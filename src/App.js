@@ -6,6 +6,7 @@ import Bar from './components/bar'
 
 function App() {
   return (
+    // не знаю нужен ли в данном случае div "App"?
     <div className="App">
       <div className="wrapper">
         <div className="container">
