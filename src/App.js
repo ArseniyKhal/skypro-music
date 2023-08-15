@@ -6,17 +6,15 @@ import Bar from './components/bar'
 
 function App() {
   return (
-    <div className="App">
-      <div className="wrapper">
-        <div className="container">
-          <main className="main">
-            <Nav />
-            <Centerblock />
-            <Sidebar />
-          </main>
-          <Bar />
-          <footer className="footer" />
-        </div>
+    <div className="wrapper">
+      <div className="container">
+        <main className="main">
+          <Nav />
+          <Centerblock />
+          <Sidebar />
+        </main>
+        <Bar />
+        <footer className="footer" />
       </div>
     </div>
   )
