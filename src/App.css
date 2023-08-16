@@ -108,6 +108,7 @@ body {
 	width: 244px;
 	background-color: #181818;
 	padding: 20px 0 20px 36px;
+	overflow: hidden;
 }
 
 .main__centerblock {
@@ -145,11 +146,17 @@ body {
 	-webkit-box-pack: justify;
 	-ms-flex-pack: justify;
 	justify-content: space-between;
+	cursor: pointer;
 }
 
 .nav__menu {
 	display: block;
 	visibility: visible;
+	transition: transform 0.5s ease;
+}
+
+.raises-up {
+	transform: translateX(-120%);
 }
 
 .logo__image {

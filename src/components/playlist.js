@@ -553,20 +553,12 @@ export default function Playlist() {
               </div>
             </div>
             <div className="track__author">
-              <a
-                className="track__author-link"
-                aria-label="track author link"
-                href="http://"
-              >
+              <a className="track__author-link" href="http://">
                 {' '}
               </a>
             </div>
             <div className="track__album">
-              <a
-                className="track__album-link"
-                aria-label="track author link"
-                href="http://"
-              >
+              <a className="track__album-link" href="http://">
                 {' '}
               </a>
             </div>
