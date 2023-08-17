@@ -153,12 +153,7 @@ body {
 
 .nav__menu {
 	display: block;
-	visibility: hidden;
 	transition: all 0.2s ease;
-}
-
-.show-menu {
-	visibility: visible;
 }
 
 .logo__image {

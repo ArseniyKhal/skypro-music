@@ -1,7 +1,10 @@
+import { useState } from 'react'
+
 export default function Nav() {
+  // Обработчик нажатия на бургер
+  const [showMemu, setShowMemu] = useState(false)
   function handleClick() {
-    const navMenu = document.getElementById('nav-menu')
-    navMenu.classList.toggle('show-menu')
+    setShowMemu(!showMemu)
   }
 
   return (
@@ -18,25 +21,27 @@ export default function Nav() {
         <span className="burger__line" />
         <span className="burger__line" />
       </button>
-      <div className="nav__menu menu" id="nav-menu">
-        <ul className="menu__list">
-          <li className="menu__item">
-            <a href="/#" className="menu__link">
-              Главное
-            </a>
-          </li>
-          <li className="menu__item">
-            <a href="/#" className="menu__link">
-              Мой плейлист
-            </a>
-          </li>
-          <li className="menu__item">
-            <a href="../signin.html" className="menu__link">
-              Войти
-            </a>
-          </li>
-        </ul>
-      </div>
+      {showMemu && (
+        <div className="nav__menu menu">
+          <ul className="menu__list">
+            <li className="menu__item">
+              <a href="/#" className="menu__link">
+                Главное
+              </a>
+            </li>
+            <li className="menu__item">
+              <a href="/#" className="menu__link">
+                Мой плейлист
+              </a>
+            </li>
+            <li className="menu__item">
+              <a href="../signin.html" className="menu__link">
+                Войти
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
     </nav>
   )
 }
