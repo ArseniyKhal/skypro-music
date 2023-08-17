@@ -1,8 +1,7 @@
 export default function Nav() {
   function handleClick() {
     const navMenu = document.getElementById('nav-menu')
-
-    navMenu.classList.toggle('raises-up')
+    navMenu.classList.toggle('show-menu')
   }
 
   return (
@@ -10,15 +9,15 @@ export default function Nav() {
       <div className="nav__logo logo">
         <img className="logo__image" src="img/logo.png" alt="logo" />
       </div>
-      <div
+      <button
         className="nav__burger burger"
         onClick={handleClick}
-        aria-hidden="true"
+        type="button"
       >
         <span className="burger__line" />
         <span className="burger__line" />
         <span className="burger__line" />
-      </div>
+      </button>
       <div className="nav__menu menu" id="nav-menu">
         <ul className="menu__list">
           <li className="menu__item">

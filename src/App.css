@@ -147,16 +147,18 @@ body {
 	-ms-flex-pack: justify;
 	justify-content: space-between;
 	cursor: pointer;
+	background-color: inherit;
+	border: none;
 }
 
 .nav__menu {
 	display: block;
-	visibility: visible;
-	transition: transform 0.5s ease;
+	visibility: hidden;
+	transition: all 0.2s ease;
 }
 
-.raises-up {
-	transform: translateX(-120%);
+.show-menu {
+	visibility: visible;
 }
 
 .logo__image {
