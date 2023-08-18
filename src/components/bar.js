@@ -5,7 +5,7 @@ import {
   TrackPlay,
 } from './player-controls'
 
-export default function Bar() {
+export default function Bar({ isLoading }) {
   return (
     <div className="bar">
       <div className="bar__content">
@@ -14,7 +14,7 @@ export default function Bar() {
           <div className="bar__player player">
             <PlayerButtons />
             <div className="player__track-play track-play">
-              <TrackPlay />
+              <TrackPlay isLoading={isLoading} />
               <Likes />
             </div>
           </div>

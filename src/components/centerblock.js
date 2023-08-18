@@ -1,14 +1,14 @@
 import Search from './search'
 import Playlist from './playlist'
 
-export default function Centerblock() {
+export default function Centerblock({ isLoading }) {
   return (
     <div className="main__centerblock centerblock">
       <Search />
       <h2 className="centerblock__h2">Треки</h2>
       <MusicFilter />
       <div className="centerblock__content">
-        <Playlist />
+        <Playlist isLoading={isLoading} />
       </div>
     </div>
   )
