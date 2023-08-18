@@ -42,6 +42,8 @@ body {
 	height: 100%;
 	font-family: "StratosSkyeng", sans-serif;
 	color: #ffffff;
+	scrollbar-color: #FFFFFF #4B4949;
+	scrollbar-width: thin;
 }
 
 .wrapper {
@@ -88,6 +90,15 @@ body {
 	fill: #696969;
 	stroke: #ffffff;
 	cursor: pointer;
+}
+
+.skeleton {
+	background-color: #313131;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .main {
@@ -310,8 +321,63 @@ body {
 	padding: 6px 20px;
 }
 
-.filter__button:not(:last-child) {
+.filter__item {
+	position: relative;
+}
+
+.filter__item:not(:last-child) {
 	margin-right: 10px;
+}
+
+.filter__menu {
+	position: absolute;
+	padding: 34px;
+	border-radius: 12px;
+	background: #313131;
+	z-index: 2;
+	top: 49px;
+	left: 0;
+}
+
+.filter__content {
+	overflow: auto;
+	max-height: 237px;
+	width: 180px;
+}
+
+.filter__content::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+
+.filter__content::-webkit-scrollbar-track {
+	background: #4B4949;
+}
+
+.filter__content::-webkit-scrollbar-thumb {
+	background-color: #FFFFFF;
+	border-radius: 2px;
+}
+
+.filter__list {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	color: #FFF;
+	font-variant-numeric: lining-nums proportional-nums;
+	font-size: 20px;
+	line-height: 120%;
+}
+
+.filter__text {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.filter__text:hover {
+	color: #B672FF;
+	text-decoration-line: underline;
 }
 
 .content__title {
@@ -456,6 +522,7 @@ body {
 	font-size: 16px;
 	line-height: 24px;
 	color: #4e4e4e;
+	margin-left: 5px;
 }
 
 .track__author {
@@ -593,15 +660,6 @@ body {
 .sidebar__img {
 	width: 100%;
 	height: auto;
-}
-
-.skeleton {
-	background-color: #313131;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
 }
 
 .bar {

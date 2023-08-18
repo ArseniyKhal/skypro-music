@@ -1,109 +1,25 @@
-export default function Playlist({ isLoading }) {
+export default function Playlist({ isLoading, playlistMusic }) {
   return (
-    <>
+    <div className="centerblock__content">
       <PlaylistTitle />
       <div className="content__playlist playlist">
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Guilt"
-          trackTitleSpan=""
-          trackAuthor="Nero"
-          album="Welcome Reality"
-          trackTime="4:44"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Elektro"
-          trackTitleSpan=""
-          trackAuthor="Dynoro, Outwork, Mr. Gee"
-          album="Elektro"
-          trackTime="2:22"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="I’m Fire"
-          trackTitleSpan=""
-          trackAuthor="Ali Bakgor"
-          album="I’m Fire"
-          trackTime="2:22"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Non Stop"
-          trackTitleSpan="(Remix)"
-          trackAuthor="Стоункат, Psychopath"
-          album="Non Stop"
-          trackTime="4:12"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Run Run"
-          trackTitleSpan="(feat. AR/CO)"
-          trackAuthor="Jaded, Will Clarke, AR/CO"
-          album="Run Run"
-          trackTime="2:54"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Eyes on Fire"
-          trackTitleSpan="(Zeds Dead Remix)"
-          trackAuthor="Blue Foundation, Zeds Dead"
-          album="Eyes on Fire"
-          trackTime="5:20"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Mucho Bien"
-          trackTitleSpan="(Hi Profile Remix)"
-          trackAuthor="HYBIT, Mr. Black, Offer Nissim, Hi Profile"
-          album="Mucho Bien"
-          trackTime="3:41"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Knives n Cherries"
-          trackTitleSpan=""
-          trackAuthor="minthaze"
-          album="Captivating"
-          trackTime="1:48"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="How Deep Is Your Love"
-          trackTitleSpan=""
-          trackAuthor="Calvin Harris, Disciples"
-          album="How Deep Is Your Love"
-          trackTime="3:32"
-          isLoading={isLoading}
-        />
-
-        <PlaylistItem
-          trackImgUrl="img/icon/sprite.svg#icon-note"
-          trackTitle="Morena"
-          trackTitleSpan=""
-          trackAuthor="Tom Boxer"
-          album="Soundz Made in Romania"
-          trackTime="3:36"
-          isLoading={isLoading}
-        />
+        {playlistMusic.map((track) => (
+          <PlaylistItem
+            key={track.id}
+            playlistMusic={playlistMusic}
+            trackImgUrl={track.trackImgUrl}
+            trackTitle={track.trackTitle}
+            trackTitleSpan={track.trackTitleSpan}
+            trackAuthor={track.trackAuthor}
+            album={track.album}
+            trackTime={track.trackTime}
+            year={track.year}
+            genre={track.genre}
+            isLoading={isLoading}
+          />
+        ))}
       </div>
-    </>
+    </div>
   )
 }
 

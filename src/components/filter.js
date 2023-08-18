@@ -1,11 +1,6 @@
-import './App.css'
-import { useEffect, useState } from 'react'
-import Nav from './components/nav'
-import Sidebar from './components/sidebar'
-import Centerblock from './components/centerblock'
-import Bar from './components/bar'
+import { useState } from 'react'
 
-const playlistMusic = [
+export const playlistMusic = [
   {
     trackImgUrl: 'img/icon/sprite.svg#icon-note',
     trackTitle: 'Guilt',
@@ -117,26 +112,66 @@ const playlistMusic = [
     id: 'rtbhr6e765ntdrtbnfyuny',
   },
 ]
-export default function App() {
-  // Загрузка 5 сек
-  const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 5000)
-  }, [])
 
+export default function MusicFilter() {
+  const [visibleFilter, setvisibleFilter] = useState(null)
+  const toggleVisibleFilter = (filter) => {
+    setvisibleFilter(visibleFilter === filter ? null : filter)
+  }
   return (
-    <div className="wrapper">
-      <div className="container">
-        <main className="main">
-          <Nav />
-          <Centerblock isLoading={isLoading} playlistMusic={playlistMusic} />
-          <Sidebar isLoading={isLoading} />
-        </main>
-        <Bar isLoading={isLoading} />
-        <footer className="footer" />
-      </div>
+    <div className="centerblock__filter filter">
+      <div className="filter__title">Искать по:</div>
+      <MusicFilterItem
+        title="исполнителю"
+        visibleFilter={visibleFilter}
+        toggleVisibleFilter={toggleVisibleFilter}
+      />
+      <MusicFilterItem
+        title="году выпуска"
+        visibleFilter={visibleFilter}
+        toggleVisibleFilter={toggleVisibleFilter}
+      />
+      <MusicFilterItem
+        title="жанру"
+        visibleFilter={visibleFilter}
+        toggleVisibleFilter={toggleVisibleFilter}
+      />
     </div>
   )
 }
+
+function MusicFilterItem({ toggleVisibleFilter, title, visibleFilter }) {
+  return (
+    <div
+      className="filter__item"
+      onClick={() => toggleVisibleFilter(title)}
+      aria-hidden="true"
+    >
+      <div className="filter__button button-author _btn-text">{title}</div>
+      {visibleFilter === title && (
+        <div className="filter__menu">
+          <div className="filter__content">
+            <ul className="filter__list">
+              {/* <FilterListText text="Michael Jackson" />
+              <FilterListText text="Frank Sinatra" /> */}
+              {playlistMusic.map((track) => (
+                <li className="filter__text" key={track.id}>
+                  {/* {title === 'исполнителю'
+                    ? track.trackAuthor
+                    : title === 'году выпуска'
+                    ? track.year
+                    : track.genre} */}
+                  {/* Вложенные тернарные выражения запрещены. Не пойму как тут сделать двойное условие */}
+                  {title === 'исполнителю' ? track.trackAuthor : track.year}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+// function FilterListText({ text }) {
+//   return <li className="filter__text">{text}</li>
+// }

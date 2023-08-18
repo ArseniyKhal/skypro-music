@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 export default function Nav() {
   // Обработчик нажатия на бургер
-  const [showMenu, setShowMenu] = useState(false)
+  const [showNavMenu, setShowNavMenu] = useState(false)
   function handleClick() {
-    setShowMenu(!showMenu)
+    setShowNavMenu(!showNavMenu)
   }
 
   return (
@@ -21,10 +21,10 @@ export default function Nav() {
         <span className="burger__line" />
         <span className="burger__line" />
       </button>
-      {showMenu && (
+      {showNavMenu && (
         <div
           className="nav__menu menu"
-          //   style={{ visibility: showMenu ? 'visible' : 'hidden' }}
+          //   style={{ visibility: showNavMenu ? 'visible' : 'hidden' }}
         >
           <ul className="menu__list">
             <li className="menu__item">
