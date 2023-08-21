@@ -42,6 +42,8 @@ body {
 	height: 100%;
 	font-family: "StratosSkyeng", sans-serif;
 	color: #ffffff;
+	scrollbar-color: #FFFFFF #4B4949;
+	scrollbar-width: thin;
 }
 
 .wrapper {
@@ -90,6 +92,15 @@ body {
 	cursor: pointer;
 }
 
+.skeleton {
+	background-color: #313131;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
 .main {
 	-webkit-box-flex: 1;
 	-ms-flex: 1 1 auto;
@@ -108,6 +119,7 @@ body {
 	width: 244px;
 	background-color: #181818;
 	padding: 20px 0 20px 36px;
+	overflow: hidden;
 }
 
 .main__centerblock {
@@ -145,11 +157,14 @@ body {
 	-webkit-box-pack: justify;
 	-ms-flex-pack: justify;
 	justify-content: space-between;
+	cursor: pointer;
+	background-color: inherit;
+	border: none;
 }
 
 .nav__menu {
 	display: block;
-	visibility: visible;
+	transition: all 0.2s ease;
 }
 
 .logo__image {
@@ -306,8 +321,63 @@ body {
 	padding: 6px 20px;
 }
 
-.filter__button:not(:last-child) {
+.filter__item {
+	position: relative;
+}
+
+.filter__item:not(:last-child) {
 	margin-right: 10px;
+}
+
+.filter__menu {
+	position: absolute;
+	padding: 34px;
+	border-radius: 12px;
+	background: #313131;
+	z-index: 2;
+	top: 49px;
+	left: 0;
+}
+
+.filter__content {
+	overflow: auto;
+	max-height: 237px;
+	width: 180px;
+}
+
+.filter__content::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+
+.filter__content::-webkit-scrollbar-track {
+	background: #4B4949;
+}
+
+.filter__content::-webkit-scrollbar-thumb {
+	background-color: #FFFFFF;
+	border-radius: 2px;
+}
+
+.filter__list {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	color: #FFF;
+	font-variant-numeric: lining-nums proportional-nums;
+	font-size: 20px;
+	line-height: 120%;
+}
+
+.filter__text {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.filter__text:hover {
+	color: #B672FF;
+	text-decoration-line: underline;
 }
 
 .content__title {
@@ -423,6 +493,7 @@ body {
 	-ms-flex-pack: center;
 	justify-content: center;
 	margin-right: 17px;
+	position: relative;
 }
 
 .track__title-svg {
@@ -430,6 +501,11 @@ body {
 	height: 17px;
 	fill: transparent;
 	stroke: #4e4e4e;
+}
+
+.track__title-text {
+	position: relative;
+	width: 100%;
 }
 
 .track__title-link {
@@ -446,6 +522,7 @@ body {
 	font-size: 16px;
 	line-height: 24px;
 	color: #4e4e4e;
+	margin-left: 5px;
 }
 
 .track__author {
@@ -456,6 +533,8 @@ body {
 	-webkit-box-pack: start;
 	-ms-flex-pack: start;
 	justify-content: flex-start;
+	position: relative;
+	padding-left: 1px;
 }
 
 .track__author-link {
@@ -469,6 +548,7 @@ body {
 
 .track__album {
 	width: 245px;
+	position: relative;
 }
 
 .track__album-link {
@@ -477,6 +557,10 @@ body {
 	font-size: 16px;
 	line-height: 24px;
 	color: #696969;
+}
+
+.track__time {
+	position: relative;
 }
 
 .track__time-svg {
@@ -561,6 +645,7 @@ body {
 .sidebar__item {
 	width: 250px;
 	height: 150px;
+	position: relative;
 }
 
 .sidebar__item:not(:last-child) {
@@ -765,6 +850,7 @@ body {
 	-ms-grid-row-span: 2;
 	-ms-grid-column: 1;
 	grid-area: image;
+	position: relative;
 }
 
 .track-play__svg {
@@ -779,6 +865,8 @@ body {
 	-ms-grid-column: 2;
 	grid-area: author;
 	min-width: 49px;
+	position: relative;
+	width: 100%;
 }
 
 .track-play__author-link {
@@ -795,6 +883,8 @@ body {
 	-ms-grid-column: 2;
 	grid-area: album;
 	min-width: 49px;
+	position: relative;
+	width: 100%;
 }
 
 .track-play__album-link {

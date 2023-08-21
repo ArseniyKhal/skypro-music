@@ -1,4 +1,4 @@
-export default function Sidebar() {
+export default function Sidebar({ isLoading }) {
   return (
     <div className="main__sidebar sidebar">
       <div className="sidebar__personal">
@@ -11,35 +11,34 @@ export default function Sidebar() {
       </div>
       <div className="sidebar__block">
         <div className="sidebar__list">
-          <div className="sidebar__item">
-            <a className="sidebar__link" href="/#">
-              <img
-                className="sidebar__img"
-                src="img/playlist01.png"
-                alt="day's playlist"
-              />
-            </a>
-          </div>
-          <div className="sidebar__item">
-            <a className="sidebar__link" href="/#">
-              <img
-                className="sidebar__img"
-                src="img/playlist02.png"
-                alt="day's playlist"
-              />
-            </a>
-          </div>
-          <div className="sidebar__item">
-            <a className="sidebar__link" href="/#">
-              <img
-                className="sidebar__img"
-                src="img/playlist03.png"
-                alt="day's playlist"
-              />
-            </a>
-          </div>
+          <SidebarItem
+            imgUrl="img/playlist01.png"
+            imgAlt={"day's playlist"}
+            isLoading={isLoading}
+          />
+          <SidebarItem
+            imgUrl="img/playlist02.png"
+            imgAlt={"day's playlist"}
+            isLoading={isLoading}
+          />
+          <SidebarItem
+            imgUrl="img/playlist03.png"
+            imgAlt={"day's playlist"}
+            isLoading={isLoading}
+          />
         </div>
       </div>
+    </div>
+  )
+}
+
+function SidebarItem({ imgUrl, imgAlt, isLoading }) {
+  return (
+    <div className="sidebar__item">
+      <a className="sidebar__link" href="/#">
+        <img className="sidebar__img" src={imgUrl} alt={imgAlt} />
+      </a>
+      {isLoading && <div className="skeleton" />}
     </div>
   )
 }
