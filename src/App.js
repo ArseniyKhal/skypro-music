@@ -1,4 +1,4 @@
-import './App.css'
+// import './App.css'
 import { useEffect, useState } from 'react'
 import NavMenu from './components/NavMenu/NavMenu'
 import Sidebar from './components/Sidebar/Sidebar'

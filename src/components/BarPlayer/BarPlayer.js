@@ -78,13 +78,16 @@ function TrackPlay({ isLoading }) {
 function Likes() {
   return (
     <S.TrackPlayLikesDis>
-      <S.TrackPlayLikes className="track-play__like _btn-icon">
-        <S.TrackPlayLikesSvg alt="like">
+      <S.TrackPlayLikes className=" _btn-icon">
+        <S.TrackPlayLikesSvg className="track-play__like-svg" alt="like">
           <use xlinkHref="img/icon/sprite.svg#icon-like" />
         </S.TrackPlayLikesSvg>
       </S.TrackPlayLikes>
       <S.TrackPlayDislikes className=" _btn-icon">
-        <S.TrackPlayDislikesSvg alt="dislike">
+        <S.TrackPlayDislikesSvg
+          className="track-play__dislike-svg"
+          alt="dislike"
+        >
           <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
         </S.TrackPlayDislikesSvg>
       </S.TrackPlayDislikes>

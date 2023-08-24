@@ -40,7 +40,7 @@ function SidebarItem({ imgUrl, imgAlt, isLoading }) {
       <S.SidebarLink href="/#">
         <S.SidebarImg src={imgUrl} alt={imgAlt} />
       </S.SidebarLink>
-      {isLoading && <S.Skeleton />}
+      {isLoading && <div className="skeleton" />}
     </S.SidebarItem>
   )
 }

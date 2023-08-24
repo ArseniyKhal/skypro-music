@@ -119,7 +119,7 @@ export default function Centerblock({ isLoading }) {
     <S.MainCenterblock>
       <Search />
       <S.CenterblockH2>Треки</S.CenterblockH2>
-      <MusicFilter />
+      <MusicFilter isLoading={isLoading} />
       <Playlist isLoading={isLoading} playlistMusic={playlistMusic} />
     </S.MainCenterblock>
   )
@@ -136,7 +136,7 @@ function Search() {
   )
 }
 
-function MusicFilter() {
+function MusicFilter({ isLoading }) {
   const [visibleFilter, setvisibleFilter] = useState(null)
   const toggleVisibleFilter = (filter) => {
     setvisibleFilter(visibleFilter === filter ? null : filter)
@@ -151,6 +151,7 @@ function MusicFilter() {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
+        isLoading={isLoading}
       />
       <MusicFilterItem
         title="году выпуска"
@@ -179,7 +180,12 @@ function MusicFilterItem({
   filterList,
 }) {
   return (
-    <S.FilterItem onClick={() => toggleVisibleFilter(title)} aria-hidden="true">
+    <S.FilterItem
+      onClick={() => toggleVisibleFilter(title)}
+      // Как отключить кнопку!?!?
+      disabled
+      aria-hidden="true"
+    >
       <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
       {visibleFilter === title && (
         <S.FilterMenu>

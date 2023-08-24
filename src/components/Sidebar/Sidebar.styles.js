@@ -77,11 +77,3 @@ export const SidebarImg = styled.img`
   width: 100%;
   height: auto;
 `
-export const Skeleton = styled.div`
-  background-color: #313131;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-`
