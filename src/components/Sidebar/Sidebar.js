@@ -1,16 +1,18 @@
+import * as S from './Sidebar.styles'
+
 export default function Sidebar({ isLoading }) {
   return (
-    <div className="main__sidebar sidebar">
-      <div className="sidebar__personal">
-        <p className="sidebar__personal-name">Sergey.Ivanov</p>
-        <div className="sidebar__icon">
+    <S.MainSidebar>
+      <S.SidebarPersonal>
+        <S.SidebarPersonalName>Sergey.Ivanov</S.SidebarPersonalName>
+        <S.SidebarIcon>
           <svg alt="logout">
             <use xlinkHref="img/icon/sprite.svg#logout" />
           </svg>
-        </div>
-      </div>
-      <div className="sidebar__block">
-        <div className="sidebar__list">
+        </S.SidebarIcon>
+      </S.SidebarPersonal>
+      <S.SidebarBlock>
+        <S.SidebarList>
           <SidebarItem
             imgUrl="img/playlist01.png"
             imgAlt={"day's playlist"}
@@ -26,19 +28,19 @@ export default function Sidebar({ isLoading }) {
             imgAlt={"day's playlist"}
             isLoading={isLoading}
           />
-        </div>
-      </div>
-    </div>
+        </S.SidebarList>
+      </S.SidebarBlock>
+    </S.MainSidebar>
   )
 }
 
 function SidebarItem({ imgUrl, imgAlt, isLoading }) {
   return (
-    <div className="sidebar__item">
-      <a className="sidebar__link" href="/#">
-        <img className="sidebar__img" src={imgUrl} alt={imgAlt} />
-      </a>
+    <S.SidebarItem>
+      <S.SidebarLink href="/#">
+        <S.SidebarImg src={imgUrl} alt={imgAlt} />
+      </S.SidebarLink>
       {isLoading && <div className="skeleton" />}
-    </div>
+    </S.SidebarItem>
   )
 }
