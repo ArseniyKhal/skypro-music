@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import * as S from './NavMenu.styles'
 
 export default function NavMenu() {
@@ -24,13 +25,19 @@ export default function NavMenu() {
         <S.NavMenu>
           <S.MenuList>
             <S.MenuItem>
-              <S.MenuLink href="/#">Главное</S.MenuLink>
+              <Link to="/" style={S.MenuLink}>
+                Главное
+              </Link>
             </S.MenuItem>
             <S.MenuItem>
-              <S.MenuLink href="/#">Мой плейлист</S.MenuLink>
+              <Link to="/favorites" style={S.MenuLink}>
+                Мой плейлист
+              </Link>
             </S.MenuItem>
             <S.MenuItem>
-              <S.MenuLink href="../signin.html">Войти</S.MenuLink>
+              <Link to="/login" style={S.MenuLink}>
+                Войти
+              </Link>
             </S.MenuItem>
           </S.MenuList>
         </S.NavMenu>

@@ -1,5 +1,4 @@
 import * as S from '../../App.styles'
-// import * as Style from './Login.styles'
 
 export default function Register() {
   return (

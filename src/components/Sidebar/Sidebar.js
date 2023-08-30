@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import * as S from './Sidebar.styles'
 
 export default function Sidebar({ isLoading }) {
@@ -17,16 +18,19 @@ export default function Sidebar({ isLoading }) {
             imgUrl="img/playlist01.png"
             imgAlt={"day's playlist"}
             isLoading={isLoading}
+            id={1}
           />
           <SidebarItem
             imgUrl="img/playlist02.png"
             imgAlt={"day's playlist"}
             isLoading={isLoading}
+            id={2}
           />
           <SidebarItem
             imgUrl="img/playlist03.png"
             imgAlt={"day's playlist"}
             isLoading={isLoading}
+            id={3}
           />
         </S.SidebarList>
       </S.SidebarBlock>
@@ -34,12 +38,12 @@ export default function Sidebar({ isLoading }) {
   )
 }
 
-function SidebarItem({ imgUrl, imgAlt, isLoading }) {
+function SidebarItem({ imgUrl, imgAlt, isLoading, id }) {
   return (
     <S.SidebarItem>
-      <S.SidebarLink href="/#">
+      <Link to={`/category/${id}`}>
         <S.SidebarImg src={imgUrl} alt={imgAlt} />
-      </S.SidebarLink>
+      </Link>
       {isLoading && <div className="skeleton" />}
     </S.SidebarItem>
   )
