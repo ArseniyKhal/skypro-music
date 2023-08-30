@@ -1,7 +1,6 @@
 import { styled, createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
-
 @font-face {
 	font-family: "StratosSkyeng";
 	src: local("StratosSkyeng"), local("StratosSkyeng"),
@@ -28,6 +27,7 @@ a:visited {
 	text-decoration: none;
 	font-family: "StratosSkyeng", sans-serif;
 	cursor: pointer;
+	color: inherit;
 }
 ul li {
 	list-style: none;
@@ -97,7 +97,6 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
 `
-
 export const Main = styled.main`
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
@@ -110,4 +109,13 @@ export const Main = styled.main`
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+`
+export const CenterBlock = styled.div`
+  position: relative;
+  top: 30vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 `
