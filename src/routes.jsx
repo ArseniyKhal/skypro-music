@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-// import { App } from './App'
-// import { About } from './pages/about'
+import NotFound from './pages/not-found'
 import Main from './pages/HomePage'
 
 export default function AppRoutes() {
@@ -8,6 +7,7 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Main />} />
       {/* <Route path="/about" element={<About />} /> */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

@@ -94,6 +94,8 @@ export const Container = styled.div`
   margin: 0 auto;
   position: relative;
   background-color: #181818;
+  display: flex;
+  justify-content: center;
 `
 
 export const Main = styled.main`
