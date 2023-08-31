@@ -119,3 +119,9 @@ export const CenterBlock = styled.div`
   align-items: center;
   gap: 15px;
 `
+export const BtnLogin = {
+  width: '100px',
+  padding: '10px',
+  backgroundColor: '#b1b1b1',
+  borderRadius: '5px',
+}

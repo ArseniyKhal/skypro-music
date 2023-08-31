@@ -9,7 +9,9 @@ export default function NavMenu() {
   return (
     <S.MainNav>
       <S.NavLogo>
-        <S.LogoImage src="img/logo.png" alt="logo" />
+        <Link to="/">
+          <S.LogoImage src="img/logo.png" alt="logo" />
+        </Link>
       </S.NavLogo>
       <S.NavBurger
         onClick={() => {
@@ -35,8 +37,14 @@ export default function NavMenu() {
               </Link>
             </S.MenuItem>
             <S.MenuItem>
-              <Link to="/login" style={S.MenuLink}>
-                Войти
+              <Link
+                to="/login"
+                onClick={() => {
+                  document.cookie = 'user=; path=/; max-age=-1'
+                }}
+                style={S.MenuLink}
+              >
+                Выйти
               </Link>
             </S.MenuItem>
           </S.MenuList>
