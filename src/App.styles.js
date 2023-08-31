@@ -117,11 +117,13 @@ export const CenterBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 `
 export const BtnLogin = {
   width: '100px',
   padding: '10px',
   backgroundColor: '#b1b1b1',
   borderRadius: '5px',
+  color: 'inherit',
+  fontSize: '20px',
 }

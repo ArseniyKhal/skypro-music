@@ -18,7 +18,9 @@ export default function Login() {
       >
         Войти
       </Link>
-      <Link to="/register">Перейти к регистрации</Link>
+      <Link to="/register" style={{ textDecoration: 'underline' }}>
+        Перейти к регистрации
+      </Link>
     </S.CenterBlock>
   )
 }
