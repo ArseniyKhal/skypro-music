@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import * as S from './Centerblock.styles'
 import playlistMusic from '../../data'
+import { getPlaylist } from '../../api'
 
 export default function Centerblock({ isLoading }) {
   return (
@@ -91,23 +92,67 @@ function MusicFilterItem({
 }
 
 function Playlist({ isLoading }) {
+  const [tracks, setTracks] = useState([
+    {
+      trackImgUrl: 'img/icon/sprite.svg#icon-note',
+      trackTitle: 'Guilt',
+      trackTitleSpan: '',
+      trackAuthor: 'Nero',
+      album: 'Welcome Reality',
+      trackTime: '4:44',
+      year: '1980',
+      genre: 'rock',
+      id: 'fghtfgkhmjrtlkhnfgb',
+    },
+    {
+      trackImgUrl: 'img/icon/sprite.svg#icon-note',
+      trackTitle: 'Elektro',
+      trackTitleSpan: '',
+      trackAuthor: 'Dynoro, Outwork, Mr. Gee',
+      album: 'Elektro',
+      trackTime: '2:22',
+      year: '2020',
+      genre: 'rock',
+      id: '45645fdgklerjt54j',
+    },
+    {
+      trackImgUrl: 'img/icon/sprite.svg#icon-note',
+      trackTitle: 'I’m Fire',
+      trackTitleSpan: '',
+      trackAuthor: 'Ali Bakgor',
+      album: 'I’m Fire',
+      trackTime: '2:22',
+      year: '2001',
+      genre: 'rock',
+      id: '567ynfght7un7tuj',
+    },
+  ])
+
+  useEffect(() => {
+    getPlaylist().then((tracks2) => {
+      setTracks(tracks2)
+    })
+  }, [])
   return (
     <S.CenterblockContent>
       <PlaylistTitle />
       <S.ContentPlaylist>
-        {playlistMusic.map((track) => (
+        {tracks.map((track) => (
           <PlaylistItem
-            key={track.id}
-            playlistMusic={playlistMusic}
-            trackImgUrl={track.trackImgUrl}
-            trackTitle={track.trackTitle}
-            trackTitleSpan={track.trackTitleSpan}
-            trackAuthor={track.trackAuthor}
             album={track.album}
-            trackTime={track.trackTime}
-            year={track.year}
+            trackAuthor={track.author}
             genre={track.genre}
+            key={track.id}
+            trackImgUrl={track.logo}
+            trackTitle={track.name}
+            // перевести секунды в минуты
+            trackTime={track.duration_in_seconds}
+            year={track.release_date}
+            trackFile={track.track_file}
             isLoading={isLoading}
+            playlistMusic={playlistMusic}
+            // trackTitleSpan не используется
+            trackTitleSpan={track.trackTitleSpan}
           />
         ))}
       </S.ContentPlaylist>

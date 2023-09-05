@@ -4,7 +4,7 @@ import * as S from '../../App.styles'
 
 export default function Login() {
   const handleLogin = () => {
-    document.cookie = 'user=value; path=/; '
+    document.cookie = 'user=; path=/; '
   }
   return (
     <S.CenterBlock>
