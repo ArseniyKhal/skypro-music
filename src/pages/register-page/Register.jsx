@@ -4,7 +4,7 @@ import * as S from '../../App.styles'
 export default function Register() {
   const navigate = useNavigate()
   const handleBackButtonClick = () => {
-    navigate('/', { replace: true })
+    navigate('/login', { replace: true })
   }
   return (
     <S.CenterBlock>

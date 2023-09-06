@@ -1,24 +1,38 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+// import {  useEffect } from 'react'
 import * as S from './Centerblock.styles'
-import playlistMusic from '../../data'
-import { getPlaylist } from '../../api'
+// import { getPlaylist } from '../../api'
 
-function formatTime(time) {
-  const min = Math.floor(time / 60)
-  let sec = String(time - min * 60)
+// форматер времени трека
+export function formatTime(time) {
+  let hour = Math.floor(time / 3600)
+  let min = Math.floor((time - hour * 3600) / 60)
+  let sec = time - hour * 3600 - min * 60
   if (sec < 10) {
     sec = `0${sec}`
   }
-  return `${min}:${sec}`
+  if (hour === 0) {
+    hour = ''
+  } else {
+    hour = `${hour}:`
+    if (min < 10) {
+      min = `0${min}`
+    }
+  }
+  return `${hour}${min}:${sec}`
 }
 
-export default function Centerblock({ isLoading }) {
+export function Centerblock({ isLoading, openPlayer, playlistMusic }) {
   return (
     <S.MainCenterblock>
       <Search />
       <S.CenterblockH2>Треки</S.CenterblockH2>
-      <MusicFilter isLoading={isLoading} />
-      <Playlist isLoading={isLoading} playlistMusic={playlistMusic} />
+      <MusicFilter isLoading={isLoading} playlistMusic={playlistMusic} />
+      <Playlist
+        isLoading={isLoading}
+        playlistMusic={playlistMusic}
+        openPlayer={openPlayer}
+      />
     </S.MainCenterblock>
   )
 }
@@ -34,7 +48,7 @@ function Search() {
   )
 }
 
-function MusicFilter({ isLoading }) {
+function MusicFilter({ isLoading, playlistMusic }) {
   const [visibleFilter, setvisibleFilter] = useState(null)
   const toggleVisibleFilter = (filter) => {
     setvisibleFilter(visibleFilter === filter ? null : filter)
@@ -45,7 +59,7 @@ function MusicFilter({ isLoading }) {
       <MusicFilterItem
         title="исполнителю"
         filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.trackAuthor)),
+          new Set(playlistMusic.map((track) => track.author)),
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
@@ -58,6 +72,7 @@ function MusicFilter({ isLoading }) {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
+        isLoading={isLoading}
       />
       <MusicFilterItem
         title="жанру"
@@ -66,6 +81,7 @@ function MusicFilter({ isLoading }) {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
+        isLoading={isLoading}
       />
     </S.CenterblockFilter>
   )
@@ -76,13 +92,13 @@ function MusicFilterItem({
   title,
   visibleFilter,
   filterList,
+  isLoading,
 }) {
   return (
     <S.FilterItem
       onClick={() => toggleVisibleFilter(title)}
-      // Как отключить кнопку!?!?
-      disabled
-      aria-hidden="true"
+      disabled={{ isLoading }}
+      style={{ pointerEvents: isLoading && 'none' }}
     >
       <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
       {visibleFilter === title && (
@@ -100,34 +116,35 @@ function MusicFilterItem({
   )
 }
 
-function Playlist({ isLoading }) {
-  const [tracks, setTracks] = useState([])
-
-  useEffect(() => {
-    getPlaylist().then((tracks2) => {
-      setTracks(tracks2)
-    })
-  }, [])
+function Playlist({ isLoading, openPlayer, playlistMusic }) {
+  // загрузка списка треков
+  //   const [tracks, setTracks] = useState([])
+  //   useEffect(() => {
+  //     getPlaylist().then((tracks2) => {
+  //       setTracks(tracks2)
+  //     })
+  //   }, [])
 
   return (
     <S.CenterblockContent>
       <PlaylistTitle />
       <S.ContentPlaylist>
-        {tracks.map((track) => (
+        {playlistMusic.map((track) => (
           <PlaylistItem
             album={track.album}
-            trackAuthor={track.author}
+            author={track.author}
             genre={track.genre}
             key={track.id}
-            trackImgUrl={track.logo}
-            trackTitle={track.name}
+            logo={track.logo}
+            name={track.name}
             trackTime={formatTime(track.duration_in_seconds)}
             year={track.release_date}
             trackFile={track.track_file}
             isLoading={isLoading}
             playlistMusic={playlistMusic}
             // trackTitleSpan не используется
-            trackTitleSpan={track.trackTitleSpan}
+            trackTitleSpan={track.soName}
+            openPlayer={openPlayer}
           />
         ))}
       </S.ContentPlaylist>
@@ -151,34 +168,38 @@ function PlaylistTitle() {
 }
 
 function PlaylistItem({
-  trackImgUrl,
-  trackTitle,
-  trackAuthor,
+  logo,
+  name,
+  author,
   album,
   trackTime,
   trackTitleSpan,
   isLoading,
+  openPlayer,
+  trackFile,
 }) {
   return (
-    <S.PlaylistItem>
+    <S.PlaylistItem
+      onClick={() => openPlayer({ name, author, logo, trackFile })}
+    >
       <S.PlaylistTrack>
         <S.TrackTitle>
           <S.TrackTitleImage>
             <S.TrackTitleSvg alt="music">
-              <use xlinkHref={trackImgUrl} />
+              <use xlinkHref={logo} />
             </S.TrackTitleSvg>
             {isLoading && <div className="skeleton" />}
           </S.TrackTitleImage>
           <S.TrackTitleText>
             {isLoading && <div className="skeleton" />}
             <S.TrackTitleLink href="http://">
-              {trackTitle}
+              {name}
               <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
             </S.TrackTitleLink>
           </S.TrackTitleText>
         </S.TrackTitle>
         <S.TrackAuthor>
-          <S.TrackAuthorLink href="http://">{trackAuthor}</S.TrackAuthorLink>
+          <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
           {isLoading && <div className="skeleton" />}
         </S.TrackAuthor>
         <S.TrackAlbum>

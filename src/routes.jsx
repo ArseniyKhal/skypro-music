@@ -12,12 +12,15 @@ export default function AppRoutes() {
     <Routes>
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Main />} />
+      </Route>
+      <Route element={<ProtectedRoute />}>
         <Route path="/favorites" element={<Favorites />} />
+      </Route>
+      <Route element={<ProtectedRoute />}>
         <Route path="/category/:id" element={<Category />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

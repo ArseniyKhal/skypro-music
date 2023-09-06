@@ -1,6 +1,6 @@
 import * as S from './BarPlayer.styles'
 
-export default function Bar({ isLoading }) {
+export default function BarPlayer({ isLoading, trackInPlayer }) {
   return (
     <S.Bar>
       <S.BarContent>
@@ -9,7 +9,7 @@ export default function Bar({ isLoading }) {
           <S.BarPlayer>
             <PlayerButtons />
             <S.BarPlayerTrackPlay>
-              <TrackPlay isLoading={isLoading} />
+              <TrackPlay isLoading={isLoading} trackInPlayer={trackInPlayer} />
               <Likes />
             </S.BarPlayerTrackPlay>
           </S.BarPlayer>
@@ -54,7 +54,7 @@ function PlayerButtons() {
   )
 }
 
-function TrackPlay({ isLoading }) {
+function TrackPlay({ isLoading, trackInPlayer }) {
   return (
     <S.TrackPlayContain>
       <S.TrackPlayImage>
@@ -64,11 +64,15 @@ function TrackPlay({ isLoading }) {
         {isLoading && <div className="skeleton" />}
       </S.TrackPlayImage>
       <S.TrackPlayAuthor>
-        <S.TrackPlayAuthorLink href="http://">Ты та...</S.TrackPlayAuthorLink>
+        <S.TrackPlayAuthorLink href="http://">
+          {trackInPlayer.author}
+        </S.TrackPlayAuthorLink>
         {isLoading && <div className="skeleton" />}
       </S.TrackPlayAuthor>
       <S.TrackPlayAlbum>
-        <S.TrackPlayAlbumLink href="http://">Баста</S.TrackPlayAlbumLink>
+        <S.TrackPlayAlbumLink href="http://">
+          {trackInPlayer.name}
+        </S.TrackPlayAlbumLink>
         {isLoading && <div className="skeleton" />}
       </S.TrackPlayAlbum>
     </S.TrackPlayContain>
