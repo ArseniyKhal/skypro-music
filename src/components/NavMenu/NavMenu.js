@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import * as S from './NavMenu.styles'
 
 export default function NavMenu() {
@@ -8,7 +9,9 @@ export default function NavMenu() {
   return (
     <S.MainNav>
       <S.NavLogo>
-        <S.LogoImage src="img/logo.png" alt="logo" />
+        <Link to="/">
+          <S.LogoImage src="img/logo.png" alt="logo" />
+        </Link>
       </S.NavLogo>
       <S.NavBurger
         onClick={() => {
@@ -24,13 +27,25 @@ export default function NavMenu() {
         <S.NavMenu>
           <S.MenuList>
             <S.MenuItem>
-              <S.MenuLink href="/#">Главное</S.MenuLink>
+              <Link to="/" style={S.MenuLink}>
+                Главное
+              </Link>
             </S.MenuItem>
             <S.MenuItem>
-              <S.MenuLink href="/#">Мой плейлист</S.MenuLink>
+              <Link to="/favorites" style={S.MenuLink}>
+                Мой плейлист
+              </Link>
             </S.MenuItem>
             <S.MenuItem>
-              <S.MenuLink href="../signin.html">Войти</S.MenuLink>
+              <Link
+                to="/login"
+                onClick={() => {
+                  document.cookie = 'user=; path=/; max-age=-1'
+                }}
+                style={S.MenuLink}
+              >
+                Выйти
+              </Link>
             </S.MenuItem>
           </S.MenuList>
         </S.NavMenu>
