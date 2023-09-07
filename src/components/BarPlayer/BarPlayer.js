@@ -1,6 +1,6 @@
 import * as S from './BarPlayer.styles'
 
-export default function BarPlayer({ isLoading, trackInPlayer }) {
+export function BarPlayer({ isLoading, trackInPlayer }) {
   return (
     <S.Bar>
       <S.BarContent>

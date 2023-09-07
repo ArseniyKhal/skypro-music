@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import * as S from './Sidebar.styles'
 
-export default function Sidebar({ isLoading }) {
+export function Sidebar({ isLoading }) {
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>

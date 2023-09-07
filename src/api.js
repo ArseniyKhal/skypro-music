@@ -10,6 +10,10 @@ export async function getPlaylist() {
       method: 'GET',
     },
   )
+  if (!response.ok) {
+    console.log('ошибка!')
+    throw new Error('Не удалось загрузить плейлист')
+  }
   const data = await response.json()
   return data
 }

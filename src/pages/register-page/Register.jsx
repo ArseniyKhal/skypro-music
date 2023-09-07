@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import * as S from '../../App.styles'
 
-export default function Register() {
+export function Register() {
   const navigate = useNavigate()
   const handleBackButtonClick = () => {
     navigate('/login', { replace: true })

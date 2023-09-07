@@ -1,4 +1,4 @@
-import AppRoutes from './routes'
+import { AppRoutes } from './routes'
 import * as S from './App.styles'
 
 export default function App() {

@@ -11,13 +11,13 @@ export function formatTime(time) {
   if (sec < 10) {
     sec = `0${sec}`
   }
+  if (min < 10) {
+    min = `0${min}`
+  }
   if (hour === 0) {
     hour = ''
   } else {
     hour = `${hour}:`
-    if (min < 10) {
-      min = `0${min}`
-    }
   }
   return `${hour}${min}:${sec}`
 }

@@ -1,6 +1,6 @@
 import * as S from '../../App.styles'
 
-export default function Favorites() {
+export function Favorites() {
   return (
     <S.CenterBlock>
       <h1>Favorites Page</h1>

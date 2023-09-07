@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react'
-import NavMenu from '../../components/NavMenu/NavMenu'
-import Sidebar from '../../components/Sidebar/Sidebar'
+import { NavMenu } from '../../components/NavMenu/NavMenu'
+import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
-import BarPlayer from '../../components/BarPlayer/BarPlayer'
-import playlistMusic from '../../data'
+import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
+import { playlistMusic } from '../../data'
 import * as S from '../../App.styles'
 
-export default function HomePage() {
+export function Main() {
+  // загрузка списка треков
+  //   const [tracks, setTracks] = useState([])
+  //   useEffect(() => {
+  //     getPlaylist().then((tracks2) => {
+  //       setTracks(tracks2)
+  //     })
+  //   }, [])
+
   // Загрузка 5 сек
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
