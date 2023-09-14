@@ -1,7 +1,8 @@
 import { useState } from 'react'
-// import {  useEffect } from 'react'
+
 import * as S from './Centerblock.styles'
-// import { getPlaylist } from '../../api'
+
+// нет прокрутки списка треков??
 
 // форматер времени трека
 export function formatTime(time) {
@@ -22,7 +23,12 @@ export function formatTime(time) {
   return `${hour}${min}:${sec}`
 }
 
-export function Centerblock({ isLoading, openPlayer, playlistMusic }) {
+export function Centerblock({
+  isLoading,
+  openPlayer,
+  playlistMusic,
+  getPlaylistError,
+}) {
   return (
     <S.MainCenterblock>
       <Search />
@@ -32,6 +38,7 @@ export function Centerblock({ isLoading, openPlayer, playlistMusic }) {
         isLoading={isLoading}
         playlistMusic={playlistMusic}
         openPlayer={openPlayer}
+        getPlaylistError={getPlaylistError}
       />
     </S.MainCenterblock>
   )
@@ -87,47 +94,43 @@ function MusicFilter({ isLoading, playlistMusic }) {
   )
 }
 
-function MusicFilterItem({
+const MusicFilterItem = ({
   toggleVisibleFilter,
   title,
   visibleFilter,
   filterList,
   isLoading,
-}) {
-  return (
-    <S.FilterItem
-      onClick={() => toggleVisibleFilter(title)}
-      disabled={{ isLoading }}
-      style={{ pointerEvents: isLoading && 'none' }}
-    >
-      <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
-      {visibleFilter === title && (
-        <S.FilterMenu>
-          <S.FilterContent>
-            <S.FilterList>
-              {filterList.map((track) => (
-                <S.FilterText key={track}>{track}</S.FilterText>
-              ))}
-            </S.FilterList>
-          </S.FilterContent>
-        </S.FilterMenu>
-      )}
-    </S.FilterItem>
-  )
-}
+}) => (
+  <S.FilterItem
+    onClick={() => toggleVisibleFilter(title)}
+    disabled={{ isLoading }}
+    style={{ pointerEvents: isLoading && 'none' }}
+  >
+    <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
+    {visibleFilter === title && (
+      <S.FilterMenu>
+        <S.FilterContent>
+          <S.FilterList>
+            {filterList.map((track) => (
+              <S.FilterText key={track}>{track}</S.FilterText>
+            ))}
+          </S.FilterList>
+        </S.FilterContent>
+      </S.FilterMenu>
+    )}
+  </S.FilterItem>
+)
 
-function Playlist({ isLoading, openPlayer, playlistMusic }) {
-  // загрузка списка треков
-  //   const [tracks, setTracks] = useState([])
-  //   useEffect(() => {
-  //     getPlaylist().then((tracks2) => {
-  //       setTracks(tracks2)
-  //     })
-  //   }, [])
-
+function Playlist({ isLoading, openPlayer, playlistMusic, getPlaylistError }) {
   return (
     <S.CenterblockContent>
       <PlaylistTitle />
+      {getPlaylistError && (
+        <p>
+          Не удалось загрузить плейлист, попробуйте позже: NetworkError when
+          attempting to fetch resource.
+        </p>
+      )}
       <S.ContentPlaylist>
         {playlistMusic.map((track) => (
           <PlaylistItem
@@ -135,7 +138,7 @@ function Playlist({ isLoading, openPlayer, playlistMusic }) {
             author={track.author}
             genre={track.genre}
             key={track.id}
-            logo={track.logo}
+            logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
             name={track.name}
             trackTime={formatTime(track.duration_in_seconds)}
             year={track.release_date}
@@ -152,22 +155,20 @@ function Playlist({ isLoading, openPlayer, playlistMusic }) {
   )
 }
 
-function PlaylistTitle() {
-  return (
-    <S.ContentTitle>
-      <S.PlaylistTitleCol1>Трек</S.PlaylistTitleCol1>
-      <S.PlaylistTitleCol2>ИСПОЛНИТЕЛЬ</S.PlaylistTitleCol2>
-      <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
-      <S.PlaylistTitleCol4>
-        <S.PlaylistTitleSvg alt="time">
-          <use xlinkHref="img/icon/sprite.svg#icon-watch" />
-        </S.PlaylistTitleSvg>
-      </S.PlaylistTitleCol4>
-    </S.ContentTitle>
-  )
-}
+const PlaylistTitle = () => (
+  <S.ContentTitle>
+    <S.PlaylistTitleCol1>Трек</S.PlaylistTitleCol1>
+    <S.PlaylistTitleCol2>ИСПОЛНИТЕЛЬ</S.PlaylistTitleCol2>
+    <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
+    <S.PlaylistTitleCol4>
+      <S.PlaylistTitleSvg alt="time">
+        <use xlinkHref="img/icon/sprite.svg#icon-watch" />
+      </S.PlaylistTitleSvg>
+    </S.PlaylistTitleCol4>
+  </S.ContentTitle>
+)
 
-function PlaylistItem({
+const PlaylistItem = ({
   logo,
   name,
   author,
@@ -177,43 +178,39 @@ function PlaylistItem({
   isLoading,
   openPlayer,
   trackFile,
-}) {
-  return (
-    <S.PlaylistItem
-      onClick={() => openPlayer({ name, author, logo, trackFile })}
-    >
-      <S.PlaylistTrack>
-        <S.TrackTitle>
-          <S.TrackTitleImage>
-            <S.TrackTitleSvg alt="music">
-              <use xlinkHref={logo} />
-            </S.TrackTitleSvg>
-            {isLoading && <div className="skeleton" />}
-          </S.TrackTitleImage>
-          <S.TrackTitleText>
-            {isLoading && <div className="skeleton" />}
-            <S.TrackTitleLink href="http://">
-              {name}
-              <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
-            </S.TrackTitleLink>
-          </S.TrackTitleText>
-        </S.TrackTitle>
-        <S.TrackAuthor>
-          <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
+}) => (
+  <S.PlaylistItem onClick={() => openPlayer({ name, author, logo, trackFile })}>
+    <S.PlaylistTrack>
+      <S.TrackTitle>
+        <S.TrackTitleImage>
+          <S.TrackTitleSvg alt="music">
+            <use xlinkHref={logo} />
+          </S.TrackTitleSvg>
           {isLoading && <div className="skeleton" />}
-        </S.TrackAuthor>
-        <S.TrackAlbum>
-          <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
+        </S.TrackTitleImage>
+        <S.TrackTitleText>
           {isLoading && <div className="skeleton" />}
-        </S.TrackAlbum>
-        <S.TrackTime>
-          <S.TrackTimeSvg alt="time">
-            <use xlinkHref="img/icon/sprite.svg#icon-like" />
-          </S.TrackTimeSvg>
-          <S.TrackTimeText>{trackTime}</S.TrackTimeText>
-          {isLoading && <div className="skeleton" />}
-        </S.TrackTime>
-      </S.PlaylistTrack>
-    </S.PlaylistItem>
-  )
-}
+          <S.TrackTitleLink href="http://">
+            {name}
+            <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
+          </S.TrackTitleLink>
+        </S.TrackTitleText>
+      </S.TrackTitle>
+      <S.TrackAuthor>
+        <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
+        {isLoading && <div className="skeleton" />}
+      </S.TrackAuthor>
+      <S.TrackAlbum>
+        <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
+        {isLoading && <div className="skeleton" />}
+      </S.TrackAlbum>
+      <S.TrackTime>
+        <S.TrackTimeSvg alt="time">
+          <use xlinkHref="img/icon/sprite.svg#icon-like" />
+        </S.TrackTimeSvg>
+        <S.TrackTimeText>{trackTime}</S.TrackTimeText>
+        {isLoading && <div className="skeleton" />}
+      </S.TrackTime>
+    </S.PlaylistTrack>
+  </S.PlaylistItem>
+)

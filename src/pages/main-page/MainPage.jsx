@@ -3,24 +3,29 @@ import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
-import { playlistMusic } from '../../data'
+import { getPlaylist } from '../../api'
 import * as S from '../../App.styles'
 
 export function Main() {
   // загрузка списка треков
-  //   const [tracks, setTracks] = useState([])
-  //   useEffect(() => {
-  //     getPlaylist().then((tracks2) => {
-  //       setTracks(tracks2)
-  //     })
-  //   }, [])
-
+  const [playlistMusic, setPlaylistMusic] = useState([])
+  const [getPlaylistError, setGetPlaylistError] = useState(null)
+  useEffect(() => {
+    getPlaylist().then(
+      (data) => {
+        setPlaylistMusic(data)
+      },
+      () => {
+        setGetPlaylistError('нет сети')
+      },
+    )
+  }, [])
   // Загрузка 5 сек
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 2000)
   }, [])
   // скрыть/показать плеер
   const [visiblePlayer, setVisiblePlayer] = useState(false)
@@ -39,6 +44,7 @@ export function Main() {
           isLoading={isLoading}
           playlistMusic={playlistMusic}
           openPlayer={openPlayer}
+          getPlaylistError={getPlaylistError}
         />
         <Sidebar isLoading={isLoading} />
       </S.Main>

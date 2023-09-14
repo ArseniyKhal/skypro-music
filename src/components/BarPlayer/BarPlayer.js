@@ -1,26 +1,24 @@
 import * as S from './BarPlayer.styles'
 
-export function BarPlayer({ isLoading, trackInPlayer }) {
-  return (
-    <S.Bar>
-      <S.BarContent>
-        <S.BarPlayerProgress />
-        <S.BarPlayerBlock>
-          <S.BarPlayer>
-            <PlayerButtons />
-            <S.BarPlayerTrackPlay>
-              <TrackPlay isLoading={isLoading} trackInPlayer={trackInPlayer} />
-              <Likes />
-            </S.BarPlayerTrackPlay>
-          </S.BarPlayer>
-          <S.BarVolumeBlock>
-            <VolumeSlider />
-          </S.BarVolumeBlock>
-        </S.BarPlayerBlock>
-      </S.BarContent>
-    </S.Bar>
-  )
-}
+export const BarPlayer = ({ isLoading, trackInPlayer }) => (
+  <S.Bar>
+    <S.BarContent>
+      <S.BarPlayerProgress />
+      <S.BarPlayerBlock>
+        <S.BarPlayer>
+          <PlayerButtons />
+          <S.BarPlayerTrackPlay>
+            <TrackPlay isLoading={isLoading} trackInPlayer={trackInPlayer} />
+            <Likes />
+          </S.BarPlayerTrackPlay>
+        </S.BarPlayer>
+        <S.BarVolumeBlock>
+          <VolumeSlider />
+        </S.BarVolumeBlock>
+      </S.BarPlayerBlock>
+    </S.BarContent>
+  </S.Bar>
+)
 
 function PlayerButtons() {
   return (
@@ -54,62 +52,53 @@ function PlayerButtons() {
   )
 }
 
-function TrackPlay({ isLoading, trackInPlayer }) {
-  return (
-    <S.TrackPlayContain>
-      <S.TrackPlayImage>
-        <S.TrackPlaySvg alt="music">
-          <use xlinkHref="img/icon/sprite.svg#icon-note" />
-        </S.TrackPlaySvg>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackPlayImage>
-      <S.TrackPlayAuthor>
-        <S.TrackPlayAuthorLink href="http://">
-          {trackInPlayer.author}
-        </S.TrackPlayAuthorLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackPlayAuthor>
-      <S.TrackPlayAlbum>
-        <S.TrackPlayAlbumLink href="http://">
-          {trackInPlayer.name}
-        </S.TrackPlayAlbumLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackPlayAlbum>
-    </S.TrackPlayContain>
-  )
-}
+const TrackPlay = ({ isLoading, trackInPlayer }) => (
+  <S.TrackPlayContain>
+    <S.TrackPlayImage>
+      <S.TrackPlaySvg alt="music">
+        <use xlinkHref="img/icon/sprite.svg#icon-note" />
+      </S.TrackPlaySvg>
+      {isLoading && <div className="skeleton" />}
+    </S.TrackPlayImage>
+    <S.TrackPlayAuthor>
+      <S.TrackPlayAuthorLink href="http://">
+        {trackInPlayer.author}
+      </S.TrackPlayAuthorLink>
+      {isLoading && <div className="skeleton" />}
+    </S.TrackPlayAuthor>
+    <S.TrackPlayAlbum>
+      <S.TrackPlayAlbumLink href="http://">
+        {trackInPlayer.name}
+      </S.TrackPlayAlbumLink>
+      {isLoading && <div className="skeleton" />}
+    </S.TrackPlayAlbum>
+  </S.TrackPlayContain>
+)
 
-function Likes() {
-  return (
-    <S.TrackPlayLikesDis>
-      <S.TrackPlayLikes className=" _btn-icon">
-        <S.TrackPlayLikesSvg className="track-play__like-svg" alt="like">
-          <use xlinkHref="img/icon/sprite.svg#icon-like" />
-        </S.TrackPlayLikesSvg>
-      </S.TrackPlayLikes>
-      <S.TrackPlayDislikes className=" _btn-icon">
-        <S.TrackPlayDislikesSvg
-          className="track-play__dislike-svg"
-          alt="dislike"
-        >
-          <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
-        </S.TrackPlayDislikesSvg>
-      </S.TrackPlayDislikes>
-    </S.TrackPlayLikesDis>
-  )
-}
+const Likes = () => (
+  <S.TrackPlayLikesDis>
+    <S.TrackPlayLikes className=" _btn-icon">
+      <S.TrackPlayLikesSvg className="track-play__like-svg" alt="like">
+        <use xlinkHref="img/icon/sprite.svg#icon-like" />
+      </S.TrackPlayLikesSvg>
+    </S.TrackPlayLikes>
+    <S.TrackPlayDislikes className=" _btn-icon">
+      <S.TrackPlayDislikesSvg className="track-play__dislike-svg" alt="dislike">
+        <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
+      </S.TrackPlayDislikesSvg>
+    </S.TrackPlayDislikes>
+  </S.TrackPlayLikesDis>
+)
 
-function VolumeSlider() {
-  return (
-    <S.VolumeContent>
-      <S.VolumeImage>
-        <S.VolumeSvg alt="volume">
-          <use xlinkHref="img/icon/sprite.svg#icon-volume" />
-        </S.VolumeSvg>
-      </S.VolumeImage>
-      <S.VolumeProgress className=" _btn">
-        <S.VolumeProgressLine className=" _btn" type="range" name="range" />
-      </S.VolumeProgress>
-    </S.VolumeContent>
-  )
-}
+const VolumeSlider = () => (
+  <S.VolumeContent>
+    <S.VolumeImage>
+      <S.VolumeSvg alt="volume">
+        <use xlinkHref="img/icon/sprite.svg#icon-volume" />
+      </S.VolumeSvg>
+    </S.VolumeImage>
+    <S.VolumeProgress className=" _btn">
+      <S.VolumeProgressLine className=" _btn" type="range" name="range" />
+    </S.VolumeProgress>
+  </S.VolumeContent>
+)

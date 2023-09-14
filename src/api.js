@@ -5,64 +5,70 @@ const usernameUser = 'yellowCat'
 // Получить список треков
 export async function getPlaylist() {
   const response = await fetch(
-    'https://painassasin.online/catalog/track/all/',
-    {
-      method: 'GET',
-    },
+    'https://skypro-music-api.skyeng.tech/catalog/track/all/',
+    { method: 'GET' },
   )
+  const data = await response.json()
   if (!response.ok) {
-    console.log('ошибка!')
     throw new Error('Не удалось загрузить плейлист')
   }
-  const data = await response.json()
   return data
 }
 
 // Регистрация
 export async function registration() {
-  const response = await fetch('https://painassasin.online/user/signup/', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: emailUser,
-      password: passwordUser,
-      username: usernameUser,
-    }),
-    headers: {
-      'content-type': 'application/json',
+  const response = await fetch(
+    'https://skypro-music-api.skyeng.tech/user/signup/',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        email: emailUser,
+        password: passwordUser,
+        username: usernameUser,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
     },
-  })
+  )
   const data = await response.json()
   return data
 }
 
 // Авторизация
 export async function login() {
-  const response = await fetch('https://painassasin.online/user/login/', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: emailUser,
-      password: passwordUser,
-    }),
-    headers: {
-      'content-type': 'application/json',
+  const response = await fetch(
+    'https://skypro-music-api.skyeng.tech/user/login/',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        email: emailUser,
+        password: passwordUser,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
     },
-  })
+  )
   const data = await response.json()
   return data
 }
 
 // Получить токен
 export async function getToken() {
-  const response = await fetch('https://painassasin.online/user/token/', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: emailUser,
-      password: passwordUser,
-    }),
-    headers: {
-      'content-type': 'application/json',
+  const response = await fetch(
+    'https://skypro-music-api.skyeng.tech/user/token/',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        email: emailUser,
+        password: passwordUser,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
     },
-  })
+  )
   const data = await response.json()
   return data
 }
@@ -70,7 +76,7 @@ export async function getToken() {
 // Обновить токен
 // export async function refreshToken() {
 //   const response = await fetch(
-//     'https://painassasin.online/user/token/refresh/',
+//     'https://skypro-music-api.skyeng.tech/user/token/refresh/',
 //     {
 //       method: 'POST',
 //       body: JSON.stringify({
