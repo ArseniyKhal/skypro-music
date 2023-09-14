@@ -122,17 +122,6 @@ export const FilterContent = styled.div`
   overflow: auto;
   max-height: 237px;
   width: 180px;
-  &::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #4b4949;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #ffffff;
-    border-radius: 2px;
-  }
 `
 export const FilterMenu = styled.div`
   position: absolute;
@@ -170,6 +159,10 @@ export const ContentPlaylist = styled.div`
   -ms-flex-direction: column;
   flex-direction: column;
   overflow-y: auto;
+  height: 100vh;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 `
 export const ContentTitle = styled.div`
   display: -webkit-box;
