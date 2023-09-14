@@ -16,7 +16,9 @@ export function Main() {
         setPlaylistMusic(data)
       },
       () => {
-        setGetPlaylistError('нет сети')
+        setGetPlaylistError(
+          'Не удалось загрузить плейлист, попробуйте позже: NetworkError when attempting to fetch resource.',
+        )
       },
     )
   }, [])

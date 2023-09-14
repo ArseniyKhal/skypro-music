@@ -125,12 +125,7 @@ function Playlist({ isLoading, openPlayer, playlistMusic, getPlaylistError }) {
   return (
     <S.CenterblockContent>
       <PlaylistTitle />
-      {getPlaylistError && (
-        <p>
-          Не удалось загрузить плейлист, попробуйте позже: NetworkError when
-          attempting to fetch resource.
-        </p>
-      )}
+      {getPlaylistError && <p>{getPlaylistError}</p>}
       <S.ContentPlaylist>
         {playlistMusic.map((track) => (
           <PlaylistItem
