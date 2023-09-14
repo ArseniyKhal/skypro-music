@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as S from './NavMenu.styles'
 
-export function NavMenu() {
+export const NavMenu = () => {
   // Обработчик нажатия на бургер
   const [showNavMenu, setShowNavMenu] = useState(false)
 

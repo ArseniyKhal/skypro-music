@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import * as S from '../../App.styles'
 
-export function Category() {
+export const Category = () => {
   const params = useParams()
   return (
     <S.CenterBlock>

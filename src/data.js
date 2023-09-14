@@ -1,4 +1,4 @@
-export const playlistMusic = [
+export const playlistMusicData = [
   {
     trackImgUrl: 'img/icon/sprite.svg#icon-note',
     name: 'Guilt',

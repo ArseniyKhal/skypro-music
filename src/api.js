@@ -8,11 +8,7 @@ export async function getPlaylist() {
     'https://skypro-music-api.skyeng.tech/catalog/track/all/',
     { method: 'GET' },
   )
-  const data = await response.json()
-  if (!response.ok) {
-    throw new Error('Не удалось загрузить плейлист')
-  }
-  return data
+  return response.json()
 }
 
 // Регистрация

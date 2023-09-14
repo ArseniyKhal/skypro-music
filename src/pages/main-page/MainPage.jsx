@@ -4,31 +4,36 @@ import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
+import { playlistMusicData } from '../../data'
 import * as S from '../../App.styles'
 
-export function Main() {
+export const Main = () => {
   // загрузка списка треков
-  const [playlistMusic, setPlaylistMusic] = useState([])
+  const [playlistMusic, setPlaylistMusic] = useState(playlistMusicData)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
-  useEffect(() => {
-    getPlaylist().then(
-      (data) => {
-        setPlaylistMusic(data)
-      },
-      () => {
-        setGetPlaylistError(
-          'Не удалось загрузить плейлист, попробуйте позже: NetworkError when attempting to fetch resource.',
-        )
-      },
-    )
-  }, [])
-  // Загрузка 5 сек
   const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    setTimeout(() => {
+
+  const fetchTracks = async () => {
+    try {
+      setIsLoading(true)
+      setGetPlaylistError('')
+      const tracks = await getPlaylist()
+      setPlaylistMusic(tracks)
+    } catch (error) {
+      console.error(error)
+      setGetPlaylistError(
+        `Не удалось загрузить плейлист, попробуйте позже. Ошибка: ${error.message}`,
+      )
       setIsLoading(false)
-    }, 2000)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchTracks()
   }, [])
+
   // скрыть/показать плеер
   const [visiblePlayer, setVisiblePlayer] = useState(false)
   // воспроизводимый трек

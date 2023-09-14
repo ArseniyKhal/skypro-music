@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import * as S from '../../App.styles'
 // import * as Style from './Login.styles'
 
-export function Login() {
+export const Login = () => {
   const handleLogin = () => {
     localStorage.setItem('user', 'user')
   }

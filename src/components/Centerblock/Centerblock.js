@@ -44,18 +44,16 @@ export function Centerblock({
   )
 }
 
-function Search() {
-  return (
-    <S.CenterblockSearch>
-      <S.SearchSvg>
-        <use xlinkHref="img/icon/sprite.svg#icon-search" />
-      </S.SearchSvg>
-      <S.SearchText type="search" placeholder="Поиск" name="search" />
-    </S.CenterblockSearch>
-  )
-}
+const Search = () => (
+  <S.CenterblockSearch>
+    <S.SearchSvg>
+      <use xlinkHref="img/icon/sprite.svg#icon-search" />
+    </S.SearchSvg>
+    <S.SearchText type="search" placeholder="Поиск" name="search" />
+  </S.CenterblockSearch>
+)
 
-function MusicFilter({ isLoading, playlistMusic }) {
+const MusicFilter = ({ isLoading, playlistMusic }) => {
   const [visibleFilter, setvisibleFilter] = useState(null)
   const toggleVisibleFilter = (filter) => {
     setvisibleFilter(visibleFilter === filter ? null : filter)
@@ -121,34 +119,37 @@ const MusicFilterItem = ({
   </S.FilterItem>
 )
 
-function Playlist({ isLoading, openPlayer, playlistMusic, getPlaylistError }) {
-  return (
-    <S.CenterblockContent>
-      <PlaylistTitle />
-      {getPlaylistError && <p>{getPlaylistError}</p>}
-      <S.ContentPlaylist>
-        {playlistMusic.map((track) => (
-          <PlaylistItem
-            album={track.album}
-            author={track.author}
-            genre={track.genre}
-            key={track.id}
-            logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
-            name={track.name}
-            trackTime={formatTime(track.duration_in_seconds)}
-            year={track.release_date}
-            trackFile={track.track_file}
-            isLoading={isLoading}
-            playlistMusic={playlistMusic}
-            // trackTitleSpan не используется
-            trackTitleSpan={track.soName}
-            openPlayer={openPlayer}
-          />
-        ))}
-      </S.ContentPlaylist>
-    </S.CenterblockContent>
-  )
-}
+const Playlist = ({
+  isLoading,
+  openPlayer,
+  playlistMusic,
+  getPlaylistError,
+}) => (
+  <S.CenterblockContent>
+    <PlaylistTitle />
+    {getPlaylistError && <p>{getPlaylistError}</p>}
+    <S.ContentPlaylist>
+      {playlistMusic.map((track) => (
+        <PlaylistItem
+          album={track.album}
+          author={track.author}
+          genre={track.genre}
+          key={track.id}
+          logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
+          name={track.name}
+          trackTime={formatTime(track.duration_in_seconds)}
+          year={track.release_date}
+          trackFile={track.track_file}
+          isLoading={isLoading}
+          playlistMusic={playlistMusic}
+          // trackTitleSpan не используется
+          trackTitleSpan={track.soName}
+          openPlayer={openPlayer}
+        />
+      ))}
+    </S.ContentPlaylist>
+  </S.CenterblockContent>
+)
 
 const PlaylistTitle = () => (
   <S.ContentTitle>
