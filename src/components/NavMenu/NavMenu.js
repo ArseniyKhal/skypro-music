@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as S from './NavMenu.styles'
 
-export default function NavMenu() {
+export const NavMenu = () => {
   // Обработчик нажатия на бургер
   const [showNavMenu, setShowNavMenu] = useState(false)
 
@@ -40,7 +40,7 @@ export default function NavMenu() {
               <Link
                 to="/login"
                 onClick={() => {
-                  document.cookie = 'user=; path=/; max-age=-1'
+                  localStorage.removeItem('user')
                 }}
                 style={S.MenuLink}
               >

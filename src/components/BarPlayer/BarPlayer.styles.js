@@ -52,14 +52,14 @@ export const BarPlayerTrackPlay = styled.div`
   flex-direction: row;
 `
 export const BarVolumeBlock = styled.div`
-  width: auto;
+  width: 139px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0 92px 0 0;
+  margin-right: 36px;
 `
 export const Bar = styled.div`
   position: absolute;
@@ -146,6 +146,7 @@ export const TrackPlayContain = styled.div`
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  overflow: hidden;
 `
 export const TrackPlayImage = styled.div`
   width: 51px;
@@ -188,6 +189,8 @@ export const TrackPlayAuthorLink = styled.a`
   line-height: 24px;
   color: #ffffff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 export const TrackPlayAlbum = styled.div`
   -ms-grid-row: 2;
@@ -203,6 +206,9 @@ export const TrackPlayAlbumLink = styled.a`
   font-size: 13px;
   line-height: 24px;
   color: #ffffff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 export const TrackPlayLikesDis = styled.div`
   display: -webkit-box;
@@ -215,7 +221,7 @@ export const TrackPlayLikesDis = styled.div`
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  margin-left: 26%;
+  padding: 0 26px;
 `
 export const TrackPlayLikes = styled.div`
   padding: 5px;

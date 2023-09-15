@@ -41,9 +41,20 @@ html, body {
 	height: 100%;
 	font-family: "StratosSkyeng", sans-serif;
 	color: #ffffff;
-	scrollbar-color: #FFFFFF #4B4949;
-	scrollbar-width: thin;
 }
+
+::-webkit-scrollbar {
+		width: 4px;
+		height: 4px;
+	 }
+	 ::-webkit-scrollbar-track {
+		background: #4b4949;
+	 }
+	 ::-webkit-scrollbar-thumb {
+		background-color: #ffffff;
+		border-radius: 2px;
+	 }
+	 
 ._btn-text:hover {
 	border-color: #d9b6ff;
 	color: #d9b6ff;

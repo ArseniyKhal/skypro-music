@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import * as S from '../../App.styles'
 // import * as Style from './Login.styles'
 
-export default function Login() {
+export const Login = () => {
   const handleLogin = () => {
-    document.cookie = 'user=value; path=/; '
+    localStorage.setItem('user', 'user')
   }
   return (
     <S.CenterBlock>

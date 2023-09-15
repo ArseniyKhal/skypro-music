@@ -122,17 +122,6 @@ export const FilterContent = styled.div`
   overflow: auto;
   max-height: 237px;
   width: 180px;
-  &::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #4b4949;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #ffffff;
-    border-radius: 2px;
-  }
 `
 export const FilterMenu = styled.div`
   position: absolute;
@@ -170,6 +159,10 @@ export const ContentPlaylist = styled.div`
   -ms-flex-direction: column;
   flex-direction: column;
   overflow-y: auto;
+  height: 100vh;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 `
 export const ContentTitle = styled.div`
   display: -webkit-box;
@@ -215,10 +208,14 @@ export const PlaylistTitleSvg = styled.svg`
   fill: transparent;
   stroke: #696969;
 `
-export const PlaylistItem = styled.div`
+export const Track = styled.div`
   width: 100%;
   display: block;
   margin-bottom: 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #131313;
+  }
 `
 export const PlaylistTrack = styled.div`
   display: -webkit-box;
@@ -275,12 +272,16 @@ export const TrackTitleText = styled.div`
   position: relative;
   width: 100%;
 `
-export const TrackTitleLink = styled.a`
+export const TrackTitleLink = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10%;
 `
 export const TrackAuthor = styled.div`
   width: 321px;
@@ -293,24 +294,32 @@ export const TrackAuthor = styled.div`
   position: relative;
   padding-left: 1px;
 `
-export const TrackAuthorLink = styled.a`
+export const TrackAuthorLink = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10%;
 `
 export const TrackAlbum = styled.div`
   width: 245px;
   position: relative;
 `
-export const TrackAlbumLink = styled.a`
+export const TrackAlbumLink = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #696969;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10%;
 `
 export const TrackTime = styled.div`
   position: relative;
