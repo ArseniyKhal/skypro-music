@@ -5,7 +5,7 @@ import * as S from './Centerblock.styles'
 // нет прокрутки списка треков??
 
 // форматер времени трека
-export function formatTime(time) {
+export const formatTime = (time) => {
   let hour = Math.floor(time / 3600)
   let min = Math.floor((time - hour * 3600) / 60)
   let sec = time - hour * 3600 - min * 60
@@ -23,26 +23,24 @@ export function formatTime(time) {
   return `${hour}${min}:${sec}`
 }
 
-export function Centerblock({
+export const Centerblock = ({
   isLoading,
   openPlayer,
   playlistMusic,
   getPlaylistError,
-}) {
-  return (
-    <S.MainCenterblock>
-      <Search />
-      <S.CenterblockH2>Треки</S.CenterblockH2>
-      <MusicFilter isLoading={isLoading} playlistMusic={playlistMusic} />
-      <Playlist
-        isLoading={isLoading}
-        playlistMusic={playlistMusic}
-        openPlayer={openPlayer}
-        getPlaylistError={getPlaylistError}
-      />
-    </S.MainCenterblock>
-  )
-}
+}) => (
+  <S.MainCenterblock>
+    <Search />
+    <S.CenterblockH2>Треки</S.CenterblockH2>
+    <MusicFilter isLoading={isLoading} playlistMusic={playlistMusic} />
+    <Playlist
+      isLoading={isLoading}
+      playlistMusic={playlistMusic}
+      openPlayer={openPlayer}
+      getPlaylistError={getPlaylistError}
+    />
+  </S.MainCenterblock>
+)
 
 const Search = () => (
   <S.CenterblockSearch>
@@ -124,13 +122,11 @@ const Playlist = ({
   openPlayer,
   playlistMusic,
   getPlaylistError,
-}) => (
-  <S.CenterblockContent>
-    <PlaylistTitle />
-    {getPlaylistError && <p>{getPlaylistError}</p>}
-    <S.ContentPlaylist>
-      {playlistMusic.map((track) => (
-        <PlaylistItem
+}) => {
+  const mapTracks =
+    playlistMusic.length > 0 ? (
+      playlistMusic.map((track) => (
+        <Track
           album={track.album}
           author={track.author}
           genre={track.genre}
@@ -146,10 +142,56 @@ const Playlist = ({
           trackTitleSpan={track.soName}
           openPlayer={openPlayer}
         />
-      ))}
-    </S.ContentPlaylist>
-  </S.CenterblockContent>
-)
+      ))
+    ) : (
+      <h3>В этом плейлисте нет треков</h3>
+    )
+
+  return (
+    <S.CenterblockContent>
+      <PlaylistTitle />
+      {getPlaylistError && <p>{getPlaylistError}</p>}
+      <S.ContentPlaylist>
+        {isLoading
+          ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+              <Track
+                key={item}
+                album={<div className="skeleton" style={{ height: '19px' }} />}
+                author={<div className="skeleton" style={{ height: '19px' }} />}
+                name={<div className="skeleton" style={{ height: '19px' }} />}
+                trackTime={
+                  <div className="skeleton" style={{ height: '19px' }} />
+                }
+              />
+            ))
+          : mapTracks}
+
+        {/* {playlistMusic.length > 0 ? (
+          playlistMusic.map((track) => (
+            <Track
+              album={track.album}
+              author={track.author}
+              genre={track.genre}
+              key={track.id}
+              logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
+              name={track.name}
+              trackTime={formatTime(track.duration_in_seconds)}
+              year={track.release_date}
+              trackFile={track.track_file}
+              isLoading={isLoading}
+              playlistMusic={playlistMusic}
+              // trackTitleSpan не используется
+              trackTitleSpan={track.soName}
+              openPlayer={openPlayer}
+            />
+          ))
+        ) : (
+          <h3>В этом плейлисте нет треков</h3>
+        )} */}
+      </S.ContentPlaylist>
+    </S.CenterblockContent>
+  )
+}
 
 const PlaylistTitle = () => (
   <S.ContentTitle>
@@ -164,7 +206,7 @@ const PlaylistTitle = () => (
   </S.ContentTitle>
 )
 
-const PlaylistItem = ({
+const Track = ({
   logo,
   name,
   author,
@@ -175,7 +217,7 @@ const PlaylistItem = ({
   openPlayer,
   trackFile,
 }) => (
-  <S.PlaylistItem onClick={() => openPlayer({ name, author, logo, trackFile })}>
+  <S.Track onClick={() => openPlayer({ name, author, logo, trackFile })}>
     <S.PlaylistTrack>
       <S.TrackTitle>
         <S.TrackTitleImage>
@@ -208,5 +250,5 @@ const PlaylistItem = ({
         {isLoading && <div className="skeleton" />}
       </S.TrackTime>
     </S.PlaylistTrack>
-  </S.PlaylistItem>
+  </S.Track>
 )

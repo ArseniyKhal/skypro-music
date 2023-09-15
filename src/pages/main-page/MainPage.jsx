@@ -4,12 +4,12 @@ import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
-import { playlistMusicData } from '../../data'
+// import { playlistMusicData } from '../../data'
 import * as S from '../../App.styles'
 
 export const Main = () => {
   // загрузка списка треков
-  const [playlistMusic, setPlaylistMusic] = useState(playlistMusicData)
+  const [playlistMusic, setPlaylistMusic] = useState([])
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -55,9 +55,7 @@ export const Main = () => {
         />
         <Sidebar isLoading={isLoading} />
       </S.Main>
-      {visiblePlayer && (
-        <BarPlayer isLoading={isLoading} trackInPlayer={trackInPlayer} />
-      )}
+      {visiblePlayer && <BarPlayer trackInPlayer={trackInPlayer} />}
       <footer />
     </>
   )

@@ -208,7 +208,7 @@ export const PlaylistTitleSvg = styled.svg`
   fill: transparent;
   stroke: #696969;
 `
-export const PlaylistItem = styled.div`
+export const Track = styled.div`
   width: 100%;
   display: block;
   margin-bottom: 12px;

@@ -1,6 +1,6 @@
 import * as S from './BarPlayer.styles'
 
-export const BarPlayer = ({ isLoading, trackInPlayer }) => (
+export const BarPlayer = ({ trackInPlayer }) => (
   <S.Bar>
     <S.BarContent>
       <S.BarPlayerProgress />
@@ -8,7 +8,7 @@ export const BarPlayer = ({ isLoading, trackInPlayer }) => (
         <S.BarPlayer>
           <PlayerButtons />
           <S.BarPlayerTrackPlay>
-            <TrackPlay isLoading={isLoading} trackInPlayer={trackInPlayer} />
+            <TrackPlay trackInPlayer={trackInPlayer} />
             <Likes />
           </S.BarPlayerTrackPlay>
         </S.BarPlayer>
@@ -50,25 +50,22 @@ const PlayerButtons = () => (
   </S.PlayerControls>
 )
 
-const TrackPlay = ({ isLoading, trackInPlayer }) => (
+const TrackPlay = ({ trackInPlayer }) => (
   <S.TrackPlayContain>
     <S.TrackPlayImage>
       <S.TrackPlaySvg alt="music">
         <use xlinkHref="img/icon/sprite.svg#icon-note" />
       </S.TrackPlaySvg>
-      {isLoading && <div className="skeleton" />}
     </S.TrackPlayImage>
     <S.TrackPlayAuthor>
       <S.TrackPlayAuthorLink href="http://">
         {trackInPlayer.author}
       </S.TrackPlayAuthorLink>
-      {isLoading && <div className="skeleton" />}
     </S.TrackPlayAuthor>
     <S.TrackPlayAlbum>
       <S.TrackPlayAlbumLink href="http://">
         {trackInPlayer.name}
       </S.TrackPlayAlbumLink>
-      {isLoading && <div className="skeleton" />}
     </S.TrackPlayAlbum>
   </S.TrackPlayContain>
 )
