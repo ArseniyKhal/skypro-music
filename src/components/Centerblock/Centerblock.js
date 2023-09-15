@@ -1,8 +1,5 @@
 import { useState } from 'react'
-
 import * as S from './Centerblock.styles'
-
-// нет прокрутки списка треков??
 
 // форматер времени трека
 export const formatTime = (time) => {
@@ -165,29 +162,6 @@ const Playlist = ({
               />
             ))
           : mapTracks}
-
-        {/* {playlistMusic.length > 0 ? (
-          playlistMusic.map((track) => (
-            <Track
-              album={track.album}
-              author={track.author}
-              genre={track.genre}
-              key={track.id}
-              logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
-              name={track.name}
-              trackTime={formatTime(track.duration_in_seconds)}
-              year={track.release_date}
-              trackFile={track.track_file}
-              isLoading={isLoading}
-              playlistMusic={playlistMusic}
-              // trackTitleSpan не используется
-              trackTitleSpan={track.soName}
-              openPlayer={openPlayer}
-            />
-          ))
-        ) : (
-          <h3>В этом плейлисте нет треков</h3>
-        )} */}
       </S.ContentPlaylist>
     </S.CenterblockContent>
   )
