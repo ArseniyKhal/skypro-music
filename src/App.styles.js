@@ -82,7 +82,7 @@ html, body {
 	fill: #696969;
 	stroke: #ffffff;
 	cursor: pointer;
-}
+	}
 .skeleton {
 	background-color: #313131;
 	width: 100%;

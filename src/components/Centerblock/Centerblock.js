@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import * as S from './Centerblock.styles'
 
 // форматер времени трека
@@ -22,7 +22,7 @@ export const formatTime = (time) => {
 
 export const Centerblock = ({
   isLoading,
-  openPlayer,
+  playTrackInPlayer,
   playlistMusic,
   getPlaylistError,
 }) => (
@@ -33,7 +33,7 @@ export const Centerblock = ({
     <Playlist
       isLoading={isLoading}
       playlistMusic={playlistMusic}
-      openPlayer={openPlayer}
+      playTrackInPlayer={playTrackInPlayer}
       getPlaylistError={getPlaylistError}
     />
   </S.MainCenterblock>
@@ -116,7 +116,7 @@ const MusicFilterItem = ({
 
 const Playlist = ({
   isLoading,
-  openPlayer,
+  playTrackInPlayer,
   playlistMusic,
   getPlaylistError,
 }) => {
@@ -137,7 +137,7 @@ const Playlist = ({
           playlistMusic={playlistMusic}
           // trackTitleSpan не используется
           trackTitleSpan={track.soName}
-          openPlayer={openPlayer}
+          playTrackInPlayer={playTrackInPlayer}
         />
       ))
     ) : (
@@ -188,41 +188,47 @@ const Track = ({
   trackTime,
   trackTitleSpan,
   isLoading,
-  openPlayer,
+  playTrackInPlayer,
   trackFile,
-}) => (
-  <S.Track onClick={() => openPlayer({ name, author, logo, trackFile })}>
-    <S.PlaylistTrack>
-      <S.TrackTitle>
-        <S.TrackTitleImage>
-          <S.TrackTitleSvg alt="music">
-            <use xlinkHref={logo} />
-          </S.TrackTitleSvg>
+}) => {
+  const trRef = useRef(null)
+  return (
+    <S.Track
+      ref={trRef}
+      onClick={() => playTrackInPlayer({ name, author, logo, trackFile })}
+    >
+      <S.PlaylistTrack>
+        <S.TrackTitle>
+          <S.TrackTitleImage>
+            <S.TrackTitleSvg alt="music">
+              <use xlinkHref={logo} />
+            </S.TrackTitleSvg>
+            {isLoading && <div className="skeleton" />}
+          </S.TrackTitleImage>
+          <S.TrackTitleText>
+            {isLoading && <div className="skeleton" />}
+            <S.TrackTitleLink href="http://">
+              {name}
+              <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
+            </S.TrackTitleLink>
+          </S.TrackTitleText>
+        </S.TrackTitle>
+        <S.TrackAuthor>
+          <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
           {isLoading && <div className="skeleton" />}
-        </S.TrackTitleImage>
-        <S.TrackTitleText>
+        </S.TrackAuthor>
+        <S.TrackAlbum>
+          <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
           {isLoading && <div className="skeleton" />}
-          <S.TrackTitleLink href="http://">
-            {name}
-            <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
-          </S.TrackTitleLink>
-        </S.TrackTitleText>
-      </S.TrackTitle>
-      <S.TrackAuthor>
-        <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackAuthor>
-      <S.TrackAlbum>
-        <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackAlbum>
-      <S.TrackTime>
-        <S.TrackTimeSvg alt="time">
-          <use xlinkHref="img/icon/sprite.svg#icon-like" />
-        </S.TrackTimeSvg>
-        <S.TrackTimeText>{trackTime}</S.TrackTimeText>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackTime>
-    </S.PlaylistTrack>
-  </S.Track>
-)
+        </S.TrackAlbum>
+        <S.TrackTime>
+          <S.TrackTimeSvg alt="time">
+            <use xlinkHref="img/icon/sprite.svg#icon-like" />
+          </S.TrackTimeSvg>
+          <S.TrackTimeText>{trackTime}</S.TrackTimeText>
+          {isLoading && <div className="skeleton" />}
+        </S.TrackTime>
+      </S.PlaylistTrack>
+    </S.Track>
+  )
+}

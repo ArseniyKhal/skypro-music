@@ -1,88 +1,70 @@
-import { useState, useRef } from 'react'
+// import { useState, useRef } from 'react'
 import * as S from './BarPlayer.styles'
 
-export const BarPlayer = ({ trackInPlayer }) => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const audioRef = useRef(null)
+export const BarPlayer = ({ trackInPlayer, isPlaying, togglePlay }) => (
+  <S.Bar>
+    <S.BarContent>
+      <S.BarPlayerProgress />
+      <S.BarPlayerBlock>
+        <S.BarPlayer>
+          <PlayerButtons
+            trackInPlayer={trackInPlayer}
+            isPlaying={isPlaying}
+            togglePlay={togglePlay}
+          />
+          <S.BarPlayerTrackPlay>
+            <TrackPlay trackInPlayer={trackInPlayer} />
+            <Likes />
+          </S.BarPlayerTrackPlay>
+        </S.BarPlayer>
+        <S.BarVolumeBlock>
+          <VolumeSlider />
+        </S.BarVolumeBlock>
+      </S.BarPlayerBlock>
+    </S.BarContent>
+  </S.Bar>
+)
 
-  const handleStart = () => {
-    audioRef.current.play()
-    setIsPlaying(true)
-  }
-
-  const handleStop = () => {
-    audioRef.current.pause()
-    setIsPlaying(false)
-  }
-
-  const togglePlay = isPlaying ? handleStop : handleStart
-
-  return (
-    <>
-      <audio controls ref={audioRef} style={{ visibility: 'hidden' }}>
-        <source src={trackInPlayer.trackFile} type="audio/mpeg" />
-        <track kind="captions" src={trackInPlayer.trackFile} />
-      </audio>
-
-      <S.Bar>
-        <S.BarContent>
-          <S.BarPlayerProgress />
-          <S.BarPlayerBlock>
-            <S.BarPlayer>
-              <PlayerButtons togglePlay={togglePlay} />
-              <S.BarPlayerTrackPlay>
-                <TrackPlay trackInPlayer={trackInPlayer} />
-                <Likes />
-              </S.BarPlayerTrackPlay>
-            </S.BarPlayer>
-            <S.BarVolumeBlock>
-              <VolumeSlider />
-            </S.BarVolumeBlock>
-          </S.BarPlayerBlock>
-        </S.BarContent>
-      </S.Bar>
-    </>
-  )
-}
-
-const PlayerButtons = ({ togglePlay }) => {
-  const notYetImplemented = () => alert('еще не реализовано')
-  return (
-    <S.PlayerControls>
-      <S.PlayerBtnPrev>
-        <S.PlayerBtnPrevSvg alt="prev" onClick={notYetImplemented}>
-          <use xlinkHref="img/icon/sprite.svg#icon-prev" />
-        </S.PlayerBtnPrevSvg>
-      </S.PlayerBtnPrev>
-      <S.PlayerBtnPlay onClick={togglePlay}>
-        <S.PlayerBtnPlaySvg alt="play">
-          <use xlinkHref="img/icon/sprite.svg#icon-play" />
-        </S.PlayerBtnPlaySvg>
-      </S.PlayerBtnPlay>
-      <S.PlayerBtnNext>
-        <S.PlayerBtnNextSvg alt="next">
-          <use xlinkHref="img/icon/sprite.svg#icon-next" />
-        </S.PlayerBtnNextSvg>
-      </S.PlayerBtnNext>
-      <S.PlayerBtnRepeat className=" _btn-icon">
-        <S.PlayerBtnRepeatSvg alt="repeat">
-          <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
-        </S.PlayerBtnRepeatSvg>
-      </S.PlayerBtnRepeat>
-      <S.PlayerBtnShuffle className=" _btn-icon">
-        <S.PlayerBtnShuffleSvg alt="shuffle">
-          <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
-        </S.PlayerBtnShuffleSvg>
-      </S.PlayerBtnShuffle>
-    </S.PlayerControls>
-  )
-}
+const PlayerButtons = ({ isPlaying, togglePlay }) => (
+  <S.PlayerControls>
+    <S.PlayerBtnPrev>
+      <S.PlayerBtnPrevSvg
+        alt="prev"
+        onClick={() => alert('еще не реализовано')}
+      >
+        <use xlinkHref="img/icon/sprite.svg#icon-prev" />
+      </S.PlayerBtnPrevSvg>
+    </S.PlayerBtnPrev>
+    <S.PlayerBtnPlay onClick={togglePlay}>
+      <S.PlayerBtnPlaySvg alt="play">
+        <use
+          xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'play'}`}
+        />
+      </S.PlayerBtnPlaySvg>
+    </S.PlayerBtnPlay>
+    <S.PlayerBtnNext>
+      <S.PlayerBtnNextSvg alt="next">
+        <use xlinkHref="img/icon/sprite.svg#icon-next" />
+      </S.PlayerBtnNextSvg>
+    </S.PlayerBtnNext>
+    <S.PlayerBtnRepeat className=" _btn-icon">
+      <S.PlayerBtnRepeatSvg alt="repeat">
+        <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
+      </S.PlayerBtnRepeatSvg>
+    </S.PlayerBtnRepeat>
+    <S.PlayerBtnShuffle className=" _btn-icon">
+      <S.PlayerBtnShuffleSvg alt="shuffle">
+        <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+      </S.PlayerBtnShuffleSvg>
+    </S.PlayerBtnShuffle>
+  </S.PlayerControls>
+)
 
 const TrackPlay = ({ trackInPlayer }) => (
   <S.TrackPlayContain>
     <S.TrackPlayImage>
       <S.TrackPlaySvg alt="music">
-        <use xlinkHref="img/icon/sprite.svg#icon-note" />
+        <use xlinkHref={trackInPlayer.logo} />
       </S.TrackPlaySvg>
     </S.TrackPlayImage>
     <S.TrackPlayAuthor>
