@@ -1,7 +1,12 @@
-// import { useState, useRef } from 'react'
 import * as S from './BarPlayer.styles'
 
-export const BarPlayer = ({ trackInPlayer, isPlaying, togglePlay }) => (
+export const BarPlayer = ({
+  trackInPlayer,
+  isPlaying,
+  togglePlay,
+  handlePrev,
+  volumeSound,
+}) => (
   <S.Bar>
     <S.BarContent>
       <S.BarPlayerProgress />
@@ -11,6 +16,7 @@ export const BarPlayer = ({ trackInPlayer, isPlaying, togglePlay }) => (
             trackInPlayer={trackInPlayer}
             isPlaying={isPlaying}
             togglePlay={togglePlay}
+            handlePrev={handlePrev}
           />
           <S.BarPlayerTrackPlay>
             <TrackPlay trackInPlayer={trackInPlayer} />
@@ -18,20 +24,17 @@ export const BarPlayer = ({ trackInPlayer, isPlaying, togglePlay }) => (
           </S.BarPlayerTrackPlay>
         </S.BarPlayer>
         <S.BarVolumeBlock>
-          <VolumeSlider />
+          <VolumeSlider volumeSound={volumeSound} />
         </S.BarVolumeBlock>
       </S.BarPlayerBlock>
     </S.BarContent>
   </S.Bar>
 )
 
-const PlayerButtons = ({ isPlaying, togglePlay }) => (
+const PlayerButtons = ({ isPlaying, togglePlay, handlePrev }) => (
   <S.PlayerControls>
     <S.PlayerBtnPrev>
-      <S.PlayerBtnPrevSvg
-        alt="prev"
-        onClick={() => alert('еще не реализовано')}
-      >
+      <S.PlayerBtnPrevSvg onClick={handlePrev} alt="prev">
         <use xlinkHref="img/icon/sprite.svg#icon-prev" />
       </S.PlayerBtnPrevSvg>
     </S.PlayerBtnPrev>
@@ -95,7 +98,7 @@ const Likes = () => (
   </S.TrackPlayLikesDis>
 )
 
-const VolumeSlider = () => (
+const VolumeSlider = ({ volumeSound }) => (
   <S.VolumeContent>
     <S.VolumeImage>
       <S.VolumeSvg alt="volume">
@@ -103,7 +106,14 @@ const VolumeSlider = () => (
       </S.VolumeSvg>
     </S.VolumeImage>
     <S.VolumeProgress className=" _btn">
-      <S.VolumeProgressLine className=" _btn" type="range" name="range" />
+      <S.VolumeProgressLine
+        className=" _btn"
+        type="range"
+        name="range"
+        onChange={(e) => {
+          volumeSound(e.target.value)
+        }}
+      />
     </S.VolumeProgress>
   </S.VolumeContent>
 )

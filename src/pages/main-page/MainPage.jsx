@@ -55,6 +55,10 @@ export const Main = () => {
     togglePlay()
   }
 
+  //   const handlePrev = () => {
+  //  alert('еще не реализовано')
+  //   }
+
   const [trackInPlayer, setTrackInPlayer] = useState(null)
   const [trackUrl, setTrackUrl] = useState(null)
   const playTrackInPlayer = ({ name, author, logo, trackFile }) => {
@@ -63,6 +67,12 @@ export const Main = () => {
     setVisiblePlayer(true)
     handleLoad()
     handleStart()
+  }
+  // громкость
+  const [isVolumeSound, setIsVolumeSound] = useState(null)
+  const volumeSound = (volume) => {
+    setIsVolumeSound(volume / 100)
+    audioRef.current.volume = isVolumeSound
   }
 
   return (
@@ -87,6 +97,7 @@ export const Main = () => {
           trackInPlayer={trackInPlayer}
           isPlaying={isPlaying}
           togglePlay={togglePlay}
+          volumeSound={volumeSound}
         />
       )}
       <footer />
