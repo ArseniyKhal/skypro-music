@@ -26,7 +26,7 @@ export const BarPlayer = ({
   return (
     <S.Bar>
       <S.BarPlayerTime>
-        <p>{formatTime(audioElem.current.currentTime)}</p> /{' '}
+        {formatTime(audioElem.current.currentTime)} /
         {formatTime(trackInPlayer.length)}
       </S.BarPlayerTime>
       <S.BarContent>

@@ -8,7 +8,7 @@ import * as S from '../../App.styles'
 
 // До изменения громкости нет значения громкости в стейте
 // почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file
-// сделать правильное отображение времени трека
+// сделать правильное отображение времени трека в списке
 // нет прокрутки списка треков
 // в макете нет иконки Отключенного звука
 
@@ -89,12 +89,12 @@ export const Main = () => {
 
   // полоска прогресса трека
   const onPlaying = () => {
-    const { duration } = audioElem.current
+    const durationTime = audioElem.current.duration
     const ct = audioElem.current.currentTime
     setTrackInPlayer({
       ...trackInPlayer,
-      progress: (ct / duration) * 100,
-      length: duration,
+      progress: (ct / durationTime) * 100,
+      length: durationTime,
     })
   }
 
