@@ -6,11 +6,14 @@ export const BarPlayer = ({
   isPlaying,
   togglePlay,
   handlePrev,
+  toggleLoop,
   volumeSound,
   setProgress,
+  isLoop,
 }) => {
   const clickRef = useRef()
 
+  // клик по прогрессу для перемотки трека
   const checkWidth = (e) => {
     const width = clickRef.current.clientWidth
     const offset = e.nativeEvent.offsetX
@@ -33,6 +36,8 @@ export const BarPlayer = ({
               isPlaying={isPlaying}
               togglePlay={togglePlay}
               handlePrev={handlePrev}
+              toggleLoop={toggleLoop}
+              isLoop={isLoop}
             />
             <S.BarPlayerTrackPlay>
               <TrackPlay trackInPlayer={trackInPlayer} />
@@ -48,43 +53,46 @@ export const BarPlayer = ({
   )
 }
 
-const PlayerButtons = ({ isPlaying, togglePlay, handlePrev }) => {
-  const prevBtnRef = useRef(null)
-  //   prevBtnRef.onClick={(console.log('ДА!'))}
-  return (
-    <S.PlayerControls>
-      <S.PlayerBtnPrev ref={prevBtnRef}>
-        <S.PlayerBtnPrevSvg onClick={handlePrev} alt="prev">
-          <use xlinkHref="img/icon/sprite.svg#icon-prev" />
-        </S.PlayerBtnPrevSvg>
-      </S.PlayerBtnPrev>
-      <S.PlayerBtnPlay onClick={togglePlay}>
-        <S.PlayerBtnPlaySvg alt="play">
-          <use
-            xlinkHref={`img/icon/sprite.svg#icon-${
-              isPlaying ? 'pause' : 'play'
-            }`}
-          />
-        </S.PlayerBtnPlaySvg>
-      </S.PlayerBtnPlay>
-      <S.PlayerBtnNext>
-        <S.PlayerBtnNextSvg alt="next">
-          <use xlinkHref="img/icon/sprite.svg#icon-next" />
-        </S.PlayerBtnNextSvg>
-      </S.PlayerBtnNext>
-      <S.PlayerBtnRepeat className=" _btn-icon">
-        <S.PlayerBtnRepeatSvg alt="repeat">
-          <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
-        </S.PlayerBtnRepeatSvg>
-      </S.PlayerBtnRepeat>
-      <S.PlayerBtnShuffle className=" _btn-icon">
-        <S.PlayerBtnShuffleSvg alt="shuffle">
-          <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
-        </S.PlayerBtnShuffleSvg>
-      </S.PlayerBtnShuffle>
-    </S.PlayerControls>
-  )
-}
+const PlayerButtons = ({
+  isPlaying,
+  togglePlay,
+  handlePrev,
+  toggleLoop,
+  isLoop,
+}) => (
+  <S.PlayerControls>
+    <S.PlayerBtnPrev>
+      <S.PlayerBtnPrevSvg onClick={handlePrev} alt="prev">
+        <use xlinkHref="img/icon/sprite.svg#icon-prev" />
+      </S.PlayerBtnPrevSvg>
+    </S.PlayerBtnPrev>
+    <S.PlayerBtnPlay onClick={togglePlay}>
+      <S.PlayerBtnPlaySvg alt="play">
+        <use
+          xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'play'}`}
+        />
+      </S.PlayerBtnPlaySvg>
+    </S.PlayerBtnPlay>
+    <S.PlayerBtnNext>
+      <S.PlayerBtnNextSvg alt="next">
+        <use xlinkHref="img/icon/sprite.svg#icon-next" />
+      </S.PlayerBtnNextSvg>
+    </S.PlayerBtnNext>
+    <S.PlayerBtnRepeat onClick={toggleLoop} className=" _btn-icon">
+      <S.PlayerBtnRepeatSvg
+        style={{ stroke: `${isLoop ? '#ACACAC' : '#696969'} ` }}
+        alt="repeat"
+      >
+        <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
+      </S.PlayerBtnRepeatSvg>
+    </S.PlayerBtnRepeat>
+    <S.PlayerBtnShuffle className=" _btn-icon">
+      <S.PlayerBtnShuffleSvg alt="shuffle">
+        <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+      </S.PlayerBtnShuffleSvg>
+    </S.PlayerBtnShuffle>
+  </S.PlayerControls>
+)
 
 const TrackPlay = ({ trackInPlayer }) => (
   <S.TrackPlayContain>

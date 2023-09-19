@@ -6,9 +6,9 @@ import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
 import * as S from '../../App.styles'
 
-// При первом запуске не могу прочитать duration трека
 // До изменения громкости нет значения громкости в стейте
 // почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file
+// сделать правильное отображение времени трека
 
 export const Main = () => {
   // загрузка списка треков
@@ -97,6 +97,16 @@ export const Main = () => {
     audioElem.current.currentTime = pr
   }
 
+  // залупливание
+  const [isLoop, setIsLoop] = useState(false)
+  const toggleLoop = () => {
+    //  if (isLoop) {
+    //  } else {
+    //  }
+
+    setIsLoop(!isLoop)
+  }
+
   return (
     <>
       <audio
@@ -104,6 +114,7 @@ export const Main = () => {
         ref={audioElem}
         onTimeUpdate={onPlaying}
         style={{ visibility: 'hidden' }}
+        loop={`${isLoop ? 'loop' : ''}`}
       >
         <source src={trackUrl} type="audio/mpeg" />
         <track kind="captions" src={trackUrl} />
@@ -124,8 +135,10 @@ export const Main = () => {
           trackInPlayer={trackInPlayer}
           isPlaying={isPlaying}
           togglePlay={togglePlay}
+          toggleLoop={toggleLoop}
           volumeSound={volumeSound}
           setProgress={setProgress}
+          isLoop={isLoop}
         />
       )}
       <footer />
