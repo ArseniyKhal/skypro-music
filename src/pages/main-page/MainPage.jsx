@@ -81,6 +81,7 @@ export const Main = () => {
     console.log(volume)
   }
 
+  // полоска прогресса трека
   const onPlaying = () => {
     const { duration } = audioElem.current
     const ct = audioElem.current.currentTime
@@ -89,6 +90,11 @@ export const Main = () => {
       progress: (ct / duration) * 100,
       length: duration,
     })
+  }
+
+  // перемотка
+  const setProgress = (pr) => {
+    audioElem.current.currentTime = pr
   }
 
   return (
@@ -119,6 +125,7 @@ export const Main = () => {
           isPlaying={isPlaying}
           togglePlay={togglePlay}
           volumeSound={volumeSound}
+          setProgress={setProgress}
         />
       )}
       <footer />

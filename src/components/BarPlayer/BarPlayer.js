@@ -7,34 +7,46 @@ export const BarPlayer = ({
   togglePlay,
   handlePrev,
   volumeSound,
-}) => (
-  <S.Bar>
-    <S.BarContent>
-      <S.BarPlayerProgress>
-        <S.BarPlayerProgressInside
-          style={{ width: `${`${trackInPlayer.progress}%`}` }}
-        />
-      </S.BarPlayerProgress>
-      <S.BarPlayerBlock>
-        <S.BarPlayer>
-          <PlayerButtons
-            trackInPlayer={trackInPlayer}
-            isPlaying={isPlaying}
-            togglePlay={togglePlay}
-            handlePrev={handlePrev}
+  setProgress,
+}) => {
+  const clickRef = useRef()
+
+  const checkWidth = (e) => {
+    const width = clickRef.current.clientWidth
+    const offset = e.nativeEvent.offsetX
+    const divProgress = (offset / width) * 100
+    setProgress((divProgress / 100) * trackInPlayer.length)
+  }
+
+  return (
+    <S.Bar>
+      <S.BarContent>
+        <S.BarPlayerProgress onClick={checkWidth} ref={clickRef}>
+          <S.BarPlayerProgressInside
+            style={{ width: `${`${trackInPlayer.progress}%`}` }}
           />
-          <S.BarPlayerTrackPlay>
-            <TrackPlay trackInPlayer={trackInPlayer} />
-            <Likes />
-          </S.BarPlayerTrackPlay>
-        </S.BarPlayer>
-        <S.BarVolumeBlock>
-          <VolumeSlider volumeSound={volumeSound} />
-        </S.BarVolumeBlock>
-      </S.BarPlayerBlock>
-    </S.BarContent>
-  </S.Bar>
-)
+        </S.BarPlayerProgress>
+        <S.BarPlayerBlock>
+          <S.BarPlayer>
+            <PlayerButtons
+              trackInPlayer={trackInPlayer}
+              isPlaying={isPlaying}
+              togglePlay={togglePlay}
+              handlePrev={handlePrev}
+            />
+            <S.BarPlayerTrackPlay>
+              <TrackPlay trackInPlayer={trackInPlayer} />
+              <Likes />
+            </S.BarPlayerTrackPlay>
+          </S.BarPlayer>
+          <S.BarVolumeBlock>
+            <VolumeSlider volumeSound={volumeSound} />
+          </S.BarVolumeBlock>
+        </S.BarPlayerBlock>
+      </S.BarContent>
+    </S.Bar>
+  )
+}
 
 const PlayerButtons = ({ isPlaying, togglePlay, handlePrev }) => {
   const prevBtnRef = useRef(null)
