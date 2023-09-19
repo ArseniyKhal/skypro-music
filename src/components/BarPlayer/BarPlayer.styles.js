@@ -8,7 +8,23 @@ export const BarContent = styled.div`
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+  background: rgba(28, 28, 28, 0.5);
 `
+
+export const BarPlayerTime = styled.div`
+  display: flex;
+  justify-content: end;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #696969;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 2%;
+`
+
 export const BarPlayerProgress = styled.div`
   width: 100%;
   height: 5px;
@@ -75,7 +91,6 @@ export const Bar = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(28, 28, 28, 0.5);
 `
 export const PlayerControls = styled.div`
   display: -webkit-box;

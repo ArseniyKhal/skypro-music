@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { formatTime } from '../Centerblock/Centerblock'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = ({
@@ -6,14 +7,15 @@ export const BarPlayer = ({
   isPlaying,
   togglePlay,
   handlePrev,
+  handleNext,
   toggleLoop,
   volumeSound,
   setProgress,
   isLoop,
+  audioElem,
 }) => {
-  const clickRef = useRef()
-
   // клик по прогрессу для перемотки трека
+  const clickRef = useRef()
   const checkWidth = (e) => {
     const width = clickRef.current.clientWidth
     const offset = e.nativeEvent.offsetX
@@ -23,10 +25,14 @@ export const BarPlayer = ({
 
   return (
     <S.Bar>
+      <S.BarPlayerTime>
+        <p>{formatTime(audioElem.current.currentTime)}</p> /{' '}
+        {formatTime(trackInPlayer.length)}
+      </S.BarPlayerTime>
       <S.BarContent>
         <S.BarPlayerProgress onClick={checkWidth} ref={clickRef}>
           <S.BarPlayerProgressInside
-            style={{ width: `${`${trackInPlayer.progress}%`}` }}
+            style={{ width: `${trackInPlayer.progress}%` }}
           />
         </S.BarPlayerProgress>
         <S.BarPlayerBlock>
@@ -36,6 +42,7 @@ export const BarPlayer = ({
               isPlaying={isPlaying}
               togglePlay={togglePlay}
               handlePrev={handlePrev}
+              handleNext={handleNext}
               toggleLoop={toggleLoop}
               isLoop={isLoop}
             />
@@ -57,12 +64,13 @@ const PlayerButtons = ({
   isPlaying,
   togglePlay,
   handlePrev,
+  handleNext,
   toggleLoop,
   isLoop,
 }) => (
   <S.PlayerControls>
-    <S.PlayerBtnPrev>
-      <S.PlayerBtnPrevSvg onClick={handlePrev} alt="prev">
+    <S.PlayerBtnPrev onClick={handlePrev}>
+      <S.PlayerBtnPrevSvg alt="prev">
         <use xlinkHref="img/icon/sprite.svg#icon-prev" />
       </S.PlayerBtnPrevSvg>
     </S.PlayerBtnPrev>
@@ -73,14 +81,14 @@ const PlayerButtons = ({
         />
       </S.PlayerBtnPlaySvg>
     </S.PlayerBtnPlay>
-    <S.PlayerBtnNext>
+    <S.PlayerBtnNext onClick={handleNext}>
       <S.PlayerBtnNextSvg alt="next">
         <use xlinkHref="img/icon/sprite.svg#icon-next" />
       </S.PlayerBtnNextSvg>
     </S.PlayerBtnNext>
     <S.PlayerBtnRepeat onClick={toggleLoop} className=" _btn-icon">
       <S.PlayerBtnRepeatSvg
-        style={{ stroke: `${isLoop ? '#ACACAC' : '#696969'} ` }}
+        style={{ stroke: `${isLoop ? '#ACACAC' : '#696969'}` }}
         alt="repeat"
       >
         <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
@@ -98,7 +106,13 @@ const TrackPlay = ({ trackInPlayer }) => (
   <S.TrackPlayContain>
     <S.TrackPlayImage>
       <S.TrackPlaySvg alt="music">
-        <use xlinkHref={trackInPlayer.logo} />
+        <use
+          xlinkHref={
+            trackInPlayer.logo
+              ? trackInPlayer.logo
+              : 'img/icon/sprite.svg#icon-note'
+          }
+        />
       </S.TrackPlaySvg>
     </S.TrackPlayImage>
     <S.TrackPlayAuthor>

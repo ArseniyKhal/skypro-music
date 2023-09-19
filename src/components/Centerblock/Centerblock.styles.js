@@ -159,7 +159,7 @@ export const ContentPlaylist = styled.div`
   -ms-flex-direction: column;
   flex-direction: column;
   overflow-y: auto;
-  height: 100vh;
+  //   height: 100vh;
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -260,7 +260,6 @@ export const TrackTitleImage = styled.div`
   -ms-flex-pack: center;
   justify-content: center;
   margin-right: 17px;
-  position: relative;
 `
 export const TrackTitleSvg = styled.svg`
   width: 18px;

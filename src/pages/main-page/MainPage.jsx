@@ -9,6 +9,8 @@ import * as S from '../../App.styles'
 // До изменения громкости нет значения громкости в стейте
 // почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file
 // сделать правильное отображение времени трека
+// нет прокрутки списка треков
+// в макете нет иконки Отключенного звука
 
 export const Main = () => {
   // загрузка списка треков
@@ -59,10 +61,14 @@ export const Main = () => {
     audioElem.current.load()
     togglePlay()
   }
-
-  //   const handlePrev = () => {
-  //  alert('еще не реализовано')
-  //   }
+  // предыдущий трек (не реализовано)
+  const handlePrev = () => {
+    alert('еще не реализовано')
+  }
+  // следующий трек (не реализовано)
+  const handleNext = () => {
+    alert('еще не реализовано')
+  }
 
   // загрузка трека в плеер
   const [trackInPlayer, setTrackInPlayer] = useState(null)
@@ -100,10 +106,6 @@ export const Main = () => {
   // залупливание
   const [isLoop, setIsLoop] = useState(false)
   const toggleLoop = () => {
-    //  if (isLoop) {
-    //  } else {
-    //  }
-
     setIsLoop(!isLoop)
   }
 
@@ -113,7 +115,7 @@ export const Main = () => {
         controls
         ref={audioElem}
         onTimeUpdate={onPlaying}
-        style={{ visibility: 'hidden' }}
+        style={{ display: 'none' }}
         loop={`${isLoop ? 'loop' : ''}`}
       >
         <source src={trackUrl} type="audio/mpeg" />
@@ -136,9 +138,12 @@ export const Main = () => {
           isPlaying={isPlaying}
           togglePlay={togglePlay}
           toggleLoop={toggleLoop}
+          handlePrev={handlePrev}
+          handleNext={handleNext}
           volumeSound={volumeSound}
           setProgress={setProgress}
           isLoop={isLoop}
+          audioElem={audioElem}
         />
       )}
       <footer />
