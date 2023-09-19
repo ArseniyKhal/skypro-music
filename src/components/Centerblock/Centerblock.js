@@ -128,6 +128,7 @@ const Playlist = ({
           author={track.author}
           genre={track.genre}
           key={track.id}
+          id={track.id}
           logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
           name={track.name}
           trackTime={formatTime(track.duration_in_seconds)}
@@ -190,13 +191,11 @@ const Track = ({
   isLoading,
   playTrackInPlayer,
   trackFile,
+  id,
 }) => {
   const trRef = useRef(null)
   return (
-    <S.Track
-      ref={trRef}
-      onClick={() => playTrackInPlayer({ name, author, logo, trackFile })}
-    >
+    <S.Track ref={trRef} onClick={() => playTrackInPlayer({ trackFile, id })}>
       <S.PlaylistTrack>
         <S.TrackTitle>
           <S.TrackTitleImage>

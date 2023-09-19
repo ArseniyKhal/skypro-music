@@ -6,6 +6,10 @@ import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
 import * as S from '../../App.styles'
 
+// При первом запуске не могу прочитать duration трека
+// До изменения громкости нет значения громкости в стейте
+// почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file
+
 export const Main = () => {
   // загрузка списка треков
   const [playlistMusic, setPlaylistMusic] = useState([])
@@ -19,6 +23,7 @@ export const Main = () => {
       setGetPlaylistError('')
       const tracks = await getPlaylist()
       setPlaylistMusic(tracks)
+      // console.log(tracks)
     } catch (error) {
       console.error(error)
       setGetPlaylistError(
@@ -38,20 +43,20 @@ export const Main = () => {
   // воспроизводим трек
   const [isPlaying, setIsPlaying] = useState(false)
 
-  const audioRef = useRef(null)
+  const audioElem = useRef(null)
 
   const handleStart = () => {
-    audioRef.current.play()
+    audioElem.current.play()
     setIsPlaying(true)
   }
   const handleStop = () => {
-    audioRef.current.pause()
+    audioElem.current.pause()
     setIsPlaying(false)
   }
   const togglePlay = isPlaying ? handleStop : handleStart
 
   const handleLoad = () => {
-    audioRef.current.load()
+    audioElem.current.load()
     togglePlay()
   }
 
@@ -59,25 +64,41 @@ export const Main = () => {
   //  alert('еще не реализовано')
   //   }
 
+  // загрузка трека в плеер
   const [trackInPlayer, setTrackInPlayer] = useState(null)
   const [trackUrl, setTrackUrl] = useState(null)
-  const playTrackInPlayer = ({ name, author, logo, trackFile }) => {
+  const playTrackInPlayer = ({ trackFile, id }) => {
     setTrackUrl(trackFile)
-    setTrackInPlayer({ name, author, logo, trackFile })
-    setVisiblePlayer(true)
+    setTrackInPlayer(playlistMusic.filter((item) => item.id === id)[0])
     handleLoad()
+    setVisiblePlayer(true)
     handleStart()
   }
+
   // громкость
-  const [isVolumeSound, setIsVolumeSound] = useState(null)
   const volumeSound = (volume) => {
-    setIsVolumeSound(volume / 100)
-    audioRef.current.volume = isVolumeSound
+    audioElem.current.volume = volume
+    console.log(volume)
+  }
+
+  const onPlaying = () => {
+    const { duration } = audioElem.current
+    const ct = audioElem.current.currentTime
+    setTrackInPlayer({
+      ...trackInPlayer,
+      progress: (ct / duration) * 100,
+      length: duration,
+    })
   }
 
   return (
     <>
-      <audio controls ref={audioRef} style={{ visibility: 'hidden' }}>
+      <audio
+        controls
+        ref={audioElem}
+        onTimeUpdate={onPlaying}
+        style={{ visibility: 'hidden' }}
+      >
         <source src={trackUrl} type="audio/mpeg" />
         <track kind="captions" src={trackUrl} />
       </audio>
