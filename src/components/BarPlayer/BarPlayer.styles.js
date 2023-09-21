@@ -282,18 +282,19 @@ export const VolumeContent = styled.div`
   justify-content: end;
 `
 export const VolumeImage = styled.div`
-  width: 13px;
-  height: 18px;
+  width: 22px;
+  height: 20px;
   margin-right: 17px;
   cursor: pointer;
 `
 export const VolumeSvg = styled.svg`
-  width: 13px;
-  height: 18px;
+  width: 100%;
+  height: 100%;
   fill: transparent;
 `
 export const VolumeProgress = styled.div`
   width: 109px;
+  display: flex;
 `
 export const VolumeProgressLine = styled.input`
   width: 109px;

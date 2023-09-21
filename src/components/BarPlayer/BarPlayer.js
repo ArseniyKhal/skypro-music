@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { formatTime } from '../Centerblock/Centerblock'
 import * as S from './BarPlayer.styles'
 
@@ -9,9 +9,12 @@ export const BarPlayer = ({
   handlePrev,
   handleNext,
   toggleLoop,
-  volumeSound,
+  volume,
+  volumeChange,
   setProgress,
   isLoop,
+  toggleShuffle,
+  isShuffle,
   audioElem,
 }) => {
   // клик по прогрессу для перемотки трека
@@ -45,6 +48,8 @@ export const BarPlayer = ({
               handleNext={handleNext}
               toggleLoop={toggleLoop}
               isLoop={isLoop}
+              toggleShuffle={toggleShuffle}
+              isShuffle={isShuffle}
             />
             <S.BarPlayerTrackPlay>
               <TrackPlay trackInPlayer={trackInPlayer} />
@@ -52,7 +57,7 @@ export const BarPlayer = ({
             </S.BarPlayerTrackPlay>
           </S.BarPlayer>
           <S.BarVolumeBlock>
-            <VolumeSlider volumeSound={volumeSound} />
+            <VolumeSlider volume={volume} volumeChange={volumeChange} />
           </S.BarVolumeBlock>
         </S.BarPlayerBlock>
       </S.BarContent>
@@ -67,6 +72,8 @@ const PlayerButtons = ({
   handleNext,
   toggleLoop,
   isLoop,
+  toggleShuffle,
+  isShuffle,
 }) => (
   <S.PlayerControls>
     <S.PlayerBtnPrev onClick={handlePrev}>
@@ -94,8 +101,11 @@ const PlayerButtons = ({
         <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
       </S.PlayerBtnRepeatSvg>
     </S.PlayerBtnRepeat>
-    <S.PlayerBtnShuffle className=" _btn-icon">
-      <S.PlayerBtnShuffleSvg alt="shuffle">
+    <S.PlayerBtnShuffle onClick={toggleShuffle} className=" _btn-icon">
+      <S.PlayerBtnShuffleSvg
+        style={{ stroke: `${isShuffle ? '#ACACAC' : '#696969'}` }}
+        alt="shuffle"
+      >
         <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
       </S.PlayerBtnShuffleSvg>
     </S.PlayerBtnShuffle>
@@ -143,23 +153,15 @@ const Likes = () => (
   </S.TrackPlayLikesDis>
 )
 
-const VolumeSlider = ({ volumeSound }) => {
-  // громкость
-  const [isVolumeSound, setIsVolumeSound] = useState(null)
+// громкость
+const VolumeSlider = ({ volume, volumeChange }) => {
   const [tempVolume, setTempVolume] = useState(null)
-  const setVolume = (volume) => {
-    setIsVolumeSound(volume / 100)
-    volumeSound(isVolumeSound)
-  }
-
   const toggleVolume = () => {
-    if (isVolumeSound) {
-      setTempVolume(isVolumeSound)
-      setIsVolumeSound(0)
-      volumeSound(0)
+    if (volume) {
+      setTempVolume(+volume)
+      volumeChange(0)
     } else {
-      setIsVolumeSound(tempVolume)
-      volumeSound(tempVolume)
+      volumeChange(tempVolume)
     }
   }
 
@@ -168,9 +170,7 @@ const VolumeSlider = ({ volumeSound }) => {
       <S.VolumeImage onClick={toggleVolume}>
         <S.VolumeSvg alt="volume">
           <use
-            xlinkHref={`img/icon/sprite.svg#icon-volume${
-              isVolumeSound ? '' : 'non'
-            }`}
+            xlinkHref={`img/icon/sprite.svg#icon-volume${+volume ? '' : 'non'}`}
           />
         </S.VolumeSvg>
       </S.VolumeImage>
@@ -179,8 +179,12 @@ const VolumeSlider = ({ volumeSound }) => {
           className=" _btn"
           type="range"
           name="range"
+          min={0}
+          max={1}
+          step={0.1}
+          value={volume}
           onChange={(e) => {
-            setVolume(e.target.value)
+            volumeChange(+e.target.value)
           }}
         />
       </S.VolumeProgress>

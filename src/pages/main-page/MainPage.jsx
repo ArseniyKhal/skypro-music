@@ -6,15 +6,15 @@ import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
 import * as S from '../../App.styles'
 
-// До изменения громкости нет значения громкости в стейте
-// почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file
+// почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file ???
 // сделать правильное отображение времени трека в списке
-// нет прокрутки списка треков
-// в макете нет иконки Отключенного звука
+// сделать время на прогрессе при наведении
+// нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
 
 export const Main = () => {
   // загрузка списка треков
   const [playlistMusic, setPlaylistMusic] = useState([])
+  const [volume, setvolume] = useState(0.5)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -40,8 +40,6 @@ export const Main = () => {
     fetchTracks()
   }, [])
 
-  // скрыть/показать плеер
-  const [visiblePlayer, setVisiblePlayer] = useState(false)
   // воспроизводим трек
   const [isPlaying, setIsPlaying] = useState(false)
 
@@ -69,22 +67,34 @@ export const Main = () => {
   const handleNext = () => {
     alert('еще не реализовано')
   }
+  // переключатель В Перемешку (не реализовано)
+  const [isShuffle, setIsShuffle] = useState(false)
+  const toggleShuffle = () => {
+    setIsShuffle(!isShuffle)
+    alert('еще не реализовано')
+  }
 
-  // загрузка трека в плеер
+  // залупливание
+  const [isLoop, setIsLoop] = useState(false)
+  const toggleLoop = () => {
+    setIsLoop(!isLoop)
+  }
+
+  // добавление и запуск трека в плеере
   const [trackInPlayer, setTrackInPlayer] = useState(null)
   const [trackUrl, setTrackUrl] = useState(null)
-  const playTrackInPlayer = ({ trackFile, id }) => {
+  const addTrackInPlayer = ({ trackFile, id }) => {
     setTrackUrl(trackFile)
     setTrackInPlayer(playlistMusic.filter((item) => item.id === id)[0])
     handleLoad()
-    setVisiblePlayer(true)
     handleStart()
   }
+  useEffect(() => {}, [trackInPlayer])
 
   // громкость
-  const volumeSound = (volume) => {
-    audioElem.current.volume = volume
-    console.log(volume)
+  const handleVolumeChange = (newVolume) => {
+    setvolume(newVolume)
+    audioElem.current.volume = newVolume
   }
 
   // полоска прогресса трека
@@ -101,12 +111,6 @@ export const Main = () => {
   // перемотка
   const setProgress = (pr) => {
     audioElem.current.currentTime = pr
-  }
-
-  // залупливание
-  const [isLoop, setIsLoop] = useState(false)
-  const toggleLoop = () => {
-    setIsLoop(!isLoop)
   }
 
   return (
@@ -127,12 +131,12 @@ export const Main = () => {
         <Centerblock
           isLoading={isLoading}
           playlistMusic={playlistMusic}
-          playTrackInPlayer={playTrackInPlayer}
+          addTrackInPlayer={addTrackInPlayer}
           getPlaylistError={getPlaylistError}
         />
         <Sidebar isLoading={isLoading} />
       </S.Main>
-      {visiblePlayer && (
+      {trackInPlayer && (
         <BarPlayer
           trackInPlayer={trackInPlayer}
           isPlaying={isPlaying}
@@ -140,9 +144,12 @@ export const Main = () => {
           toggleLoop={toggleLoop}
           handlePrev={handlePrev}
           handleNext={handleNext}
-          volumeSound={volumeSound}
+          volume={volume}
+          volumeChange={handleVolumeChange}
           setProgress={setProgress}
           isLoop={isLoop}
+          toggleShuffle={toggleShuffle}
+          isShuffle={isShuffle}
           audioElem={audioElem}
         />
       )}
