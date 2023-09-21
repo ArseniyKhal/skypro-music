@@ -11,6 +11,25 @@ export async function getPlaylist() {
   return response.json()
 }
 
+// Авторизация
+export async function login({ email, password }) {
+  const response = await fetch(
+    'https://skypro-music-api.skyeng.tech/user/login/',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    },
+  )
+  //   console.log(response)
+  return response
+}
+
 // Регистрация
 export async function registration() {
   const response = await fetch(
@@ -27,27 +46,7 @@ export async function registration() {
       },
     },
   )
-  const data = await response.json()
-  return data
-}
-
-// Авторизация
-export async function login() {
-  const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/login/',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        email: emailUser,
-        password: passwordUser,
-      }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    },
-  )
-  const data = await response.json()
-  return data
+  return response.json()
 }
 
 // Получить токен
