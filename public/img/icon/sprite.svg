@@ -22,6 +22,12 @@
         <path d="M3 5V6H3.41421L3.70711 5.70711L3 5ZM8 0H9V-2.41421L7.29289 -0.707107L8 0ZM0 5V4H-1V5H0ZM0 13H-1V14H0V13ZM3 13L3.70711 12.2929L3.41421 12H3V13ZM8 18L7.29289 18.7071L9 20.4142V18H8ZM3.70711 5.70711L8.70711 0.707107L7.29289 -0.707107L2.29289 4.29289L3.70711 5.70711ZM0 6H3V4H0V6ZM1 13V5H-1V13H1ZM3 12H0V14H3V12ZM8.70711 17.2929L3.70711 12.2929L2.29289 13.7071L7.29289 18.7071L8.70711 17.2929ZM7 0V18H9V0H7Z" fill="white" mask="url(#path-1-inside-1_2985_507)"/>
         <path d="M11 13C12.1046 13 13 11.2091 13 9C13 6.79086 12.1046 5 11 5" stroke="white"/>
     </symbol>
+    <symbol id="icon-volumenon" fill="none" viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+        <mask id="path-1-inside-1_2985_507" fill="white">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L3 5H0V13H3L8 18V0Z"/>
+        </mask>
+			<path d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z" fill="white" mask="url(#path-1-inside-1_2985_507)"/>
+    </symbol>
     <symbol id="icon-dislike"  viewBox="0 0 16 15"  xmlns="http://www.w3.org/2000/svg">
         <path d="M8.34372 3.25572H8.36529C9.29718 2.44175 11.7563 1.16576 13.9565 2.76734C17.3111 5.20921 14.2458 10.5 8.36529 14H8.34372M8.34378 3.25572H8.32221C7.39032 2.44175 4.93121 1.16576 2.73102 2.76734C-0.623552 5.20921 2.44172 10.5 8.32221 14H8.34378" />
         <path d="M1 1L15 13.5" />
@@ -32,6 +38,10 @@
     </symbol>
     <symbol id="icon-play" viewBox="0 0 15 20"  xmlns="http://www.w3.org/2000/svg">
         <path d="M15 10L-1.01012e-06 0.47372L-1.84293e-06 19.5263L15 10Z" fill="#D9D9D9"/>
+    </symbol>
+	 <symbol id="icon-pause" viewBox="0 0 15 19"  xmlns="http://www.w3.org/2000/svg">
+      <rect width="5" height="19" fill="#D9D9D9"/>
+<rect x="10" width="5" height="19" fill="#D9D9D9"/>
     </symbol>
     <symbol id="icon-next" viewBox="0 0 16 14"  xmlns="http://www.w3.org/2000/svg">
         <path d="M15 2V12.5" stroke="white"/>

@@ -82,7 +82,7 @@ html, body {
 	fill: #696969;
 	stroke: #ffffff;
 	cursor: pointer;
-}
+	}
 .skeleton {
 	background-color: #313131;
 	width: 100%;
@@ -131,10 +131,15 @@ export const CenterBlock = styled.div`
   gap: 20px;
 `
 export const BtnLogin = {
-  width: '100px',
-  padding: '10px',
-  backgroundColor: '#b1b1b1',
-  borderRadius: '5px',
+  width: '278px',
+  height: '52px',
+  backgroundColor: '#580EA2',
+  borderRadius: '6px',
+  border: 'none',
   color: 'inherit',
-  fontSize: '20px',
+  fontSize: '18px',
+  lineHeight: '133.333%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 }

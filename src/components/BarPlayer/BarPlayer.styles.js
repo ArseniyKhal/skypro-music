@@ -8,11 +8,36 @@ export const BarContent = styled.div`
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+  background: rgba(28, 28, 28, 0.5);
 `
+
+export const BarPlayerTime = styled.div`
+  display: flex;
+  justify-content: end;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #696969;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 2%;
+`
+
 export const BarPlayerProgress = styled.div`
   width: 100%;
   height: 5px;
   background: #2e2e2e;
+  cursor: pointer;
+  &:hover {
+    height: 12px;
+  }
+`
+export const BarPlayerProgressInside = styled.div`
+  width: 0;
+  height: 100%;
+  background: #b672ff;
 `
 export const BarPlayerBlock = styled.div`
   height: 73px;
@@ -66,7 +91,6 @@ export const Bar = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(28, 28, 28, 0.5);
 `
 export const PlayerControls = styled.div`
   display: -webkit-box;
@@ -258,17 +282,19 @@ export const VolumeContent = styled.div`
   justify-content: end;
 `
 export const VolumeImage = styled.div`
-  width: 13px;
-  height: 18px;
+  width: 22px;
+  height: 20px;
   margin-right: 17px;
+  cursor: pointer;
 `
 export const VolumeSvg = styled.svg`
-  width: 13px;
-  height: 18px;
+  width: 100%;
+  height: 100%;
   fill: transparent;
 `
 export const VolumeProgress = styled.div`
   width: 109px;
+  display: flex;
 `
 export const VolumeProgressLine = styled.input`
   width: 109px;

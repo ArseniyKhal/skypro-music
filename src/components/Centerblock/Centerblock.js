@@ -1,11 +1,9 @@
 import { useState } from 'react'
-
 import * as S from './Centerblock.styles'
 
-// нет прокрутки списка треков??
-
 // форматер времени трека
-export const formatTime = (time) => {
+export const formatTime = (t) => {
+  const time = Math.round(t)
   let hour = Math.floor(time / 3600)
   let min = Math.floor((time - hour * 3600) / 60)
   let sec = time - hour * 3600 - min * 60
@@ -25,7 +23,7 @@ export const formatTime = (time) => {
 
 export const Centerblock = ({
   isLoading,
-  openPlayer,
+  addTrackInPlayer,
   playlistMusic,
   getPlaylistError,
 }) => (
@@ -36,7 +34,7 @@ export const Centerblock = ({
     <Playlist
       isLoading={isLoading}
       playlistMusic={playlistMusic}
-      openPlayer={openPlayer}
+      addTrackInPlayer={addTrackInPlayer}
       getPlaylistError={getPlaylistError}
     />
   </S.MainCenterblock>
@@ -119,7 +117,7 @@ const MusicFilterItem = ({
 
 const Playlist = ({
   isLoading,
-  openPlayer,
+  addTrackInPlayer,
   playlistMusic,
   getPlaylistError,
 }) => {
@@ -131,6 +129,7 @@ const Playlist = ({
           author={track.author}
           genre={track.genre}
           key={track.id}
+          id={track.id}
           logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
           name={track.name}
           trackTime={formatTime(track.duration_in_seconds)}
@@ -140,7 +139,7 @@ const Playlist = ({
           playlistMusic={playlistMusic}
           // trackTitleSpan не используется
           trackTitleSpan={track.soName}
-          openPlayer={openPlayer}
+          addTrackInPlayer={addTrackInPlayer}
         />
       ))
     ) : (
@@ -165,29 +164,6 @@ const Playlist = ({
               />
             ))
           : mapTracks}
-
-        {/* {playlistMusic.length > 0 ? (
-          playlistMusic.map((track) => (
-            <Track
-              album={track.album}
-              author={track.author}
-              genre={track.genre}
-              key={track.id}
-              logo={track.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
-              name={track.name}
-              trackTime={formatTime(track.duration_in_seconds)}
-              year={track.release_date}
-              trackFile={track.track_file}
-              isLoading={isLoading}
-              playlistMusic={playlistMusic}
-              // trackTitleSpan не используется
-              trackTitleSpan={track.soName}
-              openPlayer={openPlayer}
-            />
-          ))
-        ) : (
-          <h3>В этом плейлисте нет треков</h3>
-        )} */}
       </S.ContentPlaylist>
     </S.CenterblockContent>
   )
@@ -214,10 +190,11 @@ const Track = ({
   trackTime,
   trackTitleSpan,
   isLoading,
-  openPlayer,
+  addTrackInPlayer,
   trackFile,
+  id,
 }) => (
-  <S.Track onClick={() => openPlayer({ name, author, logo, trackFile })}>
+  <S.Track onClick={() => addTrackInPlayer({ trackFile, id })}>
     <S.PlaylistTrack>
       <S.TrackTitle>
         <S.TrackTitleImage>

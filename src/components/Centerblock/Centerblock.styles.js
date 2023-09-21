@@ -260,7 +260,6 @@ export const TrackTitleImage = styled.div`
   -ms-flex-pack: center;
   justify-content: center;
   margin-right: 17px;
-  position: relative;
 `
 export const TrackTitleSvg = styled.svg`
   width: 18px;
