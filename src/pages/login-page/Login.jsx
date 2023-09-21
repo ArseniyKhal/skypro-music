@@ -1,26 +1,38 @@
 import { Link } from 'react-router-dom'
-import * as S from '../../App.styles'
-// import * as Style from './Login.styles'
+import * as S from './Login.styles'
 
 export const Login = () => {
   const handleLogin = () => {
     localStorage.setItem('user', 'user')
   }
   return (
-    <S.CenterBlock>
-      <h1>Страница логина</h1>
-      <Link
-        style={S.BtnLogin}
-        to="/"
-        onClick={() => {
-          handleLogin()
-        }}
-      >
-        Войти
-      </Link>
-      <Link to="/register" style={{ textDecoration: 'underline' }}>
-        Перейти к регистрации
-      </Link>
-    </S.CenterBlock>
+    <S.ModalBlock>
+      <S.ModalFormLogin action="#">
+        <a href="../">
+          <S.ModalLogo>
+            <img src="../img/logo_modal.png" alt="logo" />
+          </S.ModalLogo>
+        </a>
+        <S.ModalInputLogin type="text" name="login" placeholder="Почта" />
+        <S.ModalInputPassword
+          type="password"
+          name="password"
+          placeholder="Пароль"
+        />
+        <S.ModalBtnEnter>
+          <Link
+            to="/"
+            onClick={() => {
+              handleLogin()
+            }}
+          >
+            Войти
+          </Link>
+        </S.ModalBtnEnter>
+        <S.ModalBtnSignup>
+          <Link to="/register"> Зарегистрироваться </Link>
+        </S.ModalBtnSignup>
+      </S.ModalFormLogin>
+    </S.ModalBlock>
   )
 }
