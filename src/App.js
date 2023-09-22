@@ -11,7 +11,7 @@ export default function App() {
   }
 
   const logOutUser = () => {
-    setIsLogin(true)
+    setIsLogin(false)
   }
 
   const сontextValue = useMemo(
@@ -22,7 +22,6 @@ export default function App() {
     }),
     [logInUser, logOutUser, isLogin],
   )
-
   return (
     <>
       <S.GlobalStyle />
