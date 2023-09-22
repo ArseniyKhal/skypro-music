@@ -39,8 +39,6 @@ export const Login = () => {
                 throw new Error('Internal server error')
               default:
             }
-          } else {
-            logInUser()
           }
           return response.json()
         })
@@ -48,8 +46,7 @@ export const Login = () => {
           //  localStorage.setItem('email', user.email)
           //  localStorage.setItem('username', user.username)
 
-          console.log(user)
-
+          logInUser(user)
           localStorage.setItem('user', 'user')
         })
     } catch (err) {

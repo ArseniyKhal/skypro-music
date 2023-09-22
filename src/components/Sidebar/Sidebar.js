@@ -4,12 +4,12 @@ import UserContext from '../../context'
 import * as S from './Sidebar.styles'
 
 export const Sidebar = ({ isLoading }) => {
-  const { logOutUser } = useContext(UserContext)
+  const { logOutUser, userDate } = useContext(UserContext)
 
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>
-        <S.SidebarPersonalName>Sergey.Ivanov</S.SidebarPersonalName>
+        <S.SidebarPersonalName>{userDate.username}</S.SidebarPersonalName>
         <S.SidebarIcon>
           <svg
             onClick={() => {
