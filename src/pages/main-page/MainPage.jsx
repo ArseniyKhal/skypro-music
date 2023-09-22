@@ -25,7 +25,6 @@ export const Main = () => {
       setGetPlaylistError('')
       const tracks = await getPlaylist()
       setPlaylistMusic(tracks)
-      // console.log(tracks)
     } catch (error) {
       console.error(error)
       setGetPlaylistError(

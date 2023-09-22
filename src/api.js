@@ -1,6 +1,6 @@
 const emailUser = 'yellow@cat.ru'
 const passwordUser = '8symbol!'
-const usernameUser = 'yellowCat'
+// const usernameUser = 'yellowCat'
 
 // Получить список треков
 export async function getPlaylist() {
@@ -35,22 +35,24 @@ export async function login({ email, password }) {
 }
 
 // Регистрация
-export async function registration() {
+export async function registration({ email, password }) {
   const response = await fetch(
     'https://skypro-music-api.skyeng.tech/user/signup/',
     {
       method: 'POST',
       body: JSON.stringify({
-        email: emailUser,
-        password: passwordUser,
-        username: usernameUser,
+        email,
+        password,
+        username: email,
       }),
       headers: {
         'content-type': 'application/json',
       },
     },
   )
-  return response.json()
+  console.log(response)
+
+  return response
 }
 
 // Получить токен

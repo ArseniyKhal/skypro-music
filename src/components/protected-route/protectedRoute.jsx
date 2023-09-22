@@ -4,9 +4,6 @@ import UserContext from '../../context'
 
 export const ProtectedRoute = ({ children, redirectPath = '/login' }) => {
   const UserData = useContext(UserContext)
-  console.log(UserData.userDate.login)
-
-  //   if (localStorage.getItem('user') === null) {
   if (!UserData.userDate.login) {
     return <Navigate to={redirectPath} replace />
   }
