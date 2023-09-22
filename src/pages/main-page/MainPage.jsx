@@ -89,7 +89,6 @@ export const Main = () => {
     handleLoad()
     handleStart()
   }
-  useEffect(() => {}, [trackInPlayer])
 
   // громкость
   const handleVolumeChange = (newVolume) => {

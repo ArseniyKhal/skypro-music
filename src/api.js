@@ -26,8 +26,12 @@ export async function login({ email, password }) {
       },
     },
   )
+
   //   console.log(response)
   return response
+
+  //   const data = await response.json()
+  //   return data
 }
 
 // Регистрация

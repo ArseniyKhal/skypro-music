@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as S from './NavMenu.styles'
+// import UserContext from '../../context'
 
 export const NavMenu = () => {
   // Обработчик нажатия на бургер
   const [showNavMenu, setShowNavMenu] = useState(false)
-
+  //   console.log(useContext(UserContext))
   return (
     <S.MainNav>
       <S.NavLogo>
