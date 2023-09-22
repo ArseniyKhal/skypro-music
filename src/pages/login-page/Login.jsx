@@ -4,74 +4,62 @@ import { login } from '../../api'
 import * as S from './LoginReg.styles'
 import UserContext from '../../context'
 
-export const UserData = {
-  email: 'yellow@cat.ru',
-  password: '8symbol!',
-  username: 'yellowCat',
-  isUserLogin: false,
-}
-
-// при клике по логотипу, куда должны попадать???
+// при клике по логотипу на страницах login и reg, куда должны попадать???
+// авторизация происхдит только после повторного нажатия
+// почему напрямую не передаются значения стейта inputEmail и inputPass ??
+// вообще не пойму когда сработает блок catch ??
+// почему функция login не читает пропсы напрямую из стейта ???
+// аналогично предыдущему вопросу-почему AUDIO не хочет напрямую читать URL из стейта ???
+// не подключаются шрифты на страницах login и reg..
+// логин: yellow@cat.ru
+// пароль: 8symbol!
 
 export const Login = () => {
   const [inputEmail, setInputEmail] = useState('')
   const [inputPass, setInputPass] = useState('')
-  const [getLoginError, setLoginError] = useState(null)
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false)
+  const [loginError, setLoginError] = useState('')
   const { logInUser } = useContext(UserContext)
 
   // авторизуемся
-  //   const handleEnter = async () => {
-  //     const email = inputEmail
-  //     const password = inputPass
-  //     try {
-  //       setLoginError('')
-  //       await login({ email, password })
-  //         .then((response) => {
-  //           if (!response.ok) {
-  //             switch (response.status) {
-  //               case 400:
-  //                 throw new Error('bad request')
-  //               case 401:
-  //                 throw new Error('Unauthorixed')
-  //               case 404:
-  //                 throw new Error('Not found')
-  //               case 500:
-  //                 throw new Error('Internal server error')
-  //               default:
-  //             }
-  //           }
-  //           return response.json()
-  //         })
-  //         .then((user) => {
-  //           //  localStorage.setItem('email', user.email)
-  //           //  localStorage.setItem('username', user.username)
-
-  //           logInUser(user)
-  //           localStorage.setItem('user', 'user')
-  //         })
-  //     } catch (err) {
-  //       console.error(err)
-  //       console.log(getLoginError)
-  //       setLoginError(`Не удалось... Ошибка: ${err.message}`)
-  //     }
-
-  //     //  login().then()
-  //     //  localStorage.setItem('user', 'user')
-  //   }
+  const email = inputEmail
+  const password = inputPass
 
   const handleEnter = async () => {
-    const email = inputEmail
-    const password = inputPass
     try {
+      if (!email) {
+        setLoginError('не заполнена почта')
+        console.log('нет почты')
+        return
+      }
+      if (!password) {
+        setLoginError('не заполнен пароль')
+        console.log('нет пароля')
+        return
+      }
       setLoginError('')
-      const user = await login({ email, password })
-        .then((response) => response.json())
-        .then((json) => console.log(json))
-      logInUser(user)
-    } catch (err) {
-      console.error(err)
-      console.log(getLoginError)
-      setLoginError(`Не удалось... Ошибка: ${err.message}`)
+      setIsLoadingLogin(true)
+      await login({ email, password })
+        .then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('ok')
+            logInUser({ login: true })
+          }
+          return response.json()
+        })
+        .then((user) => {
+          setLoginError(user.detail)
+          logInUser(user)
+
+          console.log(user.detail)
+        })
+    } catch (error) {
+      console.error(error)
+      setLoginError(`Не удалось... Ошибка: ${error.message}`)
+      console.log(loginError)
+    } finally {
+      setIsLoadingLogin(false)
     }
   }
 
@@ -97,6 +85,7 @@ export const Login = () => {
           value={inputPass}
           onChange={(e) => setInputPass(e.target.value)}
         />
+        <S.ModalErrorText>{loginError}</S.ModalErrorText>
         <S.ModalBtnEnter>
           <Link
             to="/"
@@ -107,7 +96,7 @@ export const Login = () => {
             Войти
           </Link>
         </S.ModalBtnEnter>
-        <S.ModalBtnSignup>
+        <S.ModalBtnSignup disabled={isLoadingLogin}>
           <Link to="/register"> Зарегистрироваться </Link>
         </S.ModalBtnSignup>
       </S.ModalFormLogin>

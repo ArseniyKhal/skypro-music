@@ -1,21 +1,36 @@
-// import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as S from '../login-page/LoginReg.styles'
 import { registration } from '../../api'
 
 export const Register = () => {
-  //   const navigate = useNavigate()
-  //   const handleBackButtonClick = () => {
-  //     navigate('/login', { replace: true })
-  //   }
   const [inputEmail, setInputEmail] = useState('')
   const [inputPass, setInputPass] = useState('')
   const [input2Pass, setInput2Pass] = useState('')
+  const [regError, setRegError] = useState('')
+
+  const email = inputEmail
+  const password = inputPass
+  const password2 = input2Pass
+  console.log(setRegError)
 
   const handleReg = async () => {
-    const email = inputEmail
-    const password = inputPass
+    if (!email) {
+      setRegError('не заполнена почта')
+      console.log('нет почты')
+      return
+    }
+    if (!password) {
+      setRegError('не заполнен пароль')
+      console.log('нет пароля')
+      return
+    }
+    if (password !== password2) {
+      setRegError('пароли не совпадают')
+      console.log('пароли не совпадают')
+      return
+    }
+
     await registration({ email, password })
       .then((response) => {
         if (!response.ok) {
@@ -74,13 +89,6 @@ export const Register = () => {
   }
 
   return (
-    //  <S.CenterBlock>
-    //    <h1>Страница регистрации</h1>
-    //    <button onClick={handleBackButtonClick} style={S.BtnLogin} type="button">
-    //      Назад
-    //    </button>
-    //  </S.CenterBlock>
-
     <S.ModalBlock>
       <S.ModalFormLogin>
         <a href="../">
@@ -111,6 +119,7 @@ export const Register = () => {
           value={input2Pass}
           onChange={(e) => setInput2Pass(e.target.value)}
         />
+        <S.ModalErrorText>{regError}</S.ModalErrorText>
         <S.ModalBtnSignupEnt>
           <Link
             to="/"

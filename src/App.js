@@ -20,8 +20,6 @@ export default function App() {
       last_name: user.last_name,
       username: user.username,
     })
-    console.log(user)
-    console.log(userDate)
   }
 
   const logOutUser = () => {

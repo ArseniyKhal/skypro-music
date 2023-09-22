@@ -6,7 +6,7 @@ import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
 import * as S from '../../App.styles'
 
-// почему AUDIO не хочет напрямую читать URL trackInPlayer.track_file ???
+// Задачи:
 // сделать правильное отображение времени трека в списке
 // сделать время на прогрессе при наведении
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ

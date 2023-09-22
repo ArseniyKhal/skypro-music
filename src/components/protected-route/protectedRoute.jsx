@@ -3,8 +3,9 @@ import { useContext } from 'react'
 import UserContext from '../../context'
 
 export const ProtectedRoute = ({ children, redirectPath = '/login' }) => {
-  const UserData = useContext(UserContext)
-  if (!UserData.userDate.login) {
+  const data = useContext(UserContext)
+  console.log(data)
+  if (!data.userDate.login) {
     return <Navigate to={redirectPath} replace />
   }
 

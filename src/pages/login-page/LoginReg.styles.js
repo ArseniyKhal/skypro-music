@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 
 export const ModalBlock = styled.div`
+  font-family: 'StratosSkyeng', sans-serif;
   position: absolute;
   z-index: 2;
   left: calc(50% - (366px / 2));
@@ -46,9 +47,9 @@ export const ModalInput = styled.input`
   border-left: none;
   border-right: none;
   border-bottom: 1px solid #d0cece;
-  padding: 8px 1px;
-  margin-right: 3px;
+  padding: 8px 5px;
   margin-bottom: 30px;
+
   &::-webkit-input-placeholder {
     font-style: normal;
     font-weight: 400;
@@ -91,7 +92,6 @@ export const ModalBtnEnter = styled.button`
   color: #fff;
   background-color: #580ea2;
   border-radius: 6px;
-  margin-top: 60px;
   margin-bottom: 20px;
   border: none;
   display: -webkit-box;
@@ -182,9 +182,7 @@ export const ModalBtnSignupEnt = styled.button`
   height: 52px;
   background-color: #580ea2;
   border-radius: 6px;
-  margin-left: 4px;
   border: none;
-  margin-top: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -220,4 +218,11 @@ export const ModalBtnSignupEnt = styled.button`
     -ms-flex-pack: center;
     justify-content: center;
   }
+`
+export const ModalErrorText = styled.p`
+  color: red;
+  font-size: 20px;
+  width: 100%;
+  flex-grow: 1;
+  margin-top: -20px;
 `
