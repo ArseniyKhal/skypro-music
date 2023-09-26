@@ -11,7 +11,7 @@ export const ModalBlock = styled.div`
 
 export const ModalFormLogin = styled.form`
   width: 366px;
-  height: 439px;
+  min-height: 439px;
   background-color: #ffffff;
   border-radius: 12px;
   display: -webkit-box;
@@ -90,6 +90,7 @@ export const ModalBtnEnter = styled.button`
   width: 278px;
   height: 62px;
   color: #fff;
+  font-size: 18px;
   background-color: #580ea2;
   border-radius: 6px;
   margin-bottom: 20px;
@@ -132,6 +133,7 @@ export const ModalBtnEnter = styled.button`
 export const ModalBtnSignup = styled.button`
   width: 278px;
   height: 52px;
+  font-size: 18px;
   background-color: transparent;
   border: 1px solid #d0cece;
   border-radius: 6px;
@@ -180,6 +182,7 @@ export const ModalBtnSignupEnt = styled.button`
   width: 278px;
   color: #fff;
   height: 52px;
+  font-size: 18px;
   background-color: #580ea2;
   border-radius: 6px;
   border: none;
@@ -192,7 +195,7 @@ export const ModalBtnSignupEnt = styled.button`
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  & :hover {
+  &:hover {
     background-color: #3f007d;
   }
   &:active {
@@ -225,4 +228,5 @@ export const ModalErrorText = styled.p`
   width: 100%;
   flex-grow: 1;
   margin-top: -20px;
+  margin-bottom: 10px;
 `

@@ -1,91 +1,58 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as S from '../login-page/LoginReg.styles'
 import { registration } from '../../api'
+import UserContext from '../../context'
 
 export const Register = () => {
   const [inputEmail, setInputEmail] = useState('')
   const [inputPass, setInputPass] = useState('')
   const [input2Pass, setInput2Pass] = useState('')
+  const [isLoadingReg, setIsLoadingReg] = useState(false)
   const [regError, setRegError] = useState('')
+  const { logInUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
+  // регистрация
   const email = inputEmail
   const password = inputPass
   const password2 = input2Pass
-  console.log(setRegError)
 
-  const handleReg = async () => {
-    if (!email) {
-      setRegError('не заполнена почта')
-      console.log('нет почты')
-      return
-    }
-    if (!password) {
-      setRegError('не заполнен пароль')
-      console.log('нет пароля')
-      return
-    }
-    if (password !== password2) {
-      setRegError('пароли не совпадают')
-      console.log('пароли не совпадают')
-      return
-    }
-
-    await registration({ email, password })
-      .then((response) => {
-        if (!response.ok) {
-          switch (response.status) {
-            case 400:
-              throw new Error('bad request')
-            case 401:
-              throw new Error('Unauthorixed')
-            case 404:
-              throw new Error('Not found')
-            case 500:
-              throw new Error('Internal server error')
-            default:
+  const handleReg = async (e) => {
+    e.preventDefault()
+    try {
+      if (!email) {
+        setRegError('не заполнена почта')
+        return
+      }
+      if (!password) {
+        setRegError('не заполнен пароль')
+        return
+      }
+      if (password !== password2) {
+        setRegError('пароли не совпадают')
+        return
+      }
+      setRegError('')
+      setIsLoadingReg(true)
+      await registration({ email, password })
+        .then((response) => {
+          if (response.status === 201) {
+            logInUser({ login: true })
+            navigate('/')
           }
-        }
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-      })
-
-    // const email = inputEmail
-    // const password = inputPass
-    // try {
-    //   setLoginError('')
-    //   await login({ email, password })
-    // 	 .then((response) => {
-    // 		if (!response.ok) {
-    // 		  switch (response.status) {
-    // 			 case 400:
-    // 				throw new Error('bad request')
-    // 			 case 401:
-    // 				throw new Error('Unauthorixed')
-    // 			 case 404:
-    // 				throw new Error('Not found')
-    // 			 case 500:
-    // 				throw new Error('Internal server error')
-    // 			 default:
-    // 		  }
-    // 		}
-    // 		return response.json()
-    // 	 })
-    // 	 .then((user) => {
-    // 		//  localStorage.setItem('email', user.email)
-    // 		//  localStorage.setItem('username', user.username)
-    // 		logInUser(user)
-    // 		localStorage.setItem('user', 'user')
-    // 	 })
-    // } catch (err) {
-    //   console.error(err)
-    //   console.log(getLoginError)
-    //   setLoginError(`Не удалось... Ошибка: ${err.message}`)
-    // }
-    // //  login().then()
-    // //  localStorage.setItem('user', 'user')
+          return response.json()
+        })
+        .then((user) => {
+          setRegError(user.password)
+          logInUser(user)
+        })
+    } catch (error) {
+      console.error(error)
+      setIsLoadingReg(`Не удалось... Ошибка: ${error.message}`)
+    } finally {
+      setIsLoadingReg(false)
+    }
   }
 
   return (
@@ -120,15 +87,15 @@ export const Register = () => {
           onChange={(e) => setInput2Pass(e.target.value)}
         />
         <S.ModalErrorText>{regError}</S.ModalErrorText>
-        <S.ModalBtnSignupEnt>
-          <Link
-            to="/"
-            onClick={() => {
-              handleReg()
-            }}
-          >
-            Зарегистрироваться
-          </Link>
+        <S.ModalBtnSignupEnt
+          onClick={handleReg}
+          type="submit"
+          disabled={isLoadingReg}
+          style={{
+            backgroundColor: `${isLoadingReg ? '#181818' : ''}`,
+          }}
+        >
+          Зарегистрироваться
         </S.ModalBtnSignupEnt>
       </S.ModalFormLogin>
     </S.ModalBlock>
