@@ -1,7 +1,10 @@
 import { Navigate } from 'react-router-dom'
+import { useContext } from 'react'
+import UserContext from '../../context'
 
 export const ProtectedRoute = ({ children, redirectPath = '/login' }) => {
-  if (localStorage.getItem('user') === null) {
+  const data = useContext(UserContext)
+  if (!data.userDate.login) {
     return <Navigate to={redirectPath} replace />
   }
 

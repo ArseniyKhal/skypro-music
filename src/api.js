@@ -1,7 +1,3 @@
-const emailUser = 'yellow@cat.ru'
-const passwordUser = '8symbol!'
-const usernameUser = 'yellowCat'
-
 // Получить список треков
 export async function getPlaylist() {
   const response = await fetch(
@@ -11,63 +7,63 @@ export async function getPlaylist() {
   return response.json()
 }
 
-// Регистрация
-export async function registration() {
-  const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/signup/',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        email: emailUser,
-        password: passwordUser,
-        username: usernameUser,
-      }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    },
-  )
-  const data = await response.json()
-  return data
-}
-
 // Авторизация
-export async function login() {
+export async function login({ email, password }) {
   const response = await fetch(
     'https://skypro-music-api.skyeng.tech/user/login/',
     {
       method: 'POST',
       body: JSON.stringify({
-        email: emailUser,
-        password: passwordUser,
+        email,
+        password,
       }),
       headers: {
         'content-type': 'application/json',
       },
     },
   )
-  const data = await response.json()
-  return data
+  return response
 }
 
-// Получить токен
-export async function getToken() {
+// Регистрация
+export async function registration({ email, password }) {
   const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/token/',
+    'https://skypro-music-api.skyeng.tech/user/signup/',
     {
       method: 'POST',
       body: JSON.stringify({
-        email: emailUser,
-        password: passwordUser,
+        email,
+        password,
+        username: email,
       }),
       headers: {
         'content-type': 'application/json',
       },
     },
   )
-  const data = await response.json()
-  return data
+  console.log(response)
+
+  return response
 }
+
+// Получить токен
+// export async function getToken() {
+//   const response = await fetch(
+//     'https://skypro-music-api.skyeng.tech/user/token/',
+//     {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         email: emailUser,
+//         password: passwordUser,
+//       }),
+//       headers: {
+//         'content-type': 'application/json',
+//       },
+//     },
+//   )
+//   const data = await response.json()
+//   return data
+// }
 
 // Обновить токен
 // export async function refreshToken() {

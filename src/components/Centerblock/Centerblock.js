@@ -195,6 +195,7 @@ const Track = ({
   id,
 }) => (
   <S.Track onClick={() => addTrackInPlayer({ trackFile, id })}>
+    {/* <S.Track onClick={() => console.log(UserData)}> */}
     <S.PlaylistTrack>
       <S.TrackTitle>
         <S.TrackTitleImage>
