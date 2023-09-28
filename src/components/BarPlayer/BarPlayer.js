@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { formatTime } from '../Centerblock/Centerblock'
+import { currentTrack } from '../../store/selectors/tracksSelectors'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = ({
-  trackInPlayer,
   isPlaying,
   togglePlay,
   handlePrev,
@@ -16,32 +17,34 @@ export const BarPlayer = ({
   toggleShuffle,
   isShuffle,
   audioElem,
+  duration,
 }) => {
+  const track = useSelector(currentTrack)
+
   // клик по прогрессу для перемотки трека
   const clickRef = useRef()
   const checkWidth = (e) => {
     const width = clickRef.current.clientWidth
     const offset = e.nativeEvent.offsetX
     const divProgress = (offset / width) * 100
-    setProgress((divProgress / 100) * trackInPlayer.length)
+    setProgress((divProgress / 100) * duration.length)
   }
 
   return (
     <S.Bar>
       <S.BarPlayerTime>
         {formatTime(audioElem.current.currentTime)} /
-        {formatTime(trackInPlayer.length)}
+        {formatTime(duration.length)}
       </S.BarPlayerTime>
       <S.BarContent>
         <S.BarPlayerProgress onClick={checkWidth} ref={clickRef}>
           <S.BarPlayerProgressInside
-            style={{ width: `${trackInPlayer.progress}%` }}
+            style={{ width: `${duration.progress}%` }}
           />
         </S.BarPlayerProgress>
         <S.BarPlayerBlock>
           <S.BarPlayer>
             <PlayerButtons
-              trackInPlayer={trackInPlayer}
               isPlaying={isPlaying}
               togglePlay={togglePlay}
               handlePrev={handlePrev}
@@ -52,7 +55,7 @@ export const BarPlayer = ({
               isShuffle={isShuffle}
             />
             <S.BarPlayerTrackPlay>
-              <TrackPlay trackInPlayer={trackInPlayer} />
+              <TrackPlay trackInPlayer={track} />
               <Likes />
             </S.BarPlayerTrackPlay>
           </S.BarPlayer>

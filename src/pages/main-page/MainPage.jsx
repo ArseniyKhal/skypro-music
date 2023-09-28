@@ -101,13 +101,13 @@ export const Main = () => {
   }
 
   // полоска прогресса трека
+  const [duration, setDuration] = useState({})
   const onPlaying = () => {
     const durationTime = audioElem.current.duration
     const ct = audioElem.current.currentTime
-    setTrackInPlayer({
-      ...trackInPlayer,
-      progress: (ct / durationTime) * 100,
+    setDuration({
       length: durationTime,
+      progress: (ct / durationTime) * 100,
     })
   }
 
@@ -140,7 +140,6 @@ export const Main = () => {
       </S.Main>
       {trackInPlayer && (
         <BarPlayer
-          trackInPlayer={trackInPlayer}
           isPlaying={isPlaying}
           togglePlay={togglePlay}
           toggleLoop={toggleLoop}
@@ -153,6 +152,7 @@ export const Main = () => {
           toggleShuffle={toggleShuffle}
           isShuffle={isShuffle}
           audioElem={audioElem}
+          duration={duration}
         />
       )}
       <footer />

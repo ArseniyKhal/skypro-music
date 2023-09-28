@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { playListSelector } from '../../store/selectors/tracksSelectors'
+import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 import * as S from './Centerblock.styles'
 
 // форматер времени трека
@@ -129,7 +130,6 @@ const Playlist = ({
     playlistMusic.length > 0 ? (
       playlistMusic.map((track) => (
         <Track
-          // закоментировано для отладки
           album={track.album}
           author={track.author}
           genre={track.genre}
@@ -141,7 +141,7 @@ const Playlist = ({
           year={track.release_date}
           trackFile={track.track_file}
           isLoading={isLoading}
-          // trackTitleSpan не используется
+          // trackTitleSpan не используется в API, а в разметке есть
           trackTitleSpan={track.soName}
           addTrackInPlayer={addTrackInPlayer}
         />
@@ -197,40 +197,49 @@ const Track = ({
   addTrackInPlayer,
   trackFile,
   id,
-}) => (
-  <S.Track onClick={() => addTrackInPlayer({ trackFile, id })}>
-    {/* <S.Track onClick={() => console.log(UserData)}> */}
-    <S.PlaylistTrack>
-      <S.TrackTitle>
-        <S.TrackTitleImage>
-          <S.TrackTitleSvg alt="music">
-            <use xlinkHref={logo} />
-          </S.TrackTitleSvg>
+}) => {
+  const dispatch = useDispatch()
+  const addTrackPlay = () => {
+    dispatch(setCurrentTrack({ id, name, author, logo, trackFile }))
+    addTrackInPlayer({ id, name, author, logo, trackFile })
+  }
+  return (
+    <S.Track
+      //  onClick={() => addTrackInPlayer({ id, name, author, logo, trackFile })}
+      onClick={() => addTrackPlay()}
+    >
+      <S.PlaylistTrack>
+        <S.TrackTitle>
+          <S.TrackTitleImage>
+            <S.TrackTitleSvg alt="music">
+              <use xlinkHref={logo} />
+            </S.TrackTitleSvg>
+            {isLoading && <div className="skeleton" />}
+          </S.TrackTitleImage>
+          <S.TrackTitleText>
+            {isLoading && <div className="skeleton" />}
+            <S.TrackTitleLink href="http://">
+              {name}
+              <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
+            </S.TrackTitleLink>
+          </S.TrackTitleText>
+        </S.TrackTitle>
+        <S.TrackAuthor>
+          <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
           {isLoading && <div className="skeleton" />}
-        </S.TrackTitleImage>
-        <S.TrackTitleText>
+        </S.TrackAuthor>
+        <S.TrackAlbum>
+          <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
           {isLoading && <div className="skeleton" />}
-          <S.TrackTitleLink href="http://">
-            {name}
-            <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
-          </S.TrackTitleLink>
-        </S.TrackTitleText>
-      </S.TrackTitle>
-      <S.TrackAuthor>
-        <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackAuthor>
-      <S.TrackAlbum>
-        <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackAlbum>
-      <S.TrackTime>
-        <S.TrackTimeSvg alt="time">
-          <use xlinkHref="img/icon/sprite.svg#icon-like" />
-        </S.TrackTimeSvg>
-        <S.TrackTimeText>{trackTime}</S.TrackTimeText>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackTime>
-    </S.PlaylistTrack>
-  </S.Track>
-)
+        </S.TrackAlbum>
+        <S.TrackTime>
+          <S.TrackTimeSvg alt="time">
+            <use xlinkHref="img/icon/sprite.svg#icon-like" />
+          </S.TrackTimeSvg>
+          <S.TrackTimeText>{trackTime}</S.TrackTimeText>
+          {isLoading && <div className="skeleton" />}
+        </S.TrackTime>
+      </S.PlaylistTrack>
+    </S.Track>
+  )
+}

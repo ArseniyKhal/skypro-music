@@ -1,5 +1,10 @@
-import { ADD_TRACKS, PLAY_TRACK, ADD_PLAYLIST } from '../actions/types/tracks'
-// 1.
+import {
+  ADD_TRACKS,
+  PLAY_TRACK,
+  ADD_PLAYLIST,
+  SET_CURRENT_TRACK,
+} from '../actions/types/tracks'
+
 const initialState = {
   plauing: false,
   playlist: [],
@@ -8,27 +13,30 @@ const initialState = {
   byIds: {},
 }
 
-// 2.
 export default function tracksReducer(state = initialState, action) {
   switch (action.type) {
-    // 3.
+    // загрузка плей-листа
     case ADD_PLAYLIST: {
-      // 4.
       const { playlist } = action.payload
-
-      // 5.
       return {
         ...state,
-
         playlist,
       }
     }
 
+    // загрузка трека в плеер
+    case SET_CURRENT_TRACK: {
+      const { id, name, author, logo, trackFile } = action.payload
+      return {
+        ...state,
+        track: { id, name, author, logo, trackFile },
+        plauing: true,
+      }
+    }
+
     case ADD_TRACKS: {
-      // 4.
       const { id, content } = action.payload
 
-      // 5.
       return {
         ...state,
 
