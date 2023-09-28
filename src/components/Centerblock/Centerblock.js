@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { playListSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Centerblock.styles'
 
 // форматер времени трека
@@ -24,21 +26,23 @@ export const formatTime = (t) => {
 export const Centerblock = ({
   isLoading,
   addTrackInPlayer,
-  playlistMusic,
   getPlaylistError,
-}) => (
-  <S.MainCenterblock>
-    <Search />
-    <S.CenterblockH2>Треки</S.CenterblockH2>
-    <MusicFilter isLoading={isLoading} playlistMusic={playlistMusic} />
-    <Playlist
-      isLoading={isLoading}
-      playlistMusic={playlistMusic}
-      addTrackInPlayer={addTrackInPlayer}
-      getPlaylistError={getPlaylistError}
-    />
-  </S.MainCenterblock>
-)
+}) => {
+  const tracks = useSelector(playListSelector)
+  return (
+    <S.MainCenterblock>
+      <Search />
+      <S.CenterblockH2>Треки</S.CenterblockH2>
+      <MusicFilter isLoading={isLoading} playlistMusic={tracks} />
+      <Playlist
+        isLoading={isLoading}
+        addTrackInPlayer={addTrackInPlayer}
+        getPlaylistError={getPlaylistError}
+        playlistMusic={tracks}
+      />
+    </S.MainCenterblock>
+  )
+}
 
 const Search = () => (
   <S.CenterblockSearch>
@@ -118,13 +122,14 @@ const MusicFilterItem = ({
 const Playlist = ({
   isLoading,
   addTrackInPlayer,
-  playlistMusic,
   getPlaylistError,
+  playlistMusic,
 }) => {
   const mapTracks =
     playlistMusic.length > 0 ? (
       playlistMusic.map((track) => (
         <Track
+          // закоментировано для отладки
           album={track.album}
           author={track.author}
           genre={track.genre}
@@ -136,7 +141,6 @@ const Playlist = ({
           year={track.release_date}
           trackFile={track.track_file}
           isLoading={isLoading}
-          playlistMusic={playlistMusic}
           // trackTitleSpan не используется
           trackTitleSpan={track.soName}
           addTrackInPlayer={addTrackInPlayer}

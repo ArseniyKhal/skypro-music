@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { addPlaylist } from '../../store/actions/creators/tracksCreator'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
@@ -17,6 +19,7 @@ export const Main = () => {
   const [volume, setvolume] = useState(0.5)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const dispatch = useDispatch()
 
   // загрузка треков с API
   const fetchTracks = async () => {
@@ -24,6 +27,8 @@ export const Main = () => {
       setIsLoading(true)
       setGetPlaylistError('')
       const tracks = await getPlaylist()
+      // console.log(tracks)
+      dispatch(addPlaylist(tracks))
       setPlaylistMusic(tracks)
     } catch (error) {
       console.error(error)
@@ -128,7 +133,6 @@ export const Main = () => {
         <NavMenu />
         <Centerblock
           isLoading={isLoading}
-          playlistMusic={playlistMusic}
           addTrackInPlayer={addTrackInPlayer}
           getPlaylistError={getPlaylistError}
         />
