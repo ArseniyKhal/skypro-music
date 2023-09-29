@@ -25,7 +25,6 @@ export default function tracksReducer(state = initialState, action) {
     // загрузка трека в плеер
     case SET_CURRENT_TRACK: {
       const { id } = action.payload
-
       return {
         ...state,
         track: state.playlist.filter((item) => item.id === id)[0],

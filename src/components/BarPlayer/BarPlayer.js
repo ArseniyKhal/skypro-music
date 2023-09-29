@@ -2,13 +2,14 @@ import { useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatTime } from '../Centerblock/Centerblock'
 import { currentTrack } from '../../store/selectors/tracksSelectors'
-import { nextTrack } from '../../store/actions/creators/tracksCreator'
+import {
+  nextTrack,
+  togglePause,
+} from '../../store/actions/creators/tracksCreator'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = ({
-  togglePlay,
   handlePrev,
-  handleNext,
   toggleLoop,
   volume,
   volumeChange,
@@ -45,9 +46,7 @@ export const BarPlayer = ({
         <S.BarPlayerBlock>
           <S.BarPlayer>
             <PlayerButtons
-              togglePlay={togglePlay}
               handlePrev={handlePrev}
-              handleNext={handleNext}
               toggleLoop={toggleLoop}
               isLoop={isLoop}
               toggleShuffle={toggleShuffle}
@@ -68,22 +67,15 @@ export const BarPlayer = ({
 }
 
 const PlayerButtons = ({
-  togglePlay,
   handlePrev,
-  //   handleNext,
   toggleLoop,
   isLoop,
   toggleShuffle,
   isShuffle,
 }) => {
-  //   const track = useSelector(currentTrack)
   const plauing = useSelector((state) => state.audioplayer.plauing)
   const dispatch = useDispatch()
 
-  // следующий трек (не реализовано)
-  const handleNext = () => {
-    dispatch(nextTrack())
-  }
   return (
     <S.PlayerControls>
       <S.PlayerBtnPrev onClick={handlePrev}>
@@ -91,14 +83,14 @@ const PlayerButtons = ({
           <use xlinkHref="img/icon/sprite.svg#icon-prev" />
         </S.PlayerBtnPrevSvg>
       </S.PlayerBtnPrev>
-      <S.PlayerBtnPlay onClick={togglePlay}>
+      <S.PlayerBtnPlay onClick={() => dispatch(togglePause())}>
         <S.PlayerBtnPlaySvg alt="play">
           <use
             xlinkHref={`img/icon/sprite.svg#icon-${plauing ? 'pause' : 'play'}`}
           />
         </S.PlayerBtnPlaySvg>
       </S.PlayerBtnPlay>
-      <S.PlayerBtnNext onClick={handleNext}>
+      <S.PlayerBtnNext onClick={() => dispatch(nextTrack())}>
         <S.PlayerBtnNextSvg alt="next">
           <use xlinkHref="img/icon/sprite.svg#icon-next" />
         </S.PlayerBtnNextSvg>

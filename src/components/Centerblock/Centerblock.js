@@ -200,11 +200,9 @@ const Track = ({
 
   // логика кнопки play/pause
   const dispatch = useDispatch()
-  const addTrackPlay = () => {
-    dispatch(setCurrentTrack({ id }))
-  }
+
   return (
-    <S.Track onClick={addTrackPlay}>
+    <S.Track onClick={() => dispatch(setCurrentTrack({ id }))}>
       <S.PlaylistTrack>
         <S.TrackTitle>
           <S.TrackTitleImage>

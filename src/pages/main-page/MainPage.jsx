@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   addPlaylist,
-  togglePause,
+  //   togglePause,
 } from '../../store/actions/creators/tracksCreator'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
@@ -17,8 +17,11 @@ import * as S from '../../App.styles'
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
 // Как вызвать функцию при изменении store?
 // При обновлении страницы разлогинивается
+// почему Dispatch загрузки плейлиста проиходит дважды при загрузке?
 
 export const Main = () => {
+  const playlist = useSelector((state) => state.audioplayer.playlist)
+
   // загрузка списка треков
   const [volume, setvolume] = useState(0.5)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
@@ -31,7 +34,10 @@ export const Main = () => {
       setIsLoading(true)
       setGetPlaylistError('')
       const tracks = await getPlaylist()
-      dispatch(addPlaylist(tracks))
+      if (playlist) {
+        dispatch(addPlaylist(tracks))
+      }
+      // dfgh
     } catch (error) {
       console.error(error)
       setGetPlaylistError(
@@ -50,24 +56,9 @@ export const Main = () => {
   const audioElem = useRef(null)
   const plauing = useSelector((state) => state.audioplayer.plauing)
 
-  const handleStart = () => {
-    audioElem.current.play()
-    dispatch(togglePause())
-  }
-  const handleStop = () => {
-    audioElem.current.pause()
-    dispatch(togglePause())
-  }
-
-  const togglePlay = plauing ? handleStop : handleStart
-
   // предыдущий трек (не реализовано)
   const handlePrev = () => {
     alert('еще не реализовано')
-  }
-  // следующий трек (не реализовано)
-  const handleNext = () => {
-    console.log('следующий трек')
   }
   // переключатель В Перемешку (не реализовано)
   const [isShuffle, setIsShuffle] = useState(false)
@@ -85,23 +76,23 @@ export const Main = () => {
   const trackInPleer = useSelector((state) => state.audioplayer.track)
 
   // добавление и запуск трека в плеере
-  const [trackUrl, setTrackUrl] = useState(null)
-  //   const addTrackInPlayer = (trackFile) => {
-  //  setTrackUrl(trackFile)
-  //  audioElem.current.load()
-  //  if (trackInPleer) {
-  //    togglePlay()
-  //    handleStart()
-  //  }
-  //   }
   useEffect(() => {
-    setTrackUrl(trackInPleer?.track_file)
     audioElem.current.load()
     if (trackInPleer) {
-      togglePlay()
-      handleStart()
+      audioElem.current.play()
     }
   }, [trackInPleer])
+
+  // обработчик кнопки ПАУЗА
+  useEffect(() => {
+    if (trackInPleer) {
+      if (plauing) {
+        audioElem.current.play()
+      } else {
+        audioElem.current.pause()
+      }
+    }
+  }, [plauing])
 
   // громкость
   const handleVolumeChange = (newVolume) => {
@@ -123,6 +114,7 @@ export const Main = () => {
   const setProgress = (pr) => {
     audioElem.current.currentTime = pr
   }
+
   return (
     <>
       <audio
@@ -132,7 +124,7 @@ export const Main = () => {
         style={{ display: 'none' }}
         loop={`${isLoop ? 'loop' : ''}`}
       >
-        <source src={trackUrl} type="audio/mpeg" />
+        <source src={trackInPleer?.track_file} type="audio/mpeg" />
         <track kind="captions" />
       </audio>
 
@@ -146,10 +138,8 @@ export const Main = () => {
       </S.Main>
       {trackInPleer && (
         <BarPlayer
-          togglePlay={togglePlay}
           toggleLoop={toggleLoop}
           handlePrev={handlePrev}
-          handleNext={handleNext}
           volume={volume}
           volumeChange={handleVolumeChange}
           setProgress={setProgress}
