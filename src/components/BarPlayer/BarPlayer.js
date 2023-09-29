@@ -4,6 +4,7 @@ import { formatTime } from '../Centerblock/Centerblock'
 import { currentTrack } from '../../store/selectors/tracksSelectors'
 import {
   nextTrack,
+  prevTrack,
   togglePause,
 } from '../../store/actions/creators/tracksCreator'
 import * as S from './BarPlayer.styles'
@@ -67,7 +68,7 @@ export const BarPlayer = ({
 }
 
 const PlayerButtons = ({
-  handlePrev,
+  //   handlePrev,
   toggleLoop,
   isLoop,
   toggleShuffle,
@@ -78,7 +79,7 @@ const PlayerButtons = ({
 
   return (
     <S.PlayerControls>
-      <S.PlayerBtnPrev onClick={handlePrev}>
+      <S.PlayerBtnPrev onClick={() => dispatch(prevTrack())}>
         <S.PlayerBtnPrevSvg alt="prev">
           <use xlinkHref="img/icon/sprite.svg#icon-prev" />
         </S.PlayerBtnPrevSvg>

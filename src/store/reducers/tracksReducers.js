@@ -3,6 +3,7 @@ import {
   SET_CURRENT_TRACK,
   PAUSE,
   NEXT_TRACK,
+  PREV_TRACK,
 } from '../actions/types/tracks'
 
 const initialState = {
@@ -53,6 +54,23 @@ export default function tracksReducer(state = initialState, action) {
       return {
         ...state,
         track: state.playlist[indexNextTrack],
+      }
+    }
+
+    // предыдущий трек
+    case PREV_TRACK: {
+      const { id } = state.track
+      const indexCurrentTrack = state.playlist.findIndex(
+        (track) => track.id === id,
+      )
+      let indexPrevTrack = indexCurrentTrack
+      if (indexPrevTrack < state.playlist.length - 1 && indexPrevTrack > 0) {
+        indexPrevTrack = indexCurrentTrack - 1
+      }
+      console.log(indexPrevTrack)
+      return {
+        ...state,
+        track: state.playlist[indexPrevTrack],
       }
     }
 

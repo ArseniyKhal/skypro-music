@@ -1,9 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  addPlaylist,
-  //   togglePause,
-} from '../../store/actions/creators/tracksCreator'
+import { addPlaylist } from '../../store/actions/creators/tracksCreator'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
@@ -37,7 +34,6 @@ export const Main = () => {
       if (playlist) {
         dispatch(addPlaylist(tracks))
       }
-      // dfgh
     } catch (error) {
       console.error(error)
       setGetPlaylistError(
