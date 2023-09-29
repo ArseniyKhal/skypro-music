@@ -15,6 +15,8 @@ import * as S from '../../App.styles'
 // сделать правильное отображение времени трека в списке
 // сделать время на прогрессе при наведении
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
+// Как вызвать функцию при изменении store?
+// При обновлении страницы разлогинивается
 
 export const Main = () => {
   // загрузка списка треков
@@ -84,12 +86,22 @@ export const Main = () => {
 
   // добавление и запуск трека в плеере
   const [trackUrl, setTrackUrl] = useState(null)
-  const addTrackInPlayer = (trackFile) => {
-    setTrackUrl(trackFile)
+  //   const addTrackInPlayer = (trackFile) => {
+  //  setTrackUrl(trackFile)
+  //  audioElem.current.load()
+  //  if (trackInPleer) {
+  //    togglePlay()
+  //    handleStart()
+  //  }
+  //   }
+  useEffect(() => {
+    setTrackUrl(trackInPleer?.track_file)
     audioElem.current.load()
-    togglePlay()
-    handleStart()
-  }
+    if (trackInPleer) {
+      togglePlay()
+      handleStart()
+    }
+  }, [trackInPleer])
 
   // громкость
   const handleVolumeChange = (newVolume) => {
@@ -128,7 +140,6 @@ export const Main = () => {
         <NavMenu />
         <Centerblock
           isLoading={isLoading}
-          addTrackInPlayer={addTrackInPlayer}
           getPlaylistError={getPlaylistError}
         />
         <Sidebar isLoading={isLoading} />

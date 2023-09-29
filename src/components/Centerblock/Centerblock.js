@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { playListSelector } from '../../store/selectors/tracksSelectors'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
-// import { currentTrack } from '../../store/selectors/tracksSelectors'
 import * as S from './Centerblock.styles'
 
 // форматер времени трека
@@ -25,12 +23,7 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 
-export const Centerblock = ({
-  isLoading,
-  addTrackInPlayer,
-  getPlaylistError,
-}) => {
-  //   const tracks = useSelector(playListSelector)
+export const Centerblock = ({ isLoading, getPlaylistError }) => {
   const tracks = useSelector((state) => state.audioplayer.playlist)
 
   return (
@@ -40,7 +33,6 @@ export const Centerblock = ({
       <MusicFilter isLoading={isLoading} playlistMusic={tracks} />
       <Playlist
         isLoading={isLoading}
-        addTrackInPlayer={addTrackInPlayer}
         getPlaylistError={getPlaylistError}
         playlistMusic={tracks}
       />
@@ -123,12 +115,7 @@ const MusicFilterItem = ({
   </S.FilterItem>
 )
 
-const Playlist = ({
-  isLoading,
-  addTrackInPlayer,
-  getPlaylistError,
-  playlistMusic,
-}) => {
+const Playlist = ({ isLoading, getPlaylistError, playlistMusic }) => {
   const plauing = useSelector((state) => state.audioplayer.plauing)
 
   const mapTracks =
@@ -148,7 +135,6 @@ const Playlist = ({
           isLoading={isLoading}
           // trackTitleSpan не используется в API, а в разметке есть
           trackTitleSpan={track.soName}
-          addTrackInPlayer={addTrackInPlayer}
           plauing={plauing}
         />
       ))
@@ -200,11 +186,10 @@ const Track = ({
   trackTime,
   trackTitleSpan,
   isLoading,
-  addTrackInPlayer,
-  trackFile,
   id,
   plauing,
 }) => {
+  // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
   if (trackInPleer) {
@@ -213,10 +198,10 @@ const Track = ({
     }
   }
 
+  // логика кнопки play/pause
   const dispatch = useDispatch()
   const addTrackPlay = () => {
     dispatch(setCurrentTrack({ id }))
-    addTrackInPlayer(trackFile)
   }
   return (
     <S.Track onClick={addTrackPlay}>

@@ -44,10 +44,16 @@ export default function tracksReducer(state = initialState, action) {
     // следующий трек
     case NEXT_TRACK: {
       const { id } = state.track
-      const index = state.playlist.findIndex((track) => track.id === id)
+      const indexCurrentTrack = state.playlist.findIndex(
+        (track) => track.id === id,
+      )
+      let indexNextTrack = indexCurrentTrack
+      if (indexNextTrack < state.playlist.length - 1) {
+        indexNextTrack = indexCurrentTrack + 1
+      }
       return {
         ...state,
-        track: state.playlist[index + 1],
+        track: state.playlist[indexNextTrack],
       }
     }
 
