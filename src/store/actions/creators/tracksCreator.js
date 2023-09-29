@@ -1,9 +1,10 @@
 import {
   ADD_PLAYLIST,
   SET_CURRENT_TRACK,
-  PAUSE,
+  TOGGLE_PAUSE,
   NEXT_TRACK,
   PREV_TRACK,
+  REPEAT_PLAYLIST,
 } from '../types/tracks'
 
 export const addPlaylist = (playlist) => ({
@@ -17,7 +18,7 @@ export const setCurrentTrack = ({ id }) => ({
 })
 
 export const togglePause = () => ({
-  type: PAUSE,
+  type: TOGGLE_PAUSE,
 })
 
 export const nextTrack = () => ({
@@ -26,4 +27,8 @@ export const nextTrack = () => ({
 
 export const prevTrack = () => ({
   type: PREV_TRACK,
+})
+
+export const toggleRepeat = () => ({
+  type: REPEAT_PLAYLIST,
 })

@@ -1,11 +1,15 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addPlaylist } from '../../store/actions/creators/tracksCreator'
+import {
+  addPlaylist,
+  nextTrack,
+} from '../../store/actions/creators/tracksCreator'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
+
 import * as S from '../../App.styles'
 
 // Задачи:
@@ -18,6 +22,7 @@ import * as S from '../../App.styles'
 
 export const Main = () => {
   const playlist = useSelector((state) => state.audioplayer.playlist)
+  const loop = useSelector((state) => state.audioplayer.loop)
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.5)
@@ -48,14 +53,10 @@ export const Main = () => {
     fetchTracks()
   }, [])
 
-  // воспроизводим трек
   const audioElem = useRef(null)
   const plauing = useSelector((state) => state.audioplayer.plauing)
+  const trackInPleer = useSelector((state) => state.audioplayer.track)
 
-  // предыдущий трек (не реализовано)
-  const handlePrev = () => {
-    alert('еще не реализовано')
-  }
   // переключатель В Перемешку (не реализовано)
   const [isShuffle, setIsShuffle] = useState(false)
   const toggleShuffle = () => {
@@ -63,20 +64,9 @@ export const Main = () => {
     alert('еще не реализовано')
   }
 
-  // залупливание
-  const [isLoop, setIsLoop] = useState(false)
-  const toggleLoop = () => {
-    setIsLoop(!isLoop)
-  }
-
-  const trackInPleer = useSelector((state) => state.audioplayer.track)
-
-  // добавление и запуск трека в плеере
+  // добавление и автозапуск трека в плеере
   useEffect(() => {
     audioElem.current.load()
-    if (trackInPleer) {
-      audioElem.current.play()
-    }
   }, [trackInPleer])
 
   // обработчик кнопки ПАУЗА
@@ -101,6 +91,9 @@ export const Main = () => {
   const onPlaying = () => {
     const durationTime = audioElem.current.duration
     const ct = audioElem.current.currentTime
+    if (durationTime === ct) {
+      dispatch(nextTrack())
+    }
     setDuration({
       length: durationTime,
       progress: (ct / durationTime) * 100,
@@ -114,13 +107,14 @@ export const Main = () => {
   return (
     <>
       <audio
+        autoPlay
         controls
         ref={audioElem}
         onTimeUpdate={onPlaying}
         style={{ display: 'none' }}
-        loop={`${isLoop ? 'loop' : ''}`}
+        loop={`${loop ? 'loop' : ''}`}
+        src={trackInPleer?.track_file}
       >
-        <source src={trackInPleer?.track_file} type="audio/mpeg" />
         <track kind="captions" />
       </audio>
 
@@ -134,12 +128,9 @@ export const Main = () => {
       </S.Main>
       {trackInPleer && (
         <BarPlayer
-          toggleLoop={toggleLoop}
-          handlePrev={handlePrev}
           volume={volume}
           volumeChange={handleVolumeChange}
           setProgress={setProgress}
-          isLoop={isLoop}
           toggleShuffle={toggleShuffle}
           isShuffle={isShuffle}
           audioElem={audioElem}

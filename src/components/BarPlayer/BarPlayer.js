@@ -6,16 +6,14 @@ import {
   nextTrack,
   prevTrack,
   togglePause,
+  toggleRepeat,
 } from '../../store/actions/creators/tracksCreator'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = ({
-  handlePrev,
-  toggleLoop,
   volume,
   volumeChange,
   setProgress,
-  isLoop,
   toggleShuffle,
   isShuffle,
   audioElem,
@@ -47,9 +45,6 @@ export const BarPlayer = ({
         <S.BarPlayerBlock>
           <S.BarPlayer>
             <PlayerButtons
-              handlePrev={handlePrev}
-              toggleLoop={toggleLoop}
-              isLoop={isLoop}
               toggleShuffle={toggleShuffle}
               isShuffle={isShuffle}
             />
@@ -67,14 +62,10 @@ export const BarPlayer = ({
   )
 }
 
-const PlayerButtons = ({
-  //   handlePrev,
-  toggleLoop,
-  isLoop,
-  toggleShuffle,
-  isShuffle,
-}) => {
+// кнопки плеера
+const PlayerButtons = ({ toggleShuffle, isShuffle }) => {
   const plauing = useSelector((state) => state.audioplayer.plauing)
+  const loop = useSelector((state) => state.audioplayer.loop)
   const dispatch = useDispatch()
 
   return (
@@ -96,9 +87,12 @@ const PlayerButtons = ({
           <use xlinkHref="img/icon/sprite.svg#icon-next" />
         </S.PlayerBtnNextSvg>
       </S.PlayerBtnNext>
-      <S.PlayerBtnRepeat onClick={toggleLoop} className=" _btn-icon">
+      <S.PlayerBtnRepeat
+        onClick={() => dispatch(toggleRepeat())}
+        className=" _btn-icon"
+      >
         <S.PlayerBtnRepeatSvg
-          style={{ stroke: `${isLoop ? '#ACACAC' : '#696969'}` }}
+          style={{ stroke: `${loop ? '#ACACAC' : '#696969'}` }}
           alt="repeat"
         >
           <use xlinkHref="img/icon/sprite.svg#icon-repeat" />

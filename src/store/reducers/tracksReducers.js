@@ -1,15 +1,17 @@
 import {
   ADD_PLAYLIST,
   SET_CURRENT_TRACK,
-  PAUSE,
+  TOGGLE_PAUSE,
   NEXT_TRACK,
   PREV_TRACK,
+  REPEAT_PLAYLIST,
 } from '../actions/types/tracks'
 
 const initialState = {
   plauing: false,
   playlist: [],
   track: null,
+  loop: false,
 }
 
 export default function tracksReducer(state = initialState, action) {
@@ -34,7 +36,7 @@ export default function tracksReducer(state = initialState, action) {
     }
 
     // пауза
-    case PAUSE: {
+    case TOGGLE_PAUSE: {
       return {
         ...state,
         plauing: !state.plauing,
@@ -67,10 +69,17 @@ export default function tracksReducer(state = initialState, action) {
       if (indexPrevTrack < state.playlist.length - 1 && indexPrevTrack > 0) {
         indexPrevTrack = indexCurrentTrack - 1
       }
-      console.log(indexPrevTrack)
       return {
         ...state,
         track: state.playlist[indexPrevTrack],
+      }
+    }
+
+    // воспроизведение треков по кругу
+    case REPEAT_PLAYLIST: {
+      return {
+        ...state,
+        loop: !state.loop,
       }
     }
 

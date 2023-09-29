@@ -198,7 +198,6 @@ const Track = ({
     }
   }
 
-  // логика кнопки play/pause
   const dispatch = useDispatch()
 
   return (
