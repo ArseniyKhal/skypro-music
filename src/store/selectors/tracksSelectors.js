@@ -1,5 +1,4 @@
 const audioplayerSelector = (store) => store.audioplayer
-const trackSelector = (store) => store.track
 
 // список треков с API
 export const playListSelector = (store) =>
@@ -8,22 +7,21 @@ export const playListSelector = (store) =>
 // трек в плеере
 export const currentTrack = (store) => audioplayerSelector(store)?.track || {}
 
-export const trackIdsSelector = (store) => trackSelector(store)?.allIds || []
+// const trackSelector = (store) => store.track
+// export const trackIdsSelector = (store) => trackSelector(store)?.allIds || []
+// export const trackByIdSelector = (store, id) => {
+//   const trackStore = trackSelector(store)
 
-export const trackByIdSelector = (store, id) => {
-  const trackStore = trackSelector(store)
+//   if (!trackStore) {
+//     return {}
+//   }
 
-  if (!trackStore) {
-    return {}
-  }
+//   const trackItem = trackStore.byIds[id]
 
-  const trackItem = trackStore.byIds[id]
-
-  return {
-    ...trackItem,
-    id,
-  }
-}
-
-export const tracksSelector = (store) =>
-  trackIdsSelector(store).map((id) => trackByIdSelector(store, id))
+//   return {
+//     ...trackItem,
+//     id,
+//   }
+// }
+// export const tracksSelector = (store) =>
+//   trackIdsSelector(store).map((id) => trackByIdSelector(store, id))

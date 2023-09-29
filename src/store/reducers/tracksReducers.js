@@ -1,16 +1,14 @@
 import {
-  ADD_TRACKS,
-  PLAY_TRACK,
   ADD_PLAYLIST,
   SET_CURRENT_TRACK,
+  PAUSE,
+  NEXT_TRACK,
 } from '../actions/types/tracks'
 
 const initialState = {
   plauing: false,
   playlist: [],
-  track: {},
-  allIds: [],
-  byIds: {},
+  track: null,
 }
 
 export default function tracksReducer(state = initialState, action) {
@@ -26,48 +24,30 @@ export default function tracksReducer(state = initialState, action) {
 
     // загрузка трека в плеер
     case SET_CURRENT_TRACK: {
-      const { id, name, author, logo, trackFile } = action.payload
+      const { id } = action.payload
+
       return {
         ...state,
-        track: { id, name, author, logo, trackFile },
+        track: state.playlist.filter((item) => item.id === id)[0],
         plauing: true,
       }
     }
 
-    case ADD_TRACKS: {
-      const { id, content } = action.payload
-
+    // пауза
+    case PAUSE: {
       return {
         ...state,
-
-        allIds: [...state.allIds, id],
-
-        byIds: {
-          ...state.byIds,
-
-          [id]: {
-            content,
-            complete: false,
-          },
-        },
+        plauing: !state.plauing,
       }
     }
 
-    case PLAY_TRACK: {
-      const { id } = action.payload
-
-      const playTrack = state.byIds[id]
-
+    // следующий трек
+    case NEXT_TRACK: {
+      const { id } = state.track
+      const index = state.playlist.findIndex((track) => track.id === id)
       return {
         ...state,
-
-        byIds: {
-          ...state.byIds,
-          [id]: {
-            ...playTrack,
-            completed: !playTrack.completed,
-          },
-        },
+        track: state.playlist[index + 1],
       }
     }
 

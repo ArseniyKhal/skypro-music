@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { addPlaylist } from '../../store/actions/creators/tracksCreator'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  addPlaylist,
+  togglePause,
+} from '../../store/actions/creators/tracksCreator'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
@@ -15,7 +18,6 @@ import * as S from '../../App.styles'
 
 export const Main = () => {
   // загрузка списка треков
-  const [playlistMusic, setPlaylistMusic] = useState([])
   const [volume, setvolume] = useState(0.5)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -27,9 +29,7 @@ export const Main = () => {
       setIsLoading(true)
       setGetPlaylistError('')
       const tracks = await getPlaylist()
-      // console.log(tracks)
       dispatch(addPlaylist(tracks))
-      setPlaylistMusic(tracks)
     } catch (error) {
       console.error(error)
       setGetPlaylistError(
@@ -45,31 +45,27 @@ export const Main = () => {
   }, [])
 
   // воспроизводим трек
-  const [isPlaying, setIsPlaying] = useState(false)
-
   const audioElem = useRef(null)
+  const plauing = useSelector((state) => state.audioplayer.plauing)
 
   const handleStart = () => {
     audioElem.current.play()
-    setIsPlaying(true)
+    dispatch(togglePause())
   }
   const handleStop = () => {
     audioElem.current.pause()
-    setIsPlaying(false)
+    dispatch(togglePause())
   }
-  const togglePlay = isPlaying ? handleStop : handleStart
 
-  const handleLoad = () => {
-    audioElem.current.load()
-    togglePlay()
-  }
+  const togglePlay = plauing ? handleStop : handleStart
+
   // предыдущий трек (не реализовано)
   const handlePrev = () => {
     alert('еще не реализовано')
   }
   // следующий трек (не реализовано)
   const handleNext = () => {
-    alert('еще не реализовано')
+    console.log('следующий трек')
   }
   // переключатель В Перемешку (не реализовано)
   const [isShuffle, setIsShuffle] = useState(false)
@@ -84,13 +80,14 @@ export const Main = () => {
     setIsLoop(!isLoop)
   }
 
+  const trackInPleer = useSelector((state) => state.audioplayer.track)
+
   // добавление и запуск трека в плеере
-  const [trackInPlayer, setTrackInPlayer] = useState(null)
   const [trackUrl, setTrackUrl] = useState(null)
-  const addTrackInPlayer = ({ trackFile, id }) => {
+  const addTrackInPlayer = (trackFile) => {
     setTrackUrl(trackFile)
-    setTrackInPlayer(playlistMusic.filter((item) => item.id === id)[0])
-    handleLoad()
+    audioElem.current.load()
+    togglePlay()
     handleStart()
   }
 
@@ -110,12 +107,10 @@ export const Main = () => {
       progress: (ct / durationTime) * 100,
     })
   }
-
   // перемотка
   const setProgress = (pr) => {
     audioElem.current.currentTime = pr
   }
-
   return (
     <>
       <audio
@@ -126,7 +121,7 @@ export const Main = () => {
         loop={`${isLoop ? 'loop' : ''}`}
       >
         <source src={trackUrl} type="audio/mpeg" />
-        <track kind="captions" src={trackUrl} />
+        <track kind="captions" />
       </audio>
 
       <S.Main>
@@ -138,9 +133,8 @@ export const Main = () => {
         />
         <Sidebar isLoading={isLoading} />
       </S.Main>
-      {trackInPlayer && (
+      {trackInPleer && (
         <BarPlayer
-          isPlaying={isPlaying}
           togglePlay={togglePlay}
           toggleLoop={toggleLoop}
           handlePrev={handlePrev}

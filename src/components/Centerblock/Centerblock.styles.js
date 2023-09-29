@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 
 export const MainCenterblock = styled.div`
   width: auto;
@@ -345,4 +345,27 @@ export const TrackTimeSpan = styled.span`
   line-height: 24px;
   color: #4e4e4e;
   margin-left: 5px;
+`
+
+const bubbleOutKF = keyframes`
+0%,
+to {
+	transform: scale(1);
+}
+50% {
+	transform: scale(0.5);
+}
+100% {
+	transform: scale(1);
+}
+`
+export const bubbleOut = styled.div`
+  width: 16px;
+  height: 16px;
+  background-color: #b672ff;
+  border-radius: 8px;
+  display: block;
+  position: absolute;
+  animation: ${bubbleOutKF} ease-in-out infinite both;
+  animation-duration: 0.8s;
 `

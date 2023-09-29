@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { playListSelector } from '../../store/selectors/tracksSelectors'
+// import { playListSelector } from '../../store/selectors/tracksSelectors'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
+// import { currentTrack } from '../../store/selectors/tracksSelectors'
 import * as S from './Centerblock.styles'
 
 // форматер времени трека
@@ -29,7 +30,9 @@ export const Centerblock = ({
   addTrackInPlayer,
   getPlaylistError,
 }) => {
-  const tracks = useSelector(playListSelector)
+  //   const tracks = useSelector(playListSelector)
+  const tracks = useSelector((state) => state.audioplayer.playlist)
+
   return (
     <S.MainCenterblock>
       <Search />
@@ -126,6 +129,8 @@ const Playlist = ({
   getPlaylistError,
   playlistMusic,
 }) => {
+  const plauing = useSelector((state) => state.audioplayer.plauing)
+
   const mapTracks =
     playlistMusic.length > 0 ? (
       playlistMusic.map((track) => (
@@ -144,6 +149,7 @@ const Playlist = ({
           // trackTitleSpan не используется в API, а в разметке есть
           trackTitleSpan={track.soName}
           addTrackInPlayer={addTrackInPlayer}
+          plauing={plauing}
         />
       ))
     ) : (
@@ -197,23 +203,37 @@ const Track = ({
   addTrackInPlayer,
   trackFile,
   id,
+  plauing,
 }) => {
+  const trackInPleer = useSelector((state) => state.audioplayer.track)
+  let visibolbubbleOut = false
+  if (trackInPleer) {
+    if (trackInPleer.id === id) {
+      visibolbubbleOut = true
+    }
+  }
+
   const dispatch = useDispatch()
   const addTrackPlay = () => {
-    dispatch(setCurrentTrack({ id, name, author, logo, trackFile }))
-    addTrackInPlayer({ id, name, author, logo, trackFile })
+    dispatch(setCurrentTrack({ id }))
+    addTrackInPlayer(trackFile)
   }
   return (
-    <S.Track
-      //  onClick={() => addTrackInPlayer({ id, name, author, logo, trackFile })}
-      onClick={() => addTrackPlay()}
-    >
+    <S.Track onClick={addTrackPlay}>
       <S.PlaylistTrack>
         <S.TrackTitle>
           <S.TrackTitleImage>
             <S.TrackTitleSvg alt="music">
               <use xlinkHref={logo} />
             </S.TrackTitleSvg>
+            {visibolbubbleOut && (
+              <S.bubbleOut
+                style={{
+                  animationDuration: `${plauing ? '0.8s' : '0s'}`,
+                }}
+              />
+            )}
+
             {isLoading && <div className="skeleton" />}
           </S.TrackTitleImage>
           <S.TrackTitleText>
