@@ -199,7 +199,6 @@ const Track = ({
   }
 
   const dispatch = useDispatch()
-
   return (
     <S.Track onClick={() => dispatch(setCurrentTrack({ id }))}>
       <S.PlaylistTrack>
@@ -215,7 +214,6 @@ const Track = ({
                 }}
               />
             )}
-
             {isLoading && <div className="skeleton" />}
           </S.TrackTitleImage>
           <S.TrackTitleText>

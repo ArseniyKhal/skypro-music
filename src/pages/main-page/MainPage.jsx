@@ -9,7 +9,6 @@ import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { getPlaylist } from '../../api'
-
 import * as S from '../../App.styles'
 
 // Задачи:
@@ -22,7 +21,6 @@ import * as S from '../../App.styles'
 
 export const Main = () => {
   const playlist = useSelector((state) => state.audioplayer.playlist)
-  const loop = useSelector((state) => state.audioplayer.loop)
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.5)
@@ -112,7 +110,6 @@ export const Main = () => {
         ref={audioElem}
         onTimeUpdate={onPlaying}
         style={{ display: 'none' }}
-        loop={`${loop ? 'loop' : ''}`}
         src={trackInPleer?.track_file}
       >
         <track kind="captions" />

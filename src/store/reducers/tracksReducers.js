@@ -50,9 +50,15 @@ export default function tracksReducer(state = initialState, action) {
         (track) => track.id === id,
       )
       let indexNextTrack = indexCurrentTrack
-      if (indexNextTrack < state.playlist.length - 1) {
+      if (indexCurrentTrack < state.playlist.length - 1) {
         indexNextTrack = indexCurrentTrack + 1
       }
+      if (state.loop) {
+        if (indexCurrentTrack === state.playlist.length - 1) {
+          indexNextTrack = 0
+        }
+      }
+
       return {
         ...state,
         track: state.playlist[indexNextTrack],
