@@ -1,12 +1,10 @@
 const audioplayerSelector = (store) => store.audioplayer
 
 // список треков с API
-export const playListSelector = (store) =>
-  audioplayerSelector(store)?.playlist || []
+export const playListSelector = (store) => audioplayerSelector(store).playlist
 
 // текущий трек в плеере
-export const currentTrackSelector = (store) =>
-  audioplayerSelector(store)?.track || {}
+export const currentTrackSelector = (store) => audioplayerSelector(store).track
 
 // статус воспроизведения
 export const isPlauingSelector = (store) => audioplayerSelector(store).plauing

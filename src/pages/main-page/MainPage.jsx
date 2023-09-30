@@ -22,7 +22,6 @@ import * as S from '../../App.styles'
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
 // Как вызвать функцию при изменении store?
 // При обновлении страницы разлогинивается
-// почему Dispatch загрузки плейлиста проиходит дважды при загрузке?
 
 export const Main = () => {
   const playlist = useSelector(playListSelector)
@@ -58,7 +57,6 @@ export const Main = () => {
 
   const audioElem = useRef(null)
   const plauing = useSelector(isPlauingSelector)
-  //   const trackInPleer = useSelector((state) => state.audioplayer.track)
   const trackInPleer = useSelector(currentTrackSelector)
 
   // добавление и автозапуск трека в плеере
@@ -100,21 +98,6 @@ export const Main = () => {
   const setProgress = (pr) => {
     audioElem.current.currentTime = pr
   }
-
-  // перемешиватель массива
-  //   function shuffle(myArray) {
-  //     let index
-  //     let valueIndex
-  //     for (let i = 0; i <= myArray.length - 1; i++) {
-  //       index = Math.floor(Math.random() * i)
-  //       valueIndex = myArray[index]
-  //       const myArr = myArray
-  //       myArr[index] = myArray[i]
-  //       myArr[i] = valueIndex
-  //     }
-
-  //     return myArray
-  //   }
 
   return (
     <>

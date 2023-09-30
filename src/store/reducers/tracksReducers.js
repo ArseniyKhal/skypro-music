@@ -61,10 +61,10 @@ export default function tracksReducer(state = initialState, action) {
           indexNextTrack = 0
         }
       }
-
       return {
         ...state,
         track: state.playlist[indexNextTrack],
+        plauing: true,
       }
     }
 
@@ -81,6 +81,7 @@ export default function tracksReducer(state = initialState, action) {
       return {
         ...state,
         track: state.playlist[indexPrevTrack],
+        plauing: true,
       }
     }
 
