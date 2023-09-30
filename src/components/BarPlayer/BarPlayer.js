@@ -1,12 +1,18 @@
 import { useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatTime } from '../Centerblock/Centerblock'
-import { currentTrack } from '../../store/selectors/tracksSelectors'
+import {
+  currentTrackSelector,
+  isPlauingSelector,
+  isLoopSelector,
+  isShuffledSelector,
+} from '../../store/selectors/tracksSelectors'
 import {
   nextTrack,
   prevTrack,
   togglePause,
   toggleRepeat,
+  toggleShuffle,
 } from '../../store/actions/creators/tracksCreator'
 import * as S from './BarPlayer.styles'
 
@@ -14,12 +20,10 @@ export const BarPlayer = ({
   volume,
   volumeChange,
   setProgress,
-  toggleShuffle,
-  isShuffle,
   audioElem,
   duration,
 }) => {
-  const track = useSelector(currentTrack)
+  const track = useSelector(currentTrackSelector)
 
   // клик по прогрессу для перемотки трека
   const clickRef = useRef()
@@ -33,7 +37,7 @@ export const BarPlayer = ({
   return (
     <S.Bar>
       <S.BarPlayerTime>
-        {formatTime(audioElem.current.currentTime)} /
+        {formatTime(audioElem.current?.currentTime)} /
         {formatTime(duration.length)}
       </S.BarPlayerTime>
       <S.BarContent>
@@ -44,10 +48,7 @@ export const BarPlayer = ({
         </S.BarPlayerProgress>
         <S.BarPlayerBlock>
           <S.BarPlayer>
-            <PlayerButtons
-              toggleShuffle={toggleShuffle}
-              isShuffle={isShuffle}
-            />
+            <PlayerButtons />
             <S.BarPlayerTrackPlay>
               <TrackPlay trackInPlayer={track} />
               <Likes />
@@ -63,9 +64,11 @@ export const BarPlayer = ({
 }
 
 // кнопки плеера
-const PlayerButtons = ({ toggleShuffle, isShuffle }) => {
-  const plauing = useSelector((state) => state.audioplayer.plauing)
-  const loop = useSelector((state) => state.audioplayer.loop)
+const PlayerButtons = () => {
+  const plauing = useSelector(isPlauingSelector)
+  const loop = useSelector(isLoopSelector)
+  const shuffled = useSelector(isShuffledSelector)
+
   const dispatch = useDispatch()
 
   return (
@@ -98,9 +101,12 @@ const PlayerButtons = ({ toggleShuffle, isShuffle }) => {
           <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
         </S.PlayerBtnRepeatSvg>
       </S.PlayerBtnRepeat>
-      <S.PlayerBtnShuffle onClick={toggleShuffle} className=" _btn-icon">
+      <S.PlayerBtnShuffle
+        onClick={() => dispatch(toggleShuffle())}
+        className=" _btn-icon"
+      >
         <S.PlayerBtnShuffleSvg
-          style={{ stroke: `${isShuffle ? '#ACACAC' : '#696969'}` }}
+          style={{ stroke: `${shuffled ? '#ACACAC' : '#696969'}` }}
           alt="shuffle"
         >
           <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />

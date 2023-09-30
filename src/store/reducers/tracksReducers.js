@@ -5,6 +5,7 @@ import {
   NEXT_TRACK,
   PREV_TRACK,
   REPEAT_PLAYLIST,
+  SHUFFLE_PLAYLIST,
 } from '../actions/types/tracks'
 
 const initialState = {
@@ -12,6 +13,8 @@ const initialState = {
   playlist: [],
   track: null,
   loop: false,
+  shuffled: false,
+  shuffledPlaylist: [],
 }
 
 export default function tracksReducer(state = initialState, action) {
@@ -86,6 +89,14 @@ export default function tracksReducer(state = initialState, action) {
       return {
         ...state,
         loop: !state.loop,
+      }
+    }
+
+    // перемешать треки в плейлисте
+    case SHUFFLE_PLAYLIST: {
+      return {
+        ...state,
+        shuffled: !state.shuffled,
       }
     }
 

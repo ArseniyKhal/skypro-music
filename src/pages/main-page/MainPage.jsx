@@ -4,6 +4,11 @@ import {
   addPlaylist,
   nextTrack,
 } from '../../store/actions/creators/tracksCreator'
+import {
+  isPlauingSelector,
+  playListSelector,
+  //   currentTrackSelector,
+} from '../../store/selectors/tracksSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
@@ -20,7 +25,7 @@ import * as S from '../../App.styles'
 // почему Dispatch загрузки плейлиста проиходит дважды при загрузке?
 
 export const Main = () => {
-  const playlist = useSelector((state) => state.audioplayer.playlist)
+  const playlist = useSelector(playListSelector)
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.5)
@@ -52,15 +57,9 @@ export const Main = () => {
   }, [])
 
   const audioElem = useRef(null)
-  const plauing = useSelector((state) => state.audioplayer.plauing)
+  const plauing = useSelector(isPlauingSelector)
   const trackInPleer = useSelector((state) => state.audioplayer.track)
-
-  // переключатель В Перемешку (не реализовано)
-  const [isShuffle, setIsShuffle] = useState(false)
-  const toggleShuffle = () => {
-    setIsShuffle(!isShuffle)
-    alert('еще не реализовано')
-  }
+  //   const trackInPleer = useSelector(currentTrackSelector)
 
   // добавление и автозапуск трека в плеере
   useEffect(() => {
@@ -102,6 +101,21 @@ export const Main = () => {
     audioElem.current.currentTime = pr
   }
 
+  // перемешиватель массива
+  //   function shuffle(myArray) {
+  //     let index
+  //     let valueIndex
+  //     for (let i = 0; i <= myArray.length - 1; i++) {
+  //       index = Math.floor(Math.random() * i)
+  //       valueIndex = myArray[index]
+  //       const myArr = myArray
+  //       myArr[index] = myArray[i]
+  //       myArr[i] = valueIndex
+  //     }
+
+  //     return myArray
+  //   }
+
   return (
     <>
       <audio
@@ -128,8 +142,6 @@ export const Main = () => {
           volume={volume}
           volumeChange={handleVolumeChange}
           setProgress={setProgress}
-          toggleShuffle={toggleShuffle}
-          isShuffle={isShuffle}
           audioElem={audioElem}
           duration={duration}
         />

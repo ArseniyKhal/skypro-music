@@ -4,5 +4,15 @@ const audioplayerSelector = (store) => store.audioplayer
 export const playListSelector = (store) =>
   audioplayerSelector(store)?.playlist || []
 
-// трек в плеере
-export const currentTrack = (store) => audioplayerSelector(store)?.track || {}
+// текущий трек в плеере
+export const currentTrackSelector = (store) =>
+  audioplayerSelector(store)?.track || {}
+
+// статус воспроизведения
+export const isPlauingSelector = (store) => audioplayerSelector(store).plauing
+
+// статус воспроизведения по кругу
+export const isLoopSelector = (store) => audioplayerSelector(store).loop
+
+// статус воспроизведения в перемешку
+export const isShuffledSelector = (store) => audioplayerSelector(store).shuffled

@@ -5,6 +5,7 @@ import {
   NEXT_TRACK,
   PREV_TRACK,
   REPEAT_PLAYLIST,
+  SHUFFLE_PLAYLIST,
 } from '../types/tracks'
 
 export const addPlaylist = (playlist) => ({
@@ -31,4 +32,8 @@ export const prevTrack = () => ({
 
 export const toggleRepeat = () => ({
   type: REPEAT_PLAYLIST,
+})
+
+export const toggleShuffle = () => ({
+  type: SHUFFLE_PLAYLIST,
 })
