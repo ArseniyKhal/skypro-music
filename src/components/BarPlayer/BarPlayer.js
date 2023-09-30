@@ -9,7 +9,6 @@ import {
 } from '../../store/selectors/tracksSelectors'
 import {
   nextTrack,
-  //   prevTrack,
   togglePause,
   toggleRepeat,
   toggleShuffle,
@@ -69,7 +68,6 @@ const PlayerButtons = ({ togglePrevTreck }) => {
   const plauing = useSelector(isPlauingSelector)
   const loop = useSelector(isLoopSelector)
   const shuffled = useSelector(isShuffledSelector)
-
   const dispatch = useDispatch()
 
   return (

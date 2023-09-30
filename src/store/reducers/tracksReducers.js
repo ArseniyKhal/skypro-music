@@ -8,8 +8,6 @@ import {
   SHUFFLE_PLAYLIST,
 } from '../actions/types/tracks'
 
-// import { isShuffledSelector } from '../selectors/tracksSelectors'
-
 const initialState = {
   plauing: false,
   playlist: [],
@@ -51,25 +49,31 @@ export default function tracksReducer(state = initialState, action) {
     // следующий трек
     case NEXT_TRACK: {
       const { id } = state.track
-      const indexCurrentTrack = state.playlist.findIndex(
+      let indexCurrentTrack = state.playlist.findIndex(
         (track) => track.id === id,
       )
+      if (state.shuffled) {
+        indexCurrentTrack = state.shuffledPlaylist.findIndex(
+          (track) => track.id === id,
+        )
+      }
       let indexNextTrack = indexCurrentTrack
       if (indexCurrentTrack < state.playlist.length - 1) {
         indexNextTrack += 1
+        console.log(indexCurrentTrack, indexNextTrack)
       }
       if (state.loop) {
         if (indexCurrentTrack === state.playlist.length - 1) {
           indexNextTrack = 0
         }
       }
-      let list = state.playlist[indexNextTrack]
+      let nextTrack = state.playlist[indexNextTrack]
       if (state.shuffled) {
-        list = state.shuffledPlaylist[indexNextTrack]
+        nextTrack = state.shuffledPlaylist[indexNextTrack]
       }
       return {
         ...state,
-        track: list,
+        track: nextTrack,
         plauing: true,
       }
     }
@@ -77,20 +81,25 @@ export default function tracksReducer(state = initialState, action) {
     // предыдущий трек
     case PREV_TRACK: {
       const { id } = state.track
-      const indexCurrentTrack = state.playlist.findIndex(
+      let indexCurrentTrack = state.playlist.findIndex(
         (track) => track.id === id,
       )
+      if (state.shuffled) {
+        indexCurrentTrack = state.shuffledPlaylist.findIndex(
+          (track) => track.id === id,
+        )
+      }
       let indexPrevTrack = indexCurrentTrack
       if (indexPrevTrack < state.playlist.length - 1 && indexPrevTrack > 0) {
         indexPrevTrack = indexCurrentTrack - 1
       }
-      let list = state.playlist[indexPrevTrack]
+      let prevTrack = state.playlist[indexPrevTrack]
       if (state.shuffled) {
-        list = state.shuffledPlaylist[indexPrevTrack]
+        prevTrack = state.shuffledPlaylist[indexPrevTrack]
       }
       return {
         ...state,
-        track: list,
+        track: prevTrack,
         plauing: true,
       }
     }
