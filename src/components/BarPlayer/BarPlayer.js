@@ -9,7 +9,7 @@ import {
 } from '../../store/selectors/tracksSelectors'
 import {
   nextTrack,
-  prevTrack,
+  //   prevTrack,
   togglePause,
   toggleRepeat,
   toggleShuffle,
@@ -22,6 +22,7 @@ export const BarPlayer = ({
   setProgress,
   audioElem,
   duration,
+  togglePrevTreck,
 }) => {
   const track = useSelector(currentTrackSelector)
 
@@ -48,7 +49,7 @@ export const BarPlayer = ({
         </S.BarPlayerProgress>
         <S.BarPlayerBlock>
           <S.BarPlayer>
-            <PlayerButtons />
+            <PlayerButtons togglePrevTreck={togglePrevTreck} />
             <S.BarPlayerTrackPlay>
               <TrackPlay trackInPlayer={track} />
               <Likes />
@@ -64,7 +65,7 @@ export const BarPlayer = ({
 }
 
 // кнопки плеера
-const PlayerButtons = () => {
+const PlayerButtons = ({ togglePrevTreck }) => {
   const plauing = useSelector(isPlauingSelector)
   const loop = useSelector(isLoopSelector)
   const shuffled = useSelector(isShuffledSelector)
@@ -73,7 +74,7 @@ const PlayerButtons = () => {
 
   return (
     <S.PlayerControls>
-      <S.PlayerBtnPrev onClick={() => dispatch(prevTrack())}>
+      <S.PlayerBtnPrev onClick={togglePrevTreck}>
         <S.PlayerBtnPrevSvg alt="prev">
           <use xlinkHref="img/icon/sprite.svg#icon-prev" />
         </S.PlayerBtnPrevSvg>

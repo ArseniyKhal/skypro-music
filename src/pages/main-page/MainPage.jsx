@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   addPlaylist,
   nextTrack,
+  //   is5SecToPlay,
+  prevTrack,
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
@@ -30,7 +32,11 @@ export const Main = () => {
   const [volume, setvolume] = useState(0.5)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [play5sec, setPlay5sec] = useState(false)
   const dispatch = useDispatch()
+  const audioElem = useRef(null)
+  const plauing = useSelector(isPlauingSelector)
+  const trackInPleer = useSelector(currentTrackSelector)
 
   // загрузка треков с API
   const fetchTracks = async () => {
@@ -54,10 +60,6 @@ export const Main = () => {
   useEffect(() => {
     fetchTracks()
   }, [])
-
-  const audioElem = useRef(null)
-  const plauing = useSelector(isPlauingSelector)
-  const trackInPleer = useSelector(currentTrackSelector)
 
   // добавление и автозапуск трека в плеере
   useEffect(() => {
@@ -86,17 +88,34 @@ export const Main = () => {
   const onPlaying = () => {
     const durationTime = audioElem.current.duration
     const ct = audioElem.current.currentTime
-    if (durationTime === ct) {
-      dispatch(nextTrack())
-    }
     setDuration({
       length: durationTime,
       progress: (ct / durationTime) * 100,
     })
+
+    // переходим на следующий трек, если этот закончился
+    if (durationTime === ct) {
+      dispatch(nextTrack())
+    }
+    // для 5сек-отметки
+    if (ct > 5) {
+      setPlay5sec(true)
+    } else {
+      setPlay5sec(false)
+    }
   }
   // перемотка
   const setProgress = (pr) => {
     audioElem.current.currentTime = pr
+  }
+
+  // если трек воспроизводится 5 сек, то PrevTreck переключит на начало песни
+  const togglePrevTreck = () => {
+    if (play5sec) {
+      setProgress(0)
+    } else {
+      dispatch(prevTrack())
+    }
   }
 
   return (
@@ -125,6 +144,7 @@ export const Main = () => {
           volume={volume}
           volumeChange={handleVolumeChange}
           setProgress={setProgress}
+          togglePrevTreck={togglePrevTreck}
           audioElem={audioElem}
           duration={duration}
         />
