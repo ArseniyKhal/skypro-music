@@ -7,7 +7,7 @@ import {
 import {
   isPlauingSelector,
   playListSelector,
-  //   currentTrackSelector,
+  currentTrackSelector,
 } from '../../store/selectors/tracksSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
@@ -58,8 +58,8 @@ export const Main = () => {
 
   const audioElem = useRef(null)
   const plauing = useSelector(isPlauingSelector)
-  const trackInPleer = useSelector((state) => state.audioplayer.track)
-  //   const trackInPleer = useSelector(currentTrackSelector)
+  //   const trackInPleer = useSelector((state) => state.audioplayer.track)
+  const trackInPleer = useSelector(currentTrackSelector)
 
   // добавление и автозапуск трека в плеере
   useEffect(() => {
