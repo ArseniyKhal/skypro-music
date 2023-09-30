@@ -8,6 +8,8 @@ import {
   SHUFFLE_PLAYLIST,
 } from '../actions/types/tracks'
 
+// import { isShuffledSelector } from '../selectors/tracksSelectors'
+
 const initialState = {
   plauing: false,
   playlist: [],
@@ -54,16 +56,20 @@ export default function tracksReducer(state = initialState, action) {
       )
       let indexNextTrack = indexCurrentTrack
       if (indexCurrentTrack < state.playlist.length - 1) {
-        indexNextTrack = indexCurrentTrack + 1
+        indexNextTrack += 1
       }
       if (state.loop) {
         if (indexCurrentTrack === state.playlist.length - 1) {
           indexNextTrack = 0
         }
       }
+      let list = state.playlist[indexNextTrack]
+      if (state.shuffled) {
+        list = state.shuffledPlaylist[indexNextTrack]
+      }
       return {
         ...state,
-        track: state.playlist[indexNextTrack],
+        track: list,
         plauing: true,
       }
     }
@@ -78,9 +84,13 @@ export default function tracksReducer(state = initialState, action) {
       if (indexPrevTrack < state.playlist.length - 1 && indexPrevTrack > 0) {
         indexPrevTrack = indexCurrentTrack - 1
       }
+      let list = state.playlist[indexPrevTrack]
+      if (state.shuffled) {
+        list = state.shuffledPlaylist[indexPrevTrack]
+      }
       return {
         ...state,
-        track: state.playlist[indexPrevTrack],
+        track: list,
         plauing: true,
       }
     }
@@ -98,6 +108,7 @@ export default function tracksReducer(state = initialState, action) {
       return {
         ...state,
         shuffled: !state.shuffled,
+        shuffledPlaylist: [...state.playlist].sort(() => 0.5 - Math.random()),
       }
     }
 
