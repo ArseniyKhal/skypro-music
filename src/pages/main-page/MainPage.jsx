@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   addPlaylist,
   nextTrack,
-  //   is5SecToPlay,
   prevTrack,
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
   playListSelector,
   currentTrackSelector,
+  isLoopSelector,
 } from '../../store/selectors/tracksSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
@@ -37,6 +37,7 @@ export const Main = () => {
   const audioElem = useRef(null)
   const plauing = useSelector(isPlauingSelector)
   const trackInPleer = useSelector(currentTrackSelector)
+  const isLoop = useSelector(isLoopSelector)
 
   // загрузка треков с API
   const fetchTracks = async () => {
@@ -127,6 +128,7 @@ export const Main = () => {
         onTimeUpdate={onPlaying}
         style={{ display: 'none' }}
         src={trackInPleer?.track_file}
+        loop={isLoop ? 'loop' : ''}
       >
         <track kind="captions" />
       </audio>
