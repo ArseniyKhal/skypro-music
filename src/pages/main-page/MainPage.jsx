@@ -1,4 +1,16 @@
 import { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  addPlaylist,
+  nextTrack,
+  prevTrack,
+} from '../../store/actions/creators/tracksCreator'
+import {
+  isPlauingSelector,
+  playListSelector,
+  currentTrackSelector,
+  isLoopSelector,
+} from '../../store/selectors/tracksSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
@@ -10,13 +22,22 @@ import * as S from '../../App.styles'
 // сделать правильное отображение времени трека в списке
 // сделать время на прогрессе при наведении
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
+// Как вызвать функцию при изменении store?
+// При обновлении страницы разлогинивается
 
 export const Main = () => {
+  const playlist = useSelector(playListSelector)
+
   // загрузка списка треков
-  const [playlistMusic, setPlaylistMusic] = useState([])
   const [volume, setvolume] = useState(0.5)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [play5sec, setPlay5sec] = useState(false)
+  const dispatch = useDispatch()
+  const audioElem = useRef(null)
+  const plauing = useSelector(isPlauingSelector)
+  const trackInPleer = useSelector(currentTrackSelector)
+  const isLoop = useSelector(isLoopSelector)
 
   // загрузка треков с API
   const fetchTracks = async () => {
@@ -24,7 +45,9 @@ export const Main = () => {
       setIsLoading(true)
       setGetPlaylistError('')
       const tracks = await getPlaylist()
-      setPlaylistMusic(tracks)
+      if (playlist) {
+        dispatch(addPlaylist(tracks))
+      }
     } catch (error) {
       console.error(error)
       setGetPlaylistError(
@@ -39,55 +62,21 @@ export const Main = () => {
     fetchTracks()
   }, [])
 
-  // воспроизводим трек
-  const [isPlaying, setIsPlaying] = useState(false)
-
-  const audioElem = useRef(null)
-
-  const handleStart = () => {
-    audioElem.current.play()
-    setIsPlaying(true)
-  }
-  const handleStop = () => {
-    audioElem.current.pause()
-    setIsPlaying(false)
-  }
-  const togglePlay = isPlaying ? handleStop : handleStart
-
-  const handleLoad = () => {
+  // добавление и автозапуск трека в плеере
+  useEffect(() => {
     audioElem.current.load()
-    togglePlay()
-  }
-  // предыдущий трек (не реализовано)
-  const handlePrev = () => {
-    alert('еще не реализовано')
-  }
-  // следующий трек (не реализовано)
-  const handleNext = () => {
-    alert('еще не реализовано')
-  }
-  // переключатель В Перемешку (не реализовано)
-  const [isShuffle, setIsShuffle] = useState(false)
-  const toggleShuffle = () => {
-    setIsShuffle(!isShuffle)
-    alert('еще не реализовано')
-  }
+  }, [trackInPleer])
 
-  // залупливание
-  const [isLoop, setIsLoop] = useState(false)
-  const toggleLoop = () => {
-    setIsLoop(!isLoop)
-  }
-
-  // добавление и запуск трека в плеере
-  const [trackInPlayer, setTrackInPlayer] = useState(null)
-  const [trackUrl, setTrackUrl] = useState(null)
-  const addTrackInPlayer = ({ trackFile, id }) => {
-    setTrackUrl(trackFile)
-    setTrackInPlayer(playlistMusic.filter((item) => item.id === id)[0])
-    handleLoad()
-    handleStart()
-  }
+  // обработчик кнопки ПАУЗА
+  useEffect(() => {
+    if (trackInPleer) {
+      if (plauing) {
+        audioElem.current.play()
+      } else {
+        audioElem.current.pause()
+      }
+    }
+  }, [plauing])
 
   // громкость
   const handleVolumeChange = (newVolume) => {
@@ -96,59 +85,70 @@ export const Main = () => {
   }
 
   // полоска прогресса трека
+  const [duration, setDuration] = useState({})
   const onPlaying = () => {
     const durationTime = audioElem.current.duration
     const ct = audioElem.current.currentTime
-    setTrackInPlayer({
-      ...trackInPlayer,
-      progress: (ct / durationTime) * 100,
+    setDuration({
       length: durationTime,
+      progress: (ct / durationTime) * 100,
     })
-  }
 
+    // переходим на следующий трек, если этот закончился
+    if (durationTime === ct) {
+      dispatch(nextTrack())
+    }
+    // для 5сек-отметки
+    if (ct > 5) {
+      setPlay5sec(true)
+    } else {
+      setPlay5sec(false)
+    }
+  }
   // перемотка
   const setProgress = (pr) => {
     audioElem.current.currentTime = pr
   }
 
+  // если трек воспроизводится 5 сек, то PrevTreck переключит на начало песни
+  const togglePrevTreck = () => {
+    if (play5sec) {
+      setProgress(0)
+    } else {
+      dispatch(prevTrack())
+    }
+  }
+
   return (
     <>
       <audio
+        autoPlay
         controls
         ref={audioElem}
         onTimeUpdate={onPlaying}
         style={{ display: 'none' }}
-        loop={`${isLoop ? 'loop' : ''}`}
+        src={trackInPleer?.track_file}
+        loop={isLoop ? 'loop' : ''}
       >
-        <source src={trackUrl} type="audio/mpeg" />
-        <track kind="captions" src={trackUrl} />
+        <track kind="captions" />
       </audio>
 
       <S.Main>
         <NavMenu />
         <Centerblock
           isLoading={isLoading}
-          playlistMusic={playlistMusic}
-          addTrackInPlayer={addTrackInPlayer}
           getPlaylistError={getPlaylistError}
         />
         <Sidebar isLoading={isLoading} />
       </S.Main>
-      {trackInPlayer && (
+      {trackInPleer && (
         <BarPlayer
-          trackInPlayer={trackInPlayer}
-          isPlaying={isPlaying}
-          togglePlay={togglePlay}
-          toggleLoop={toggleLoop}
-          handlePrev={handlePrev}
-          handleNext={handleNext}
           volume={volume}
           volumeChange={handleVolumeChange}
           setProgress={setProgress}
-          isLoop={isLoop}
-          toggleShuffle={toggleShuffle}
-          isShuffle={isShuffle}
+          togglePrevTreck={togglePrevTreck}
           audioElem={audioElem}
+          duration={duration}
         />
       )}
       <footer />

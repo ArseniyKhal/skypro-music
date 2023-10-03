@@ -1,58 +1,56 @@
 import { useRef, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { formatTime } from '../Centerblock/Centerblock'
+import {
+  currentTrackSelector,
+  isPlauingSelector,
+  isLoopSelector,
+  isShuffledSelector,
+} from '../../store/selectors/tracksSelectors'
+import {
+  nextTrack,
+  togglePause,
+  toggleRepeat,
+  toggleShuffle,
+} from '../../store/actions/creators/tracksCreator'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = ({
-  trackInPlayer,
-  isPlaying,
-  togglePlay,
-  handlePrev,
-  handleNext,
-  toggleLoop,
   volume,
   volumeChange,
   setProgress,
-  isLoop,
-  toggleShuffle,
-  isShuffle,
   audioElem,
+  duration,
+  togglePrevTreck,
 }) => {
+  const track = useSelector(currentTrackSelector)
+
   // клик по прогрессу для перемотки трека
   const clickRef = useRef()
   const checkWidth = (e) => {
     const width = clickRef.current.clientWidth
     const offset = e.nativeEvent.offsetX
     const divProgress = (offset / width) * 100
-    setProgress((divProgress / 100) * trackInPlayer.length)
+    setProgress((divProgress / 100) * duration.length)
   }
 
   return (
     <S.Bar>
       <S.BarPlayerTime>
-        {formatTime(audioElem.current.currentTime)} /
-        {formatTime(trackInPlayer.length)}
+        {formatTime(audioElem.current?.currentTime)} /
+        {formatTime(duration.length)}
       </S.BarPlayerTime>
       <S.BarContent>
         <S.BarPlayerProgress onClick={checkWidth} ref={clickRef}>
           <S.BarPlayerProgressInside
-            style={{ width: `${trackInPlayer.progress}%` }}
+            style={{ width: `${duration.progress}%` }}
           />
         </S.BarPlayerProgress>
         <S.BarPlayerBlock>
           <S.BarPlayer>
-            <PlayerButtons
-              trackInPlayer={trackInPlayer}
-              isPlaying={isPlaying}
-              togglePlay={togglePlay}
-              handlePrev={handlePrev}
-              handleNext={handleNext}
-              toggleLoop={toggleLoop}
-              isLoop={isLoop}
-              toggleShuffle={toggleShuffle}
-              isShuffle={isShuffle}
-            />
+            <PlayerButtons togglePrevTreck={togglePrevTreck} />
             <S.BarPlayerTrackPlay>
-              <TrackPlay trackInPlayer={trackInPlayer} />
+              <TrackPlay trackInPlayer={track} />
               <Likes />
             </S.BarPlayerTrackPlay>
           </S.BarPlayer>
@@ -65,52 +63,57 @@ export const BarPlayer = ({
   )
 }
 
-const PlayerButtons = ({
-  isPlaying,
-  togglePlay,
-  handlePrev,
-  handleNext,
-  toggleLoop,
-  isLoop,
-  toggleShuffle,
-  isShuffle,
-}) => (
-  <S.PlayerControls>
-    <S.PlayerBtnPrev onClick={handlePrev}>
-      <S.PlayerBtnPrevSvg alt="prev">
-        <use xlinkHref="img/icon/sprite.svg#icon-prev" />
-      </S.PlayerBtnPrevSvg>
-    </S.PlayerBtnPrev>
-    <S.PlayerBtnPlay onClick={togglePlay}>
-      <S.PlayerBtnPlaySvg alt="play">
-        <use
-          xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'play'}`}
-        />
-      </S.PlayerBtnPlaySvg>
-    </S.PlayerBtnPlay>
-    <S.PlayerBtnNext onClick={handleNext}>
-      <S.PlayerBtnNextSvg alt="next">
-        <use xlinkHref="img/icon/sprite.svg#icon-next" />
-      </S.PlayerBtnNextSvg>
-    </S.PlayerBtnNext>
-    <S.PlayerBtnRepeat onClick={toggleLoop} className=" _btn-icon">
-      <S.PlayerBtnRepeatSvg
-        style={{ stroke: `${isLoop ? '#ACACAC' : '#696969'}` }}
-        alt="repeat"
+// кнопки плеера
+const PlayerButtons = ({ togglePrevTreck }) => {
+  const plauing = useSelector(isPlauingSelector)
+  const loop = useSelector(isLoopSelector)
+  const shuffled = useSelector(isShuffledSelector)
+  const dispatch = useDispatch()
+
+  return (
+    <S.PlayerControls>
+      <S.PlayerBtnPrev onClick={togglePrevTreck}>
+        <S.PlayerBtnPrevSvg alt="prev">
+          <use xlinkHref="img/icon/sprite.svg#icon-prev" />
+        </S.PlayerBtnPrevSvg>
+      </S.PlayerBtnPrev>
+      <S.PlayerBtnPlay onClick={() => dispatch(togglePause())}>
+        <S.PlayerBtnPlaySvg alt="play">
+          <use
+            xlinkHref={`img/icon/sprite.svg#icon-${plauing ? 'pause' : 'play'}`}
+          />
+        </S.PlayerBtnPlaySvg>
+      </S.PlayerBtnPlay>
+      <S.PlayerBtnNext onClick={() => dispatch(nextTrack())}>
+        <S.PlayerBtnNextSvg alt="next">
+          <use xlinkHref="img/icon/sprite.svg#icon-next" />
+        </S.PlayerBtnNextSvg>
+      </S.PlayerBtnNext>
+      <S.PlayerBtnRepeat
+        onClick={() => dispatch(toggleRepeat())}
+        className=" _btn-icon"
       >
-        <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
-      </S.PlayerBtnRepeatSvg>
-    </S.PlayerBtnRepeat>
-    <S.PlayerBtnShuffle onClick={toggleShuffle} className=" _btn-icon">
-      <S.PlayerBtnShuffleSvg
-        style={{ stroke: `${isShuffle ? '#ACACAC' : '#696969'}` }}
-        alt="shuffle"
+        <S.PlayerBtnRepeatSvg
+          style={{ stroke: `${loop ? '#ACACAC' : '#696969'}` }}
+          alt="repeat"
+        >
+          <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
+        </S.PlayerBtnRepeatSvg>
+      </S.PlayerBtnRepeat>
+      <S.PlayerBtnShuffle
+        onClick={() => dispatch(toggleShuffle())}
+        className=" _btn-icon"
       >
-        <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
-      </S.PlayerBtnShuffleSvg>
-    </S.PlayerBtnShuffle>
-  </S.PlayerControls>
-)
+        <S.PlayerBtnShuffleSvg
+          style={{ stroke: `${shuffled ? '#ACACAC' : '#696969'}` }}
+          alt="shuffle"
+        >
+          <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+        </S.PlayerBtnShuffleSvg>
+      </S.PlayerBtnShuffle>
+    </S.PlayerControls>
+  )
+}
 
 const TrackPlay = ({ trackInPlayer }) => (
   <S.TrackPlayContain>

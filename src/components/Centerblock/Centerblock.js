@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 import * as S from './Centerblock.styles'
 
 // форматер времени трека
@@ -21,24 +23,22 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 
-export const Centerblock = ({
-  isLoading,
-  addTrackInPlayer,
-  playlistMusic,
-  getPlaylistError,
-}) => (
-  <S.MainCenterblock>
-    <Search />
-    <S.CenterblockH2>Треки</S.CenterblockH2>
-    <MusicFilter isLoading={isLoading} playlistMusic={playlistMusic} />
-    <Playlist
-      isLoading={isLoading}
-      playlistMusic={playlistMusic}
-      addTrackInPlayer={addTrackInPlayer}
-      getPlaylistError={getPlaylistError}
-    />
-  </S.MainCenterblock>
-)
+export const Centerblock = ({ isLoading, getPlaylistError }) => {
+  const tracks = useSelector((state) => state.audioplayer.playlist)
+
+  return (
+    <S.MainCenterblock>
+      <Search />
+      <S.CenterblockH2>Треки</S.CenterblockH2>
+      <MusicFilter isLoading={isLoading} playlistMusic={tracks} />
+      <Playlist
+        isLoading={isLoading}
+        getPlaylistError={getPlaylistError}
+        playlistMusic={tracks}
+      />
+    </S.MainCenterblock>
+  )
+}
 
 const Search = () => (
   <S.CenterblockSearch>
@@ -115,12 +115,9 @@ const MusicFilterItem = ({
   </S.FilterItem>
 )
 
-const Playlist = ({
-  isLoading,
-  addTrackInPlayer,
-  playlistMusic,
-  getPlaylistError,
-}) => {
+const Playlist = ({ isLoading, getPlaylistError, playlistMusic }) => {
+  const plauing = useSelector((state) => state.audioplayer.plauing)
+
   const mapTracks =
     playlistMusic.length > 0 ? (
       playlistMusic.map((track) => (
@@ -136,10 +133,9 @@ const Playlist = ({
           year={track.release_date}
           trackFile={track.track_file}
           isLoading={isLoading}
-          playlistMusic={playlistMusic}
-          // trackTitleSpan не используется
+          // trackTitleSpan не используется в API, а в разметке есть
           trackTitleSpan={track.soName}
-          addTrackInPlayer={addTrackInPlayer}
+          plauing={plauing}
         />
       ))
     ) : (
@@ -190,43 +186,60 @@ const Track = ({
   trackTime,
   trackTitleSpan,
   isLoading,
-  addTrackInPlayer,
-  trackFile,
   id,
-}) => (
-  <S.Track onClick={() => addTrackInPlayer({ trackFile, id })}>
-    {/* <S.Track onClick={() => console.log(UserData)}> */}
-    <S.PlaylistTrack>
-      <S.TrackTitle>
-        <S.TrackTitleImage>
-          <S.TrackTitleSvg alt="music">
-            <use xlinkHref={logo} />
-          </S.TrackTitleSvg>
+  plauing,
+}) => {
+  // логика отображения фиолетового шара на обложке при восроизведении
+  const trackInPleer = useSelector((state) => state.audioplayer.track)
+  let visibolbubbleOut = false
+  if (trackInPleer) {
+    if (trackInPleer.id === id) {
+      visibolbubbleOut = true
+    }
+  }
+
+  const dispatch = useDispatch()
+  return (
+    <S.Track onClick={() => dispatch(setCurrentTrack({ id }))}>
+      <S.PlaylistTrack>
+        <S.TrackTitle>
+          <S.TrackTitleImage>
+            <S.TrackTitleSvg alt="music">
+              <use xlinkHref={logo} />
+            </S.TrackTitleSvg>
+            {visibolbubbleOut && (
+              <S.bubbleOut
+                style={{
+                  animationDuration: `${plauing ? '0.8s' : '0s'}`,
+                }}
+              />
+            )}
+            {isLoading && <div className="skeleton" />}
+          </S.TrackTitleImage>
+          <S.TrackTitleText>
+            {isLoading && <div className="skeleton" />}
+            <S.TrackTitleLink href="http://">
+              {name}
+              <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
+            </S.TrackTitleLink>
+          </S.TrackTitleText>
+        </S.TrackTitle>
+        <S.TrackAuthor>
+          <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
           {isLoading && <div className="skeleton" />}
-        </S.TrackTitleImage>
-        <S.TrackTitleText>
+        </S.TrackAuthor>
+        <S.TrackAlbum>
+          <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
           {isLoading && <div className="skeleton" />}
-          <S.TrackTitleLink href="http://">
-            {name}
-            <S.TrackTimeSpan>{trackTitleSpan}</S.TrackTimeSpan>
-          </S.TrackTitleLink>
-        </S.TrackTitleText>
-      </S.TrackTitle>
-      <S.TrackAuthor>
-        <S.TrackAuthorLink href="http://">{author}</S.TrackAuthorLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackAuthor>
-      <S.TrackAlbum>
-        <S.TrackAlbumLink href="http://">{album}</S.TrackAlbumLink>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackAlbum>
-      <S.TrackTime>
-        <S.TrackTimeSvg alt="time">
-          <use xlinkHref="img/icon/sprite.svg#icon-like" />
-        </S.TrackTimeSvg>
-        <S.TrackTimeText>{trackTime}</S.TrackTimeText>
-        {isLoading && <div className="skeleton" />}
-      </S.TrackTime>
-    </S.PlaylistTrack>
-  </S.Track>
-)
+        </S.TrackAlbum>
+        <S.TrackTime>
+          <S.TrackTimeSvg alt="time">
+            <use xlinkHref="img/icon/sprite.svg#icon-like" />
+          </S.TrackTimeSvg>
+          <S.TrackTimeText>{trackTime}</S.TrackTimeText>
+          {isLoading && <div className="skeleton" />}
+        </S.TrackTime>
+      </S.PlaylistTrack>
+    </S.Track>
+  )
+}
