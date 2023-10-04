@@ -22,14 +22,15 @@ import * as S from '../../App.styles'
 // сделать правильное отображение времени трека в списке
 // сделать время на прогрессе при наведении
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
-// Как вызвать функцию при изменении store?
 // При обновлении страницы разлогинивается
+// нет скелетонов на плейлисте
+// не правильно отображение фильтра по дате
 
 export const Main = () => {
   const playlist = useSelector(playListSelector)
 
   // загрузка списка треков
-  const [volume, setvolume] = useState(0.5)
+  const [volume, setvolume] = useState(0.3)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [play5sec, setPlay5sec] = useState(false)

@@ -1,7 +1,6 @@
-import * as S from '../../App.styles'
+import { Playlist } from '../../components/Playlist/Playlist'
+// import * as S from '../../App.styles'
 
 export const Favorites = () => (
-  <S.CenterBlock>
-    <h1>Favorites Page</h1>
-  </S.CenterBlock>
+  <Playlist>{/* <h1>Favorites Page</h1> */}</Playlist>
 )

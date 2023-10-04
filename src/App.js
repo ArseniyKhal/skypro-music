@@ -43,15 +43,13 @@ export default function App() {
   return (
     <>
       <S.GlobalStyle />
-      <div className="App">
-        <S.Wrapper>
-          <S.Container>
-            <UserContext.Provider value={сontextValue}>
-              <AppRoutes />
-            </UserContext.Provider>
-          </S.Container>
-        </S.Wrapper>
-      </div>
+      <S.Wrapper>
+        <S.Container>
+          <UserContext.Provider value={сontextValue}>
+            <AppRoutes />
+          </UserContext.Provider>
+        </S.Container>
+      </S.Wrapper>
     </>
   )
 }

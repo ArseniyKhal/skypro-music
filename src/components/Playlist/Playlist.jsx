@@ -1,7 +1,8 @@
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
-import * as S from './Centerblock.styles'
+import { playListShuffleSelector } from '../../store/selectors/tracksSelectors'
+import * as S from './Playlist.styles'
 
 // форматер времени трека
 export const formatTime = (t) => {
@@ -23,101 +24,27 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 
-export const Centerblock = ({ isLoading, getPlaylistError }) => {
-  const tracks = useSelector((state) => state.audioplayer.playlist)
+export const Playlist = ({ isLoading, getPlaylistError }) => {
+  const playListShuffle = useSelector(playListShuffleSelector)
 
-  return (
-    <S.MainCenterblock>
-      <Search />
-      <S.CenterblockH2>Треки</S.CenterblockH2>
-      <MusicFilter isLoading={isLoading} playlistMusic={tracks} />
-      <Playlist
-        isLoading={isLoading}
-        getPlaylistError={getPlaylistError}
-        playlistMusic={tracks}
-      />
-    </S.MainCenterblock>
-  )
-}
-
-const Search = () => (
-  <S.CenterblockSearch>
-    <S.SearchSvg>
-      <use xlinkHref="img/icon/sprite.svg#icon-search" />
-    </S.SearchSvg>
-    <S.SearchText type="search" placeholder="Поиск" name="search" />
-  </S.CenterblockSearch>
-)
-
-const MusicFilter = ({ isLoading, playlistMusic }) => {
-  const [visibleFilter, setvisibleFilter] = useState(null)
-  const toggleVisibleFilter = (filter) => {
-    setvisibleFilter(visibleFilter === filter ? null : filter)
-  }
-  return (
-    <S.CenterblockFilter>
-      <S.FilterTitle>Искать по:</S.FilterTitle>
-      <MusicFilterItem
-        title="исполнителю"
-        filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.author)),
-        )}
-        visibleFilter={visibleFilter}
-        toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
-      />
-      <MusicFilterItem
-        title="году выпуска"
-        filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.year)),
-        )}
-        visibleFilter={visibleFilter}
-        toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
-      />
-      <MusicFilterItem
-        title="жанру"
-        filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.genre)),
-        )}
-        visibleFilter={visibleFilter}
-        toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
-      />
-    </S.CenterblockFilter>
-  )
-}
-
-const MusicFilterItem = ({
-  toggleVisibleFilter,
-  title,
-  visibleFilter,
-  filterList,
-  isLoading,
-}) => (
-  <S.FilterItem
-    onClick={() => toggleVisibleFilter(title)}
-    disabled={{ isLoading }}
-    style={{ pointerEvents: isLoading && 'none' }}
-  >
-    <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
-    {visibleFilter === title && (
-      <S.FilterMenu>
-        <S.FilterContent>
-          <S.FilterList>
-            {filterList.map((track) => (
-              <S.FilterText key={track}>{track}</S.FilterText>
-            ))}
-          </S.FilterList>
-        </S.FilterContent>
-      </S.FilterMenu>
-    )}
-  </S.FilterItem>
-)
-
-const Playlist = ({ isLoading, getPlaylistError, playlistMusic }) => {
+  const { pathname } = useLocation()
+  let playlistMusic = useSelector((state) => state.audioplayer.playlist)
   const plauing = useSelector((state) => state.audioplayer.plauing)
+  let title = ''
 
+  if (pathname === '/favorites') {
+    playlistMusic = playListShuffle
+    title = 'Мои треки'
+  } else if (pathname === '/category/1') {
+    title = 'Плейлист дня'
+  } else if (pathname === '/category/2') {
+    title = '100 танцевальных хитов'
+  } else if (pathname === '/category/3') {
+    title = 'Инди-заряд'
+  } else {
+    title = 'Треки'
+  }
+  console.log(title)
   const mapTracks =
     playlistMusic.length > 0 ? (
       playlistMusic.map((track) => (
@@ -167,7 +94,7 @@ const Playlist = ({ isLoading, getPlaylistError, playlistMusic }) => {
 
 const PlaylistTitle = () => (
   <S.ContentTitle>
-    <S.PlaylistTitleCol1>Трек</S.PlaylistTitleCol1>
+    <S.PlaylistTitleCol1>ТРЕК</S.PlaylistTitleCol1>
     <S.PlaylistTitleCol2>ИСПОЛНИТЕЛЬ</S.PlaylistTitleCol2>
     <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
     <S.PlaylistTitleCol4>

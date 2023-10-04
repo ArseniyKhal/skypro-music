@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { formatTime } from '../Centerblock/Centerblock'
+import { formatTime } from '../Playlist/Playlist'
 import {
   currentTrackSelector,
   isPlauingSelector,
@@ -121,7 +121,7 @@ const TrackPlay = ({ trackInPlayer }) => (
       <S.TrackPlaySvg alt="music">
         <use
           xlinkHref={
-            trackInPlayer.logo
+            trackInPlayer?.logo
               ? trackInPlayer.logo
               : 'img/icon/sprite.svg#icon-note'
           }
@@ -130,12 +130,12 @@ const TrackPlay = ({ trackInPlayer }) => (
     </S.TrackPlayImage>
     <S.TrackPlayAuthor>
       <S.TrackPlayAuthorLink href="http://">
-        {trackInPlayer.author}
+        {trackInPlayer?.author}
       </S.TrackPlayAuthorLink>
     </S.TrackPlayAuthor>
     <S.TrackPlayAlbum>
       <S.TrackPlayAlbumLink href="http://">
-        {trackInPlayer.name}
+        {trackInPlayer?.name}
       </S.TrackPlayAlbumLink>
     </S.TrackPlayAlbum>
   </S.TrackPlayContain>

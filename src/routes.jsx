@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { NotFound } from './pages/not-found-page/NotFound'
 import { Main } from './pages/main-page/MainPage'
+import { Playlist } from './components/Playlist/Playlist'
 import { Login } from './pages/login-page/Login'
 import { Register } from './pages/register-page/Register'
 import { Favorites } from './pages/favorites-page/Favorites'
@@ -10,31 +11,32 @@ import { ProtectedRoute } from './components/protected-route/protectedRoute'
 export function AppRoutes() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Main />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/favorites"
-        element={
-          <ProtectedRoute>
-            <Favorites />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/category/:id"
-        element={
-          <ProtectedRoute>
-            <Category />
-          </ProtectedRoute>
-        }
-      />
-
+      <Route path="/" element={<Main />}>
+        <Route
+          path=""
+          element={
+            <ProtectedRoute>
+              <Playlist />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="favorites"
+          element={
+            <ProtectedRoute>
+              <Favorites />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="category/:id"
+          element={
+            <ProtectedRoute>
+              <Category />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="*" element={<NotFound />} />
