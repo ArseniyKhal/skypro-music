@@ -6,10 +6,10 @@ export const tracksApi = createApi({
     baseUrl: 'https://skypro-music-api.skyeng.tech/catalog/track/',
   }),
   endpoints: (builder) => ({
-    getPlaylist: builder.query({
+    getTracks: builder.query({
       query: () => 'all/',
     }),
   }),
 })
 
-export const { useGetPlaylistQuery } = tracksApi
+export const { useGetTracksQuery } = tracksApi

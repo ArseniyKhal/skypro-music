@@ -7,6 +7,7 @@ import {
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
   IS_LOADING,
+  SET_TOKEN,
 } from '../actions/types/tracks'
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   shuffled: false,
   shuffledPlaylist: [],
   isLoading: false,
+  tokens: {},
 }
 
 export default function tracksReducer(state = initialState, action) {
@@ -103,6 +105,15 @@ export default function tracksReducer(state = initialState, action) {
       return {
         ...state,
         isLoading,
+      }
+    }
+
+    // получаем токены и записываем в state
+    case SET_TOKEN: {
+      const { tokens } = action.payload
+      return {
+        ...state,
+        tokens,
       }
     }
 

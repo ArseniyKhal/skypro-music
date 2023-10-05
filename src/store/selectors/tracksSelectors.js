@@ -21,3 +21,7 @@ export const isShuffledSelector = (store) => audioplayerSelector(store).shuffled
 
 // статус загрузки данных из API
 export const isLoadingSelector = (store) => audioplayerSelector(store).isLoading
+
+// Access токен
+export const accessTokenSelector = (store) =>
+  audioplayerSelector(store).tokens.access

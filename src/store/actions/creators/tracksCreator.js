@@ -7,6 +7,7 @@ import {
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
   IS_LOADING,
+  SET_TOKEN,
 } from '../types/tracks'
 
 export const addPlaylist = (playlist) => ({
@@ -42,4 +43,9 @@ export const toggleShuffle = () => ({
 export const isLoadingData = (isLoading) => ({
   type: IS_LOADING,
   payload: { isLoading },
+})
+
+export const setToken = (tokens) => ({
+  type: SET_TOKEN,
+  payload: { tokens },
 })

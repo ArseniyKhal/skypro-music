@@ -3,7 +3,12 @@ import { useLocation } from 'react-router-dom'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 // import { playListShuffleSelector } from '../../store/selectors/tracksSelectors'
 import { dataPlayList } from '../../data'
-import { isLoadingSelector } from '../../store/selectors/tracksSelectors'
+import {
+  isLoadingSelector,
+  accessTokenSelector,
+} from '../../store/selectors/tracksSelectors'
+import { getFavoriteList } from '../../api'
+import { useGetTracksQuery } from '../../services/servicesApi'
 import * as S from './Playlist.styles'
 
 // форматер времени трека
@@ -26,13 +31,21 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 export const Playlist = ({ getPlaylistError }) => {
-  let playlistMusic = useSelector((state) => state.audioplayer.playlist)
+  //   let playlistMusic = useSelector((state) => state.audioplayer.playlist)
   const plauing = useSelector((state) => state.audioplayer.plauing)
   const isLoading = useSelector(isLoadingSelector)
+  const accessToken = useSelector(accessTokenSelector)
   const { pathname } = useLocation()
 
+  let playlistMusic = useGetTracksQuery().data
+  let favoritesTracks = dataPlayList
+  const fetchFavoritesTracks = async () => {
+    favoritesTracks = await getFavoriteList(accessToken)
+  }
+
   if (pathname === '/favorites') {
-    playlistMusic = dataPlayList
+    fetchFavoritesTracks()
+    playlistMusic = favoritesTracks
   }
 
   const mapTracks =

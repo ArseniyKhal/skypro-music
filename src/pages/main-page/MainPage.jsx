@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useGetPlaylistQuery } from '../../services/servicesApi'
+import { useGetTracksQuery } from '../../services/servicesApi'
 import {
   addPlaylist,
   nextTrack,
   prevTrack,
   isLoadingData,
+  setToken,
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
@@ -17,7 +18,10 @@ import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
-import { getPlaylist } from '../../api'
+import {
+  // getPlaylist,
+  getToken,
+} from '../../api'
 import * as S from '../../App.styles'
 
 // Задачи:
@@ -32,7 +36,7 @@ export const Main = () => {
   const {
     data,
     // error, isLoading
-  } = useGetPlaylistQuery()
+  } = useGetTracksQuery()
   const playlist = data
 
   // загрузка списка треков
@@ -45,15 +49,25 @@ export const Main = () => {
   const trackInPleer = useSelector(currentTrackSelector)
   const isLoop = useSelector(isLoopSelector)
 
+  const GetToken = async () => {
+    await getToken()
+      .then((response) => response.json())
+      .then((tokens) => {
+        dispatch(setToken(tokens))
+        dispatch(addPlaylist(playlist))
+      })
+  }
+
   // загрузка треков с API
   const fetchTracks = async () => {
     try {
       dispatch(isLoadingData(true))
-
       setGetPlaylistError('')
-      const tracks = await getPlaylist()
+      // const tracks = await getPlaylist()
+      // console.log(tracks)
       if (playlist) {
-        dispatch(addPlaylist(tracks))
+        //   dispatch(addPlaylist(tracks))
+        GetToken()
       }
     } catch (error) {
       console.error(error)
