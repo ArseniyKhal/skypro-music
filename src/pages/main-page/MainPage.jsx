@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useGetPlaylistQuery } from '../../services/servicesApi'
+import { useGetPlaylistQuery } from '../../services/servicesApi'
 import {
   addPlaylist,
   nextTrack,
@@ -9,10 +9,9 @@ import {
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
-  playListSelector,
+  //   playListSelector,
   currentTrackSelector,
   isLoopSelector,
-  //   isLoadingSelector,
 } from '../../store/selectors/tracksSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
@@ -26,30 +25,29 @@ import * as S from '../../App.styles'
 // сделать время на прогрессе при наведении
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
 // При обновлении страницы разлогинивается
-// нет скелетонов на плейлисте
+// отладить адаптивность
 // не правильно отображение фильтра по дате
 
 export const Main = () => {
-  // const { data, error, isLoading } = useGetAllTodosQuery();
-
-  const playlist = useSelector(playListSelector)
+  const {
+    data,
+    // error, isLoading
+  } = useGetPlaylistQuery()
+  const playlist = data
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.3)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
-  //   const [isLoading, setIsLoading] = useState(true)
   const [play5sec, setPlay5sec] = useState(false)
   const dispatch = useDispatch()
   const audioElem = useRef(null)
   const plauing = useSelector(isPlauingSelector)
   const trackInPleer = useSelector(currentTrackSelector)
   const isLoop = useSelector(isLoopSelector)
-  //   const isLoading = useSelector(isLoadingSelector)
 
   // загрузка треков с API
   const fetchTracks = async () => {
     try {
-      // setIsLoading(true)
       dispatch(isLoadingData(true))
 
       setGetPlaylistError('')
@@ -63,7 +61,6 @@ export const Main = () => {
         `Не удалось загрузить плейлист, попробуйте позже. Ошибка: ${error.message}`,
       )
     } finally {
-      // setIsLoading(false)
       dispatch(isLoadingData(false))
     }
   }
@@ -158,7 +155,6 @@ export const Main = () => {
           duration={duration}
         />
       )}
-      {/* <footer /> */}
     </>
   )
 }
