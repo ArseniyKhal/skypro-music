@@ -6,6 +6,7 @@ import {
   PREV_TRACK,
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
+  IS_LOADING,
 } from '../actions/types/tracks'
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   loop: false,
   shuffled: false,
   shuffledPlaylist: [],
+  isLoading: false,
 }
 
 export default function tracksReducer(state = initialState, action) {
@@ -30,10 +32,10 @@ export default function tracksReducer(state = initialState, action) {
 
     // загрузка трека в плеер
     case SET_CURRENT_TRACK: {
-      const { id } = action.payload
+      const { track } = action.payload
       return {
         ...state,
-        track: state.playlist.filter((item) => item.id === id)[0],
+        track,
         plauing: true,
       }
     }
@@ -92,6 +94,15 @@ export default function tracksReducer(state = initialState, action) {
         ...state,
         shuffled: !state.shuffled,
         shuffledPlaylist: [...state.playlist].sort(() => 0.5 - Math.random()),
+      }
+    }
+
+    // статус загрузки данных из API
+    case IS_LOADING: {
+      const { isLoading } = action.payload
+      return {
+        ...state,
+        isLoading,
       }
     }
 

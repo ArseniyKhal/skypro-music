@@ -1,6 +1,9 @@
+import { useSelector } from 'react-redux'
 import { Playlist } from '../../components/Playlist/Playlist'
-// import * as S from '../../App.styles'
+import { isLoadingSelector } from '../../store/selectors/tracksSelectors'
 
-export const Favorites = () => (
-  <Playlist>{/* <h1>Favorites Page</h1> */}</Playlist>
-)
+export const Favorites = () => {
+  const isLoading = useSelector(isLoadingSelector)
+
+  return isLoading ? <h3>Загрузка</h3> : <Playlist />
+}

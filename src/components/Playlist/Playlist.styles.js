@@ -102,7 +102,8 @@ export const TrackTitle = styled.div`
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 447px;
+  max-width: 447px;
+  min-width: 400px;
 `
 export const TrackTitleImage = styled.div`
   width: 51px;
@@ -228,4 +229,13 @@ export const bubbleOut = styled.div`
   position: absolute;
   animation: ${bubbleOutKF} ease-in-out infinite both;
   animation-duration: 0.8s;
+`
+
+export const Skeleton = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #313131;
+  position: absolute;
+  top: 0;
+  left: 0;
 `

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import UserContext from '../../context'
+import { isLoadingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Sidebar.styles'
 
-export const Sidebar = ({ isLoading }) => {
+export const Sidebar = () => {
   const { logOutUser, userDate } = useContext(UserContext)
 
   return (
@@ -26,19 +28,16 @@ export const Sidebar = ({ isLoading }) => {
           <SidebarItem
             imgUrl="img/playlist01.png"
             imgAlt={"day's playlist"}
-            isLoading={isLoading}
             id={1}
           />
           <SidebarItem
             imgUrl="img/playlist02.png"
             imgAlt={"day's playlist"}
-            isLoading={isLoading}
             id={2}
           />
           <SidebarItem
             imgUrl="img/playlist03.png"
             imgAlt={"day's playlist"}
-            isLoading={isLoading}
             id={3}
           />
         </S.SidebarList>
@@ -47,11 +46,14 @@ export const Sidebar = ({ isLoading }) => {
   )
 }
 
-const SidebarItem = ({ imgUrl, imgAlt, isLoading, id }) => (
-  <S.SidebarItem>
-    <Link to={`/category/${id}`}>
-      <S.SidebarImg src={imgUrl} alt={imgAlt} />
-    </Link>
-    {isLoading && <div className="skeleton" />}
-  </S.SidebarItem>
-)
+const SidebarItem = ({ imgUrl, imgAlt, id }) => {
+  const isLoading = useSelector(isLoadingSelector)
+  return (
+    <S.SidebarItem>
+      <Link to={`/category/${id}`}>
+        <S.SidebarImg src={imgUrl} alt={imgAlt} />
+      </Link>
+      {isLoading && <div className="skeleton" />}
+    </S.SidebarItem>
+  )
+}

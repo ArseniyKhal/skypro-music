@@ -6,6 +6,7 @@ import {
   PREV_TRACK,
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
+  IS_LOADING,
 } from '../types/tracks'
 
 export const addPlaylist = (playlist) => ({
@@ -13,9 +14,9 @@ export const addPlaylist = (playlist) => ({
   payload: { playlist },
 })
 
-export const setCurrentTrack = ({ id }) => ({
+export const setCurrentTrack = (track) => ({
   type: SET_CURRENT_TRACK,
-  payload: { id },
+  payload: { track },
 })
 
 export const togglePause = () => ({
@@ -36,4 +37,9 @@ export const toggleRepeat = () => ({
 
 export const toggleShuffle = () => ({
   type: SHUFFLE_PLAYLIST,
+})
+
+export const isLoadingData = (isLoading) => ({
+  type: IS_LOADING,
+  payload: { isLoading },
 })

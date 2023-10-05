@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
+import { isLoadingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Centerblock.styles'
 
-export const Centerblock = ({
-  isLoading,
-  //  getPlaylistError
-}) => {
+export const Centerblock = () => {
   const { pathname } = useLocation()
   let title = ''
   if (pathname === '/favorites') {
@@ -25,9 +23,9 @@ export const Centerblock = ({
     <S.MainCenterblock>
       <Search />
       <S.CenterblockH2>{title}</S.CenterblockH2>
-      <MusicFilter isLoading={isLoading} />
+      <MusicFilter />
 
-      <Outlet isLoading={isLoading} />
+      <Outlet />
 
       {/* <Playlist
         isLoading={isLoading} ??????????????
@@ -46,7 +44,7 @@ const Search = () => (
   </S.CenterblockSearch>
 )
 
-const MusicFilter = ({ isLoading }) => {
+const MusicFilter = () => {
   const [visibleFilter, setvisibleFilter] = useState(null)
   const playlistMusic = useSelector((state) => state.audioplayer.playlist)
   const toggleVisibleFilter = (filter) => {
@@ -62,7 +60,6 @@ const MusicFilter = ({ isLoading }) => {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
       />
       <MusicFilterItem
         title="году выпуска"
@@ -71,7 +68,6 @@ const MusicFilter = ({ isLoading }) => {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
       />
       <MusicFilterItem
         title="жанру"
@@ -80,7 +76,6 @@ const MusicFilter = ({ isLoading }) => {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
       />
     </S.CenterblockFilter>
   )
@@ -91,24 +86,26 @@ const MusicFilterItem = ({
   title,
   visibleFilter,
   filterList,
-  isLoading,
-}) => (
-  <S.FilterItem
-    onClick={() => toggleVisibleFilter(title)}
-    disabled={{ isLoading }}
-    style={{ pointerEvents: isLoading && 'none' }}
-  >
-    <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
-    {visibleFilter === title && (
-      <S.FilterMenu>
-        <S.FilterContent>
-          <S.FilterList>
-            {filterList.map((track) => (
-              <S.FilterText key={track}>{track}</S.FilterText>
-            ))}
-          </S.FilterList>
-        </S.FilterContent>
-      </S.FilterMenu>
-    )}
-  </S.FilterItem>
-)
+}) => {
+  const isLoading = useSelector(isLoadingSelector)
+  return (
+    <S.FilterItem
+      onClick={() => toggleVisibleFilter(title)}
+      disabled={{ isLoading }}
+      style={{ pointerEvents: isLoading && 'none' }}
+    >
+      <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
+      {visibleFilter === title && (
+        <S.FilterMenu>
+          <S.FilterContent>
+            <S.FilterList>
+              {filterList.map((track) => (
+                <S.FilterText key={track}>{track}</S.FilterText>
+              ))}
+            </S.FilterList>
+          </S.FilterContent>
+        </S.FilterMenu>
+      )}
+    </S.FilterItem>
+  )
+}

@@ -1,15 +1,18 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+// import { useGetPlaylistQuery } from '../../services/servicesApi'
 import {
   addPlaylist,
   nextTrack,
   prevTrack,
+  isLoadingData,
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
   playListSelector,
   currentTrackSelector,
   isLoopSelector,
+  //   isLoadingSelector,
 } from '../../store/selectors/tracksSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
@@ -27,23 +30,28 @@ import * as S from '../../App.styles'
 // не правильно отображение фильтра по дате
 
 export const Main = () => {
+  // const { data, error, isLoading } = useGetAllTodosQuery();
+
   const playlist = useSelector(playListSelector)
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.3)
   const [getPlaylistError, setGetPlaylistError] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  //   const [isLoading, setIsLoading] = useState(true)
   const [play5sec, setPlay5sec] = useState(false)
   const dispatch = useDispatch()
   const audioElem = useRef(null)
   const plauing = useSelector(isPlauingSelector)
   const trackInPleer = useSelector(currentTrackSelector)
   const isLoop = useSelector(isLoopSelector)
+  //   const isLoading = useSelector(isLoadingSelector)
 
   // загрузка треков с API
   const fetchTracks = async () => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
+      dispatch(isLoadingData(true))
+
       setGetPlaylistError('')
       const tracks = await getPlaylist()
       if (playlist) {
@@ -55,7 +63,8 @@ export const Main = () => {
         `Не удалось загрузить плейлист, попробуйте позже. Ошибка: ${error.message}`,
       )
     } finally {
-      setIsLoading(false)
+      // setIsLoading(false)
+      dispatch(isLoadingData(false))
     }
   }
 
@@ -136,11 +145,8 @@ export const Main = () => {
 
       <S.Main>
         <NavMenu />
-        <Centerblock
-          isLoading={isLoading}
-          getPlaylistError={getPlaylistError}
-        />
-        <Sidebar isLoading={isLoading} />
+        <Centerblock getPlaylistError={getPlaylistError} />
+        <Sidebar />
       </S.Main>
       {trackInPleer && (
         <BarPlayer
@@ -152,7 +158,7 @@ export const Main = () => {
           duration={duration}
         />
       )}
-      <footer />
+      {/* <footer /> */}
     </>
   )
 }
