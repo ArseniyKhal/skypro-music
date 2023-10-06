@@ -5,6 +5,7 @@ import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 import {
   useGetTracksQuery,
   useGetFavoriteTracksQuery,
+  useAddFavoriteTrackMutation,
 } from '../../services/servicesApi'
 import { isPlauingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Playlist.styles'
@@ -38,17 +39,17 @@ export const Playlist = ({ getPlaylistError }) => {
     playlistMusic = tracksFavoriteData
   }
 
-  const mapTracks = playlistMusic ? (
-    playlistMusic.map((track) => (
-      <Track key={track.id} isLoading={isLoading} track={track} />
-    ))
-  ) : (
-    <h3>В этом плейлисте нет треков</h3>
-  )
+  const mapTracks =
+    playlistMusic?.length > 0 ? (
+      playlistMusic.map((track) => (
+        <Track key={track.id} isLoading={isLoading} track={track} />
+      ))
+    ) : (
+      <h3>В этом плейлисте нет треков</h3>
+    )
 
   return (
     <S.CenterblockContent>
-      {/* <PlaylistTitle /> */}
       <S.ContentTitle>
         <S.PlaylistTitleCol1>ТРЕК</S.PlaylistTitleCol1>
         <S.PlaylistTitleCol2>ИСПОЛНИТЕЛЬ</S.PlaylistTitleCol2>
@@ -71,9 +72,6 @@ export const Playlist = ({ getPlaylistError }) => {
   )
 }
 
-// const PlaylistTitle = () => (
-// )
-
 const Track = ({ isLoading, track }) => {
   const plauing = useSelector(isPlauingSelector)
   const dispatch = useDispatch()
@@ -87,10 +85,14 @@ const Track = ({ isLoading, track }) => {
     }
   }
   // обработчик лайков
+  const trackId = track.id
   const [like, setLike] = useState(false)
-  const toggleLike = (e) => {
+  const [addFavoriteTrack, { isSuccess }] = useAddFavoriteTrackMutation()
+  const toggleLike = async (e) => {
     e.stopPropagation()
     setLike(!like)
+    await addFavoriteTrack(trackId).unwrap()
+    console.log('isSuccess:', isSuccess)
   }
   return (
     <S.Track onClick={() => dispatch(setCurrentTrack(track))}>
