@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
-import { isLoadingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Centerblock.styles'
+import { useGetTracksQuery } from '../../services/servicesApi'
 
 export const Centerblock = () => {
   const { pathname } = useLocation()
@@ -87,7 +87,8 @@ const MusicFilterItem = ({
   visibleFilter,
   filterList,
 }) => {
-  const isLoading = useSelector(isLoadingSelector)
+  const { isLoading } = useGetTracksQuery()
+
   return (
     <S.FilterItem
       onClick={() => toggleVisibleFilter(title)}
