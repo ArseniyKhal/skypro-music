@@ -5,8 +5,6 @@ import {
   addPlaylist,
   nextTrack,
   prevTrack,
-  isLoadingData,
-  setToken,
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
@@ -18,10 +16,6 @@ import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
-import {
-  // getPlaylist,
-  getToken,
-} from '../../api'
 import * as S from '../../App.styles'
 
 // Задачи:
@@ -31,14 +25,14 @@ import * as S from '../../App.styles'
 // При обновлении страницы разлогинивается
 // отладить адаптивность
 // не правильно отображение фильтра по дате
+// как обработать ошибку загрузки плейлиста
 
 export const Main = () => {
   const { data } = useGetTracksQuery()
-  const playlist = data
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.3)
-  const [getPlaylistError, setGetPlaylistError] = useState(null)
+  //   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [play5sec, setPlay5sec] = useState(false)
   const dispatch = useDispatch()
   const audioElem = useRef(null)
@@ -46,40 +40,25 @@ export const Main = () => {
   const trackInPleer = useSelector(currentTrackSelector)
   const isLoop = useSelector(isLoopSelector)
 
-  const GetToken = async () => {
-    await getToken()
-      .then((response) => response.json())
-      .then((tokens) => {
-        dispatch(setToken(tokens))
-        dispatch(addPlaylist(playlist))
-      })
-  }
-
   // загрузка треков с API
-  const fetchTracks = async () => {
-    try {
-      dispatch(isLoadingData(true))
-      setGetPlaylistError('')
-      // const tracks = await getPlaylist()
-      if (playlist) {
-        //   dispatch(addPlaylist(tracks))
-        GetToken()
-      }
-    } catch (error) {
-      console.error(error)
-      setGetPlaylistError(
-        `Не удалось загрузить плейлист, попробуйте позже. Ошибка: ${error.message}`,
-      )
-    } finally {
-      dispatch(isLoadingData(false))
-    }
-  }
+  //   const fetchTracks = async () => {
+  //     try {
+  //       setGetPlaylistError('')
+  //		const tracks = await getPlaylist()
+  //       if (playlist) {
+  //       }
+  //     } catch (error) {
+  //       console.error(error)
+  //       setGetPlaylistError(
+  //         `Не удалось загрузить плейлист, попробуйте позже. Ошибка: ${error.message}`,
+  //       )
+  //     }
+  //     //  finally {    }
+  //   }
 
   useEffect(() => {
-    console.log(fetchTracks)
-
-    //  fetchTracks()
-  }, [])
+    dispatch(addPlaylist(data))
+  }, [data])
 
   // добавление и автозапуск трека в плеере
   useEffect(() => {
@@ -154,7 +133,9 @@ export const Main = () => {
 
       <S.Main>
         <NavMenu />
-        <Centerblock getPlaylistError={getPlaylistError} />
+        <Centerblock
+        //   getPlaylistError={getPlaylistError}
+        />
         <Sidebar />
       </S.Main>
       {trackInPleer && (

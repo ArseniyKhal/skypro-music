@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
 import * as S from './Centerblock.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
@@ -46,7 +45,8 @@ const Search = () => (
 
 const MusicFilter = () => {
   const [visibleFilter, setvisibleFilter] = useState(null)
-  const playlistMusic = useSelector((state) => state.audioplayer.playlist)
+  const { data } = useGetTracksQuery()
+  const playlistMusic = data
   const toggleVisibleFilter = (filter) => {
     setvisibleFilter(visibleFilter === filter ? null : filter)
   }
@@ -56,7 +56,7 @@ const MusicFilter = () => {
       <MusicFilterItem
         title="исполнителю"
         filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.author)),
+          new Set(playlistMusic?.map((track) => track.author)),
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
@@ -64,7 +64,7 @@ const MusicFilter = () => {
       <MusicFilterItem
         title="году выпуска"
         filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.release_date)),
+          new Set(playlistMusic?.map((track) => track.release_date)),
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
@@ -72,7 +72,7 @@ const MusicFilter = () => {
       <MusicFilterItem
         title="жанру"
         filterList={Array.from(
-          new Set(playlistMusic.map((track) => track.genre)),
+          new Set(playlistMusic?.map((track) => track.genre)),
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}

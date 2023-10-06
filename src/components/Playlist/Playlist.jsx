@@ -3,10 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 // import { playListShuffleSelector } from '../../store/selectors/tracksSelectors'
 import { dataPlayList } from '../../data'
-import {
-  //   isLoadingSelector,
-  accessTokenSelector,
-} from '../../store/selectors/tracksSelectors'
+import { accessTokenSelector } from '../../store/selectors/tracksSelectors'
 import { getFavoriteList } from '../../api'
 import { useGetTracksQuery } from '../../services/servicesApi'
 import * as S from './Playlist.styles'
@@ -32,7 +29,6 @@ export const formatTime = (t) => {
 }
 export const Playlist = ({ getPlaylistError }) => {
   const plauing = useSelector((state) => state.audioplayer.plauing)
-  //   const isLoading = useSelector(isLoadingSelector)
   const accessToken = useSelector(accessTokenSelector)
   const { pathname } = useLocation()
   const { data, isLoading } = useGetTracksQuery()

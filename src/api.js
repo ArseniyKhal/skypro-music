@@ -10,11 +10,10 @@ export async function getPlaylist() {
   return response.json()
 }
 
-// Авторизация
+// Авторизация + tokens
 export async function login({ email, password }) {
-  const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/login/',
-    {
+  const [loginRes, tokenRes] = await Promise.all([
+    fetch('https://skypro-music-api.skyeng.tech/user/login/', {
       method: 'POST',
       body: JSON.stringify({
         email,
@@ -23,9 +22,20 @@ export async function login({ email, password }) {
       headers: {
         'content-type': 'application/json',
       },
-    },
-  )
-  return response
+    }),
+    fetch('https://skypro-music-api.skyeng.tech/user/token/', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  ])
+  const tokenJsonData = await tokenRes.json()
+  return { loginRes, tokenJsonData }
 }
 
 // Регистрация
@@ -59,24 +69,6 @@ export async function getFavoriteList(accessToken) {
     },
   )
   return response.json()
-}
-
-// Получить токен
-export async function getToken() {
-  const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/token/',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        email: 'test@test.test',
-        password: 'test@test.test',
-      }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    },
-  )
-  return response
 }
 
 // Обновить токен

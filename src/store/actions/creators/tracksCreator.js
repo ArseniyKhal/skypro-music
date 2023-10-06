@@ -6,7 +6,6 @@ import {
   PREV_TRACK,
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
-  IS_LOADING,
   SET_TOKEN,
 } from '../types/tracks'
 
@@ -38,11 +37,6 @@ export const toggleRepeat = () => ({
 
 export const toggleShuffle = () => ({
   type: SHUFFLE_PLAYLIST,
-})
-
-export const isLoadingData = (isLoading) => ({
-  type: IS_LOADING,
-  payload: { isLoading },
 })
 
 export const setToken = (tokens) => ({

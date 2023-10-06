@@ -1,7 +1,9 @@
 import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { login } from '../../api'
 import * as S from './LoginReg.styles'
+import { setToken } from '../../store/actions/creators/tracksCreator'
 import UserContext from '../../context'
 
 // почему функция login не читает пропсы напрямую из стейта ???
@@ -18,6 +20,7 @@ export const Login = () => {
   const [loginError, setLoginError] = useState('')
   const { logInUser } = useContext(UserContext)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   // авторизуемся
   const email = inputEmail
@@ -37,12 +40,13 @@ export const Login = () => {
       setLoginError('')
       setIsLoadingLogin(true)
       await login({ email, password })
-        .then((response) => {
-          if (response.status === 200) {
+        .then(({ loginRes, tokenJsonData }) => {
+          if (loginRes.status === 200) {
             logInUser({ login: true })
             navigate('/')
+            dispatch(setToken(tokenJsonData))
           }
-          return response.json()
+          return loginRes.json()
         })
         .then((user) => {
           setLoginError(user.detail)
@@ -50,7 +54,7 @@ export const Login = () => {
         })
     } catch (error) {
       console.error(error)
-      setLoginError(`Не удалось... Ошибка: ${error.message}`)
+      setLoginError(`Ошибка: ${error.message}`)
     } finally {
       setIsLoadingLogin(false)
     }
