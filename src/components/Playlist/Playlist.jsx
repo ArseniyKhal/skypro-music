@@ -6,6 +6,7 @@ import {
   useGetTracksQuery,
   useGetFavoriteTracksQuery,
   useAddFavoriteTrackMutation,
+  //   useDelFavoriteTrackMutation,
 } from '../../services/servicesApi'
 import { isPlauingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Playlist.styles'
@@ -88,10 +89,12 @@ const Track = ({ isLoading, track }) => {
   const trackId = track.id
   const [like, setLike] = useState(false)
   const [addFavoriteTrack, { isSuccess }] = useAddFavoriteTrackMutation()
+  //   const [dalFavoriteTrack] = useDelFavoriteTrackMutation()
   const toggleLike = async (e) => {
     e.stopPropagation()
     setLike(!like)
     await addFavoriteTrack(trackId).unwrap()
+    //  await dalFavoriteTrack(trackId).unwrap()
     console.log('isSuccess:', isSuccess)
   }
   return (

@@ -36,6 +36,15 @@ export const tracksApi = createApi({
       },
       invalidatesTags: [DATA_TAG],
     }),
+    delFavoriteTrack: builder.mutation({
+      query(id) {
+        return {
+          url: `/catalog/track/${id}/favorite/`,
+          method: 'DELETE',
+        }
+      },
+      invalidatesTags: [DATA_TAG],
+    }),
   }),
 })
 
@@ -43,4 +52,5 @@ export const {
   useGetTracksQuery,
   useGetFavoriteTracksQuery,
   useAddFavoriteTrackMutation,
+  useDelFavoriteTrackMutation,
 } = tracksApi
