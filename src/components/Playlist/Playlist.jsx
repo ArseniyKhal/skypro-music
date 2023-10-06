@@ -30,6 +30,7 @@ export const formatTime = (t) => {
   }
   return `${hour}${min}:${sec}`
 }
+// PLAYLIST
 export const Playlist = ({ getPlaylistError }) => {
   const { pathname } = useLocation()
   const { data, isLoading } = useGetTracksQuery()
@@ -65,7 +66,11 @@ export const Playlist = ({ getPlaylistError }) => {
       <S.ContentPlaylist>
         {isLoading
           ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-              <Track isLoading={isLoading} key={item} />
+              <Track
+                isLoading={isLoading}
+                key={item}
+                favList={tracksFavoriteData}
+              />
             ))
           : mapTracks}
       </S.ContentPlaylist>
@@ -73,10 +78,11 @@ export const Playlist = ({ getPlaylistError }) => {
   )
 }
 
-const Track = ({ isLoading, track }) => {
+// TRACK
+const Track = ({ isLoading, track, favList }) => {
   const plauing = useSelector(isPlauingSelector)
   const dispatch = useDispatch()
-
+  console.log(favList)
   // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
@@ -85,8 +91,14 @@ const Track = ({ isLoading, track }) => {
       visibolbubbleOut = true
     }
   }
+
+  //  function contains(arr, elem) {
+  //    return arr.find((i) => i === elem) !== -1
+  //  }
+
   // обработчик лайков
-  const trackId = track.id
+  const trackId = track?.id
+  //   const trac = track
   const [like, setLike] = useState(false)
   const [addFavoriteTrack, { isSuccess }] = useAddFavoriteTrackMutation()
   //   const [dalFavoriteTrack] = useDelFavoriteTrackMutation()
@@ -96,7 +108,9 @@ const Track = ({ isLoading, track }) => {
     await addFavoriteTrack(trackId).unwrap()
     //  await dalFavoriteTrack(trackId).unwrap()
     console.log('isSuccess:', isSuccess)
+    //  contains(list, trac)
   }
+
   return (
     <S.Track onClick={() => dispatch(setCurrentTrack(track))}>
       <S.PlaylistTrack>
