@@ -4,7 +4,7 @@ import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 // import { playListShuffleSelector } from '../../store/selectors/tracksSelectors'
 import { dataPlayList } from '../../data'
 import {
-  isLoadingSelector,
+  //   isLoadingSelector,
   accessTokenSelector,
 } from '../../store/selectors/tracksSelectors'
 import { getFavoriteList } from '../../api'
@@ -31,13 +31,12 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 export const Playlist = ({ getPlaylistError }) => {
-  //   let playlistMusic = useSelector((state) => state.audioplayer.playlist)
   const plauing = useSelector((state) => state.audioplayer.plauing)
-  const isLoading = useSelector(isLoadingSelector)
+  //   const isLoading = useSelector(isLoadingSelector)
   const accessToken = useSelector(accessTokenSelector)
   const { pathname } = useLocation()
-
-  let playlistMusic = useGetTracksQuery().data
+  const { data, isLoading } = useGetTracksQuery()
+  let playlistMusic = data
   let favoritesTracks = dataPlayList
   const fetchFavoritesTracks = async () => {
     favoritesTracks = await getFavoriteList(accessToken)
@@ -49,7 +48,7 @@ export const Playlist = ({ getPlaylistError }) => {
   }
 
   const mapTracks =
-    playlistMusic.length > 0 ? (
+    playlistMusic?.length > 0 ? (
       playlistMusic.map((track) => (
         <Track
           key={track.id}

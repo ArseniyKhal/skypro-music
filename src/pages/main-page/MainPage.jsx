@@ -33,10 +33,7 @@ import * as S from '../../App.styles'
 // не правильно отображение фильтра по дате
 
 export const Main = () => {
-  const {
-    data,
-    // error, isLoading
-  } = useGetTracksQuery()
+  const { data } = useGetTracksQuery()
   const playlist = data
 
   // загрузка списка треков
@@ -64,7 +61,6 @@ export const Main = () => {
       dispatch(isLoadingData(true))
       setGetPlaylistError('')
       // const tracks = await getPlaylist()
-      // console.log(tracks)
       if (playlist) {
         //   dispatch(addPlaylist(tracks))
         GetToken()
@@ -80,7 +76,9 @@ export const Main = () => {
   }
 
   useEffect(() => {
-    fetchTracks()
+    console.log(fetchTracks)
+
+    //  fetchTracks()
   }, [])
 
   // добавление и автозапуск трека в плеере

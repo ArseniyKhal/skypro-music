@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
-import { useSelector } from 'react-redux'
 import UserContext from '../../context'
-import { isLoadingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Sidebar.styles'
+import { useGetTracksQuery } from '../../services/servicesApi'
 
 export const Sidebar = () => {
   const { logOutUser, userDate } = useContext(UserContext)
@@ -47,7 +46,7 @@ export const Sidebar = () => {
 }
 
 const SidebarItem = ({ imgUrl, imgAlt, id }) => {
-  const isLoading = useSelector(isLoadingSelector)
+  const { isLoading } = useGetTracksQuery()
   return (
     <S.SidebarItem>
       <Link to={`/category/${id}`}>
