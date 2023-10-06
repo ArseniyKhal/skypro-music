@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useGetTracksQuery } from '../../services/servicesApi'
+import {
+  useGetTracksQuery,
+  //   useGetFavoriteTracksQuery,
+} from '../../services/servicesApi'
 import {
   addPlaylist,
   nextTrack,
@@ -8,7 +11,6 @@ import {
 } from '../../store/actions/creators/tracksCreator'
 import {
   isPlauingSelector,
-  //   playListSelector,
   currentTrackSelector,
   isLoopSelector,
 } from '../../store/selectors/tracksSelectors'
@@ -28,7 +30,7 @@ import * as S from '../../App.styles'
 // как обработать ошибку загрузки плейлиста
 
 export const Main = () => {
-  const { data } = useGetTracksQuery()
+  const tracksData = useGetTracksQuery().data
 
   // загрузка списка треков
   const [volume, setvolume] = useState(0.3)
@@ -57,8 +59,8 @@ export const Main = () => {
   //   }
 
   useEffect(() => {
-    dispatch(addPlaylist(data))
-  }, [data])
+    dispatch(addPlaylist(tracksData))
+  }, [tracksData])
 
   // добавление и автозапуск трека в плеере
   useEffect(() => {

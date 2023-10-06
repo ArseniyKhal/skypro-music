@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
 // import { playListShuffleSelector } from '../../store/selectors/tracksSelectors'
-import { dataPlayList } from '../../data'
-import { accessTokenSelector } from '../../store/selectors/tracksSelectors'
-import { getFavoriteList } from '../../api'
-import { useGetTracksQuery } from '../../services/servicesApi'
+import {
+  useGetTracksQuery,
+  useGetFavoriteTracksQuery,
+} from '../../services/servicesApi'
 import * as S from './Playlist.styles'
 
 // форматер времени трека
@@ -29,18 +29,13 @@ export const formatTime = (t) => {
 }
 export const Playlist = ({ getPlaylistError }) => {
   const plauing = useSelector((state) => state.audioplayer.plauing)
-  const accessToken = useSelector(accessTokenSelector)
   const { pathname } = useLocation()
   const { data, isLoading } = useGetTracksQuery()
   let playlistMusic = data
-  let favoritesTracks = dataPlayList
-  const fetchFavoritesTracks = async () => {
-    favoritesTracks = await getFavoriteList(accessToken)
-  }
+  const tracksFavoriteData = useGetFavoriteTracksQuery().data
 
   if (pathname === '/favorites') {
-    fetchFavoritesTracks()
-    playlistMusic = favoritesTracks
+    playlistMusic = tracksFavoriteData
   }
 
   const mapTracks =
