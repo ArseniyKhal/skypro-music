@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
-// import { playListShuffleSelector } from '../../store/selectors/tracksSelectors'
 import {
   useGetTracksQuery,
   useGetFavoriteTracksQuery,
 } from '../../services/servicesApi'
+import { isPlauingSelector } from '../../store/selectors/tracksSelectors'
 import * as S from './Playlist.styles'
 
 // форматер времени трека
@@ -28,7 +29,6 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 export const Playlist = ({ getPlaylistError }) => {
-  const plauing = useSelector((state) => state.audioplayer.plauing)
   const { pathname } = useLocation()
   const { data, isLoading } = useGetTracksQuery()
   let playlistMusic = data
@@ -38,23 +38,27 @@ export const Playlist = ({ getPlaylistError }) => {
     playlistMusic = tracksFavoriteData
   }
 
-  const mapTracks =
-    playlistMusic?.length > 0 ? (
-      playlistMusic.map((track) => (
-        <Track
-          key={track.id}
-          isLoading={isLoading}
-          plauing={plauing}
-          track={track}
-        />
-      ))
-    ) : (
-      <h3>В этом плейлисте нет треков</h3>
-    )
+  const mapTracks = playlistMusic ? (
+    playlistMusic.map((track) => (
+      <Track key={track.id} isLoading={isLoading} track={track} />
+    ))
+  ) : (
+    <h3>В этом плейлисте нет треков</h3>
+  )
 
   return (
     <S.CenterblockContent>
-      <PlaylistTitle />
+      {/* <PlaylistTitle /> */}
+      <S.ContentTitle>
+        <S.PlaylistTitleCol1>ТРЕК</S.PlaylistTitleCol1>
+        <S.PlaylistTitleCol2>ИСПОЛНИТЕЛЬ</S.PlaylistTitleCol2>
+        <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
+        <S.PlaylistTitleCol4>
+          <S.PlaylistTitleSvg alt="time">
+            <use xlinkHref="img/icon/sprite.svg#icon-watch" />
+          </S.PlaylistTitleSvg>
+        </S.PlaylistTitleCol4>
+      </S.ContentTitle>
       {getPlaylistError && <p>{getPlaylistError}</p>}
       <S.ContentPlaylist>
         {isLoading
@@ -67,20 +71,13 @@ export const Playlist = ({ getPlaylistError }) => {
   )
 }
 
-const PlaylistTitle = () => (
-  <S.ContentTitle>
-    <S.PlaylistTitleCol1>ТРЕК</S.PlaylistTitleCol1>
-    <S.PlaylistTitleCol2>ИСПОЛНИТЕЛЬ</S.PlaylistTitleCol2>
-    <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
-    <S.PlaylistTitleCol4>
-      <S.PlaylistTitleSvg alt="time">
-        <use xlinkHref="img/icon/sprite.svg#icon-watch" />
-      </S.PlaylistTitleSvg>
-    </S.PlaylistTitleCol4>
-  </S.ContentTitle>
-)
+// const PlaylistTitle = () => (
+// )
 
-const Track = ({ isLoading, plauing, track }) => {
+const Track = ({ isLoading, track }) => {
+  const plauing = useSelector(isPlauingSelector)
+  const dispatch = useDispatch()
+
   // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
@@ -89,7 +86,12 @@ const Track = ({ isLoading, plauing, track }) => {
       visibolbubbleOut = true
     }
   }
-  const dispatch = useDispatch()
+  // обработчик лайков
+  const [like, setLike] = useState(false)
+  const toggleLike = (e) => {
+    e.stopPropagation()
+    setLike(!like)
+  }
   return (
     <S.Track onClick={() => dispatch(setCurrentTrack(track))}>
       <S.PlaylistTrack>
@@ -131,7 +133,14 @@ const Track = ({ isLoading, plauing, track }) => {
           {isLoading && <S.Skeleton />}
         </S.TrackAlbum>
         <S.TrackTime>
-          <S.TrackTimeSvg alt="time">
+          <S.TrackTimeSvg
+            alt="time"
+            onClick={toggleLike}
+            style={{
+              stroke: `${like ? '#B672FF' : ''}`,
+              fill: `${like ? '#B672FF' : ''}`,
+            }}
+          >
             <use xlinkHref="img/icon/sprite.svg#icon-like" />
           </S.TrackTimeSvg>
           <S.TrackTimeText>
