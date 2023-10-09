@@ -14,9 +14,13 @@ import * as S from '../../App.styles'
 // отладить адаптивность
 // неправильно отображение фильтра по дате
 // getPlaylistError надо?
+// как через return передать две переменные?
+// если теперь есть данные о пользавотеле в сторе, нежен ли контекст?
+// надо ли чистить токены при при logout?
 
 export const Main = () => {
   const trackInPlayer = useSelector(currentTrackSelector)
+  //   console.log(trackInPlayer)
   //   const [getPlaylistError, setGetPlaylistError] = useState(null)
 
   // загрузка треков с API

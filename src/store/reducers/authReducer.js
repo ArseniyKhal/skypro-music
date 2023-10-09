@@ -4,6 +4,9 @@ const initialState = {
   logIn: false,
   accessToken: '',
   refreshToken: '',
+  username: '',
+  email: '',
+  id: '',
 }
 
 export default function authReducer(state = initialState, action) {
@@ -18,12 +21,16 @@ export default function authReducer(state = initialState, action) {
       }
     }
 
-    // logIn/logOut юзер
+    // logIn/logOut юзера
     case USER_LOGIN: {
       const { data } = action.payload
+      console.log(data)
       return {
         ...state,
         logIn: data,
+        username: data.username,
+        email: data.email,
+        id: data.id,
       }
     }
 

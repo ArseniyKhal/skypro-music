@@ -45,13 +45,13 @@ export const Login = () => {
             logInUser({ login: true })
             navigate('/')
             dispatch(setTokens(tokenJsonData))
-            dispatch(logIn(true))
           }
           return loginRes.json()
         })
         .then((user) => {
           setLoginError(user.detail)
           logInUser(user)
+          dispatch(logIn(user))
         })
     } catch (error) {
       console.error(error)
