@@ -2,10 +2,10 @@ import * as S from './Centerblock.styles'
 import { MusicFilter } from '../MusicFilter/MusicFilter'
 import { Playlist } from '../Playlist/Playlist'
 
-export const Centerblock = ({ tracks, isLoading, tetle }) => (
+export const Centerblock = ({ tracks, isLoading, title }) => (
   <S.MainCenterblock>
     <Search />
-    <S.CenterblockH2>{tetle}</S.CenterblockH2>
+    <S.CenterblockH2>{title}</S.CenterblockH2>
     <MusicFilter />
     <Playlist tracks={tracks} isLoading={isLoading} />
   </S.MainCenterblock>

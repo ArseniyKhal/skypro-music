@@ -4,5 +4,5 @@ import { useGetFavoriteTracksQuery } from '../../services/servicesApi'
 export const Favorites = () => {
   const { data, isLoading } = useGetFavoriteTracksQuery()
 
-  return <Centerblock tracks={data} isLoading={isLoading} tetle="Мои треки" />
+  return <Centerblock tracks={data} isLoading={isLoading} title="Мои треки" />
 }

@@ -8,5 +8,5 @@ export const MainTrackList = () => {
   const dispatch = useDispatch()
   dispatch(addPlaylist(data))
 
-  return <Centerblock tracks={data} isLoading={isLoading} tetle="Треки" />
+  return <Centerblock tracks={data} isLoading={isLoading} title="Треки" />
 }

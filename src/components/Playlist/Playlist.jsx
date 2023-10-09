@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { setCurrentTrack } from '../../store/actions/creators/audioplayerCreator'
 import {
-  useGetFavoriteTracksQuery,
   useLikeTrackMutation,
   //   useDislikeTrackMutation,
 } from '../../services/servicesApi'
-// import { idUserSelector } from '../../store/selectors/authSelectors'
+import { idUserSelector } from '../../store/selectors/authSelectors'
 import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import * as S from './Playlist.styles'
 
@@ -31,8 +31,6 @@ export const formatTime = (t) => {
 }
 // PLAYLIST
 export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
-  const tracksFavoriteData = useGetFavoriteTracksQuery().data
-
   const mapTracks =
     tracks?.length > 0 ? (
       tracks.map((track) => (
@@ -58,11 +56,7 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
       <S.ContentPlaylist>
         {isLoading
           ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-              <Track
-                isLoading={isLoading}
-                key={item}
-                favList={tracksFavoriteData}
-              />
+              <Track isLoading={isLoading} key={item} />
             ))
           : mapTracks}
       </S.ContentPlaylist>
@@ -72,9 +66,10 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 
 // TRACK
 const Track = ({ isLoading, track }) => {
+  const { pathname } = useLocation()
+  const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
   const dispatch = useDispatch()
-
   // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
@@ -87,16 +82,24 @@ const Track = ({ isLoading, track }) => {
   // обработчик лайков
   const trackId = track?.id
   const [like, setLike] = useState(false)
-  const [addFavoriteTrack, { isSuccess }] = useLikeTrackMutation()
+  const [likeTrack, { isSuccess }] = useLikeTrackMutation()
   //   const [dalFavoriteTrack] = useDelFavoriteTrackMutation()
+  let isLike = false
+  isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
+  if (pathname === '/favorites') {
+    isLike = true
+  }
+  //   const isLike =
+  //     (track?.stared_user ?? []).find(({ id }) => id === idUser) &&
+  //     pathname === '/favorites'
+
   const toggleLike = async (e) => {
     e.stopPropagation()
     setLike(!like)
-    await addFavoriteTrack(trackId).unwrap()
+    await likeTrack(trackId).unwrap()
     //  await dalFavoriteTrack(trackId).unwrap()
     console.log('isSuccess:', isSuccess)
   }
-
   return (
     <S.Track onClick={() => dispatch(setCurrentTrack(track))}>
       <S.PlaylistTrack>
@@ -142,8 +145,8 @@ const Track = ({ isLoading, track }) => {
             alt="time"
             onClick={toggleLike}
             style={{
-              stroke: `${like ? '#B672FF' : ''}`,
-              fill: `${like ? '#B672FF' : ''}`,
+              stroke: `${isLike ? '#B672FF' : ''}`,
+              fill: `${isLike ? '#B672FF' : ''}`,
             }}
           >
             <use xlinkHref="img/icon/sprite.svg#icon-like" />

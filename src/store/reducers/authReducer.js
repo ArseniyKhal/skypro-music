@@ -24,7 +24,6 @@ export default function authReducer(state = initialState, action) {
     // logIn/logOut юзера
     case USER_LOGIN: {
       const { data } = action.payload
-      console.log(data)
       return {
         ...state,
         logIn: data,
