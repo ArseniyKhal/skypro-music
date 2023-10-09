@@ -7,7 +7,7 @@ export const tracksApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://skypro-music-api.skyeng.tech',
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().audioplayer.tokens.access
+      const token = getState().auth.accessToken
       console.debug('Использую токен из стора', { token })
       if (token) {
         headers.set('authorization', `Bearer ${token}`)

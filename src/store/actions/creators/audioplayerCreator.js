@@ -6,8 +6,7 @@ import {
   PREV_TRACK,
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
-  SET_TOKEN,
-} from '../types/tracks'
+} from '../types/constants'
 
 export const addPlaylist = (playlist) => ({
   type: ADD_PLAYLIST,
@@ -37,9 +36,4 @@ export const toggleRepeat = () => ({
 
 export const toggleShuffle = () => ({
   type: SHUFFLE_PLAYLIST,
-})
-
-export const setToken = (tokens) => ({
-  type: SET_TOKEN,
-  payload: { tokens },
 })

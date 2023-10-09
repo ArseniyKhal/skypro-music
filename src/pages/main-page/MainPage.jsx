@@ -8,12 +8,12 @@ import {
   addPlaylist,
   nextTrack,
   prevTrack,
-} from '../../store/actions/creators/tracksCreator'
+} from '../../store/actions/creators/audioplayerCreator'
 import {
   isPlauingSelector,
   currentTrackSelector,
   isLoopSelector,
-} from '../../store/selectors/tracksSelectors'
+} from '../../store/selectors/audioplayerSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { Centerblock } from '../../components/Centerblock/Centerblock'

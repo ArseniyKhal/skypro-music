@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
+import { useDispatch } from 'react-redux'
 import UserContext from '../../context'
 import * as S from './Sidebar.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
+import { logIn } from '../../store/actions/creators/authCreator'
 
 export const Sidebar = () => {
+  const dispatch = useDispatch()
   const { logOutUser, userDate } = useContext(UserContext)
+  const toggleExitButton = () => {
+    logOutUser()
+    dispatch(logIn(false))
+  }
 
   return (
     <S.MainSidebar>
@@ -14,7 +21,7 @@ export const Sidebar = () => {
         <S.SidebarIcon>
           <svg
             onClick={() => {
-              logOutUser()
+              toggleExitButton()
             }}
             alt="logout"
           >

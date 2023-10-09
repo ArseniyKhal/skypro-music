@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login } from '../../api'
 import * as S from './LoginReg.styles'
-import { setToken } from '../../store/actions/creators/tracksCreator'
+import { setTokens, logIn } from '../../store/actions/creators/authCreator'
 import UserContext from '../../context'
 
 // почему функция login не читает пропсы напрямую из стейта ???
@@ -44,7 +44,8 @@ export const Login = () => {
           if (loginRes.status === 200) {
             logInUser({ login: true })
             navigate('/')
-            dispatch(setToken(tokenJsonData))
+            dispatch(setTokens(tokenJsonData))
+            dispatch(logIn(true))
           }
           return loginRes.json()
         })

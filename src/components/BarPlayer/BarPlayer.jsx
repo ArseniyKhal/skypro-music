@@ -6,13 +6,13 @@ import {
   isPlauingSelector,
   isLoopSelector,
   isShuffledSelector,
-} from '../../store/selectors/tracksSelectors'
+} from '../../store/selectors/audioplayerSelectors'
 import {
   nextTrack,
   togglePause,
   toggleRepeat,
   toggleShuffle,
-} from '../../store/actions/creators/tracksCreator'
+} from '../../store/actions/creators/audioplayerCreator'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = ({

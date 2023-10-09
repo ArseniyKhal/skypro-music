@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { setCurrentTrack } from '../../store/actions/creators/tracksCreator'
+import { setCurrentTrack } from '../../store/actions/creators/audioplayerCreator'
 import {
   useGetTracksQuery,
   useGetFavoriteTracksQuery,
   useAddFavoriteTrackMutation,
   //   useDelFavoriteTrackMutation,
 } from '../../services/servicesApi'
-import { isPlauingSelector } from '../../store/selectors/tracksSelectors'
+import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import * as S from './Playlist.styles'
 
 // форматер времени трека
@@ -79,10 +79,10 @@ export const Playlist = ({ getPlaylistError }) => {
 }
 
 // TRACK
-const Track = ({ isLoading, track, favList }) => {
+const Track = ({ isLoading, track }) => {
   const plauing = useSelector(isPlauingSelector)
   const dispatch = useDispatch()
-  console.log(favList)
+  //   console.log(favList)
   // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false

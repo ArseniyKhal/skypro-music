@@ -18,7 +18,3 @@ export const isLoopSelector = (store) => audioplayerSelector(store)?.loop
 
 // статус воспроизведения в перемешку
 export const isShuffledSelector = (store) => audioplayerSelector(store).shuffled
-
-// Access токен
-export const accessTokenSelector = (store) =>
-  audioplayerSelector(store).tokens.access
