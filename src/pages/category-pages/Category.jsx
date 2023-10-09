@@ -1,11 +1,7 @@
 import { useParams } from 'react-router-dom'
-import * as S from '../../App.styles'
+import { Centerblock } from '../../components/Centerblock/Centerblock'
 
 export const Category = () => {
   const params = useParams()
-  return (
-    <S.CenterBlock>
-      <h1>Category Page {params.id} </h1>
-    </S.CenterBlock>
-  )
+  return <Centerblock tetle={`Category Page ${params.id}`} />
 }

@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { NotFound } from './pages/not-found-page/NotFound'
 import { Main } from './pages/main-page/MainPage'
-import { Playlist } from './components/Playlist/Playlist'
+import { MainTrackList } from './components/MainTrackList/MainTrackList'
 import { Login } from './pages/login-page/Login'
 import { Register } from './pages/register-page/Register'
 import { Favorites } from './pages/favorites-page/Favorites'
@@ -16,7 +16,7 @@ export function AppRoutes() {
           path=""
           element={
             <ProtectedRoute>
-              <Playlist />
+              <MainTrackList />
             </ProtectedRoute>
           }
         />

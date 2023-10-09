@@ -27,7 +27,7 @@ export const tracksApi = createApi({
           : [DATA_TAG],
     }),
 
-    addFavoriteTrack: builder.mutation({
+    likeTrack: builder.mutation({
       query(id) {
         return {
           url: `/catalog/track/${id}/favorite/`,
@@ -51,6 +51,6 @@ export const tracksApi = createApi({
 export const {
   useGetTracksQuery,
   useGetFavoriteTracksQuery,
-  useAddFavoriteTrackMutation,
-  useDelFavoriteTrackMutation,
+  useLikeTrackMutation,
+  useDislikeTrackMutation,
 } = tracksApi

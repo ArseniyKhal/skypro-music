@@ -1,12 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { setCurrentTrack } from '../../store/actions/creators/audioplayerCreator'
 import {
-  useGetTracksQuery,
   useGetFavoriteTracksQuery,
-  useAddFavoriteTrackMutation,
-  //   useDelFavoriteTrackMutation,
+  useLikeTrackMutation,
+  //   useDislikeTrackMutation,
 } from '../../services/servicesApi'
 import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import * as S from './Playlist.styles'
@@ -31,19 +29,12 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 // PLAYLIST
-export const Playlist = ({ getPlaylistError }) => {
-  const { pathname } = useLocation()
-  const { data, isLoading } = useGetTracksQuery()
-  let playlistMusic = data
+export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
   const tracksFavoriteData = useGetFavoriteTracksQuery().data
 
-  if (pathname === '/favorites') {
-    playlistMusic = tracksFavoriteData
-  }
-
   const mapTracks =
-    playlistMusic?.length > 0 ? (
-      playlistMusic.map((track) => (
+    tracks?.length > 0 ? (
+      tracks.map((track) => (
         <Track key={track.id} isLoading={isLoading} track={track} />
       ))
     ) : (
@@ -82,7 +73,7 @@ export const Playlist = ({ getPlaylistError }) => {
 const Track = ({ isLoading, track }) => {
   const plauing = useSelector(isPlauingSelector)
   const dispatch = useDispatch()
-  //   console.log(favList)
+
   // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
@@ -92,15 +83,10 @@ const Track = ({ isLoading, track }) => {
     }
   }
 
-  //  function contains(arr, elem) {
-  //    return arr.find((i) => i === elem) !== -1
-  //  }
-
   // обработчик лайков
   const trackId = track?.id
-  //   const trac = track
   const [like, setLike] = useState(false)
-  const [addFavoriteTrack, { isSuccess }] = useAddFavoriteTrackMutation()
+  const [addFavoriteTrack, { isSuccess }] = useLikeTrackMutation()
   //   const [dalFavoriteTrack] = useDelFavoriteTrackMutation()
   const toggleLike = async (e) => {
     e.stopPropagation()
@@ -108,7 +94,6 @@ const Track = ({ isLoading, track }) => {
     await addFavoriteTrack(trackId).unwrap()
     //  await dalFavoriteTrack(trackId).unwrap()
     console.log('isSuccess:', isSuccess)
-    //  contains(list, trac)
   }
 
   return (

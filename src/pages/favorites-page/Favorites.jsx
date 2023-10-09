@@ -1,8 +1,8 @@
-import { Playlist } from '../../components/Playlist/Playlist'
-import { useGetTracksQuery } from '../../services/servicesApi'
+import { Centerblock } from '../../components/Centerblock/Centerblock'
+import { useGetFavoriteTracksQuery } from '../../services/servicesApi'
 
 export const Favorites = () => {
-  const { isLoading } = useGetTracksQuery()
+  const { data, isLoading } = useGetFavoriteTracksQuery()
 
-  return isLoading ? <h3>Загрузка</h3> : <Playlist />
+  return <Centerblock tracks={data} isLoading={isLoading} tetle="Мои треки" />
 }

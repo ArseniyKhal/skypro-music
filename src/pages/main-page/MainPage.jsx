@@ -1,11 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
+import { Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  useGetTracksQuery,
-  //   useGetFavoriteTracksQuery,
-} from '../../services/servicesApi'
-import {
-  addPlaylist,
   nextTrack,
   prevTrack,
 } from '../../store/actions/creators/audioplayerCreator'
@@ -16,7 +12,6 @@ import {
 } from '../../store/selectors/audioplayerSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
-import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import * as S from '../../App.styles'
 
@@ -26,17 +21,15 @@ import * as S from '../../App.styles'
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
 // При обновлении страницы разлогинивается
 // отладить адаптивность
-// не правильно отображение фильтра по дате
-// как обработать ошибку загрузки плейлиста
+// неправильно отображение фильтра по дате
+// getPlaylistError надо?
+// перенести AUDIO в пллер
 
 export const Main = () => {
-  const tracksData = useGetTracksQuery().data
-
-  // загрузка списка треков
+  const dispatch = useDispatch()
   const [volume, setvolume] = useState(0.3)
   //   const [getPlaylistError, setGetPlaylistError] = useState(null)
   const [play5sec, setPlay5sec] = useState(false)
-  const dispatch = useDispatch()
   const audioElem = useRef(null)
   const plauing = useSelector(isPlauingSelector)
   const trackInPleer = useSelector(currentTrackSelector)
@@ -57,15 +50,6 @@ export const Main = () => {
   //     }
   //     //  finally {    }
   //   }
-
-  useEffect(() => {
-    dispatch(addPlaylist(tracksData))
-  }, [tracksData])
-
-  // добавление и автозапуск трека в плеере
-  useEffect(() => {
-    audioElem.current.load()
-  }, [trackInPleer])
 
   // обработчик кнопки ПАУЗА
   useEffect(() => {
@@ -135,9 +119,7 @@ export const Main = () => {
 
       <S.Main>
         <NavMenu />
-        <Centerblock
-        //   getPlaylistError={getPlaylistError}
-        />
+        <Outlet />
         <Sidebar />
       </S.Main>
       {trackInPleer && (
