@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatTime } from '../Playlist/Playlist'
 import {
@@ -9,21 +9,74 @@ import {
 } from '../../store/selectors/audioplayerSelectors'
 import {
   nextTrack,
+  prevTrack,
   togglePause,
   toggleRepeat,
   toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
 import * as S from './BarPlayer.styles'
 
-export const BarPlayer = ({
-  volume,
-  volumeChange,
-  setProgress,
-  audioElem,
-  duration,
-  togglePrevTreck,
-}) => {
-  const track = useSelector(currentTrackSelector)
+export const BarPlayer = () => {
+  const audioElem = useRef(null)
+  const dispatch = useDispatch()
+  const trackInPlayer = useSelector(currentTrackSelector)
+  const plauing = useSelector(isPlauingSelector)
+  const isLoop = useSelector(isLoopSelector)
+  const [volume, setvolume] = useState(0.3)
+  const [play5sec, setPlay5sec] = useState(false)
+
+  //   громкость
+  const volumeChange = (newVolume) => {
+    setvolume(newVolume)
+    audioElem.current.volume = newVolume
+  }
+
+  // обработчик кнопки ПАУЗА
+  useEffect(() => {
+    if (trackInPlayer) {
+      if (plauing) {
+        audioElem.current.play()
+      } else {
+        audioElem.current.pause()
+      }
+    }
+  }, [plauing])
+
+  // полоска прогресса трека
+  const [duration, setDuration] = useState({})
+  const onPlaying = () => {
+    const durationTime = audioElem.current.duration
+    const ct = audioElem.current.currentTime
+    setDuration({
+      length: durationTime,
+      progress: (ct / durationTime) * 100,
+    })
+
+    // переходим на следующий трек, если этот закончился
+    if (durationTime === ct) {
+      dispatch(nextTrack())
+    }
+    // для 5сек-отметки
+    if (ct > 5) {
+      setPlay5sec(true)
+    } else {
+      setPlay5sec(false)
+    }
+  }
+
+  //   перемотка
+  const setProgress = (pr) => {
+    audioElem.current.currentTime = pr
+  }
+
+  // если трек воспроизводится 5 сек, то PrevTreck переключит на начало песни
+  const togglePrevTreck = () => {
+    if (play5sec) {
+      setProgress(0)
+    } else {
+      dispatch(prevTrack())
+    }
+  }
 
   // клик по прогрессу для перемотки трека
   const clickRef = useRef()
@@ -35,31 +88,45 @@ export const BarPlayer = ({
   }
 
   return (
-    <S.Bar>
-      <S.BarPlayerTime>
-        {formatTime(audioElem.current?.currentTime)} /
-        {formatTime(duration.length)}
-      </S.BarPlayerTime>
-      <S.BarContent>
-        <S.BarPlayerProgress onClick={checkWidth} ref={clickRef}>
-          <S.BarPlayerProgressInside
-            style={{ width: `${duration.progress}%` }}
-          />
-        </S.BarPlayerProgress>
-        <S.BarPlayerBlock>
-          <S.BarPlayer>
-            <PlayerButtons togglePrevTreck={togglePrevTreck} />
-            <S.BarPlayerTrackPlay>
-              <TrackPlay trackInPlayer={track} />
-              <Likes />
-            </S.BarPlayerTrackPlay>
-          </S.BarPlayer>
-          <S.BarVolumeBlock>
-            <VolumeSlider volume={volume} volumeChange={volumeChange} />
-          </S.BarVolumeBlock>
-        </S.BarPlayerBlock>
-      </S.BarContent>
-    </S.Bar>
+    <>
+      <audio
+        autoPlay
+        controls
+        ref={audioElem}
+        onTimeUpdate={onPlaying}
+        style={{ display: 'none' }}
+        src={trackInPlayer?.track_file}
+        loop={isLoop ? 'loop' : ''}
+      >
+        <track kind="captions" />
+      </audio>
+
+      <S.Bar>
+        <S.BarPlayerTime>
+          {formatTime(audioElem.current?.currentTime)} /
+          {formatTime(duration.length)}
+        </S.BarPlayerTime>
+        <S.BarContent>
+          <S.BarPlayerProgress onClick={checkWidth} ref={clickRef}>
+            <S.BarPlayerProgressInside
+              style={{ width: `${duration.progress}%` }}
+            />
+          </S.BarPlayerProgress>
+          <S.BarPlayerBlock>
+            <S.BarPlayer>
+              <PlayerButtons togglePrevTreck={togglePrevTreck} />
+              <S.BarPlayerTrackPlay>
+                <TrackPlay track={trackInPlayer} />
+                <Likes />
+              </S.BarPlayerTrackPlay>
+            </S.BarPlayer>
+            <S.BarVolumeBlock>
+              <VolumeSlider volume={volume} volumeChange={volumeChange} />
+            </S.BarVolumeBlock>
+          </S.BarPlayerBlock>
+        </S.BarContent>
+      </S.Bar>
+    </>
   )
 }
 
@@ -115,28 +182,22 @@ const PlayerButtons = ({ togglePrevTreck }) => {
   )
 }
 
-const TrackPlay = ({ trackInPlayer }) => (
+const TrackPlay = ({ track }) => (
   <S.TrackPlayContain>
     <S.TrackPlayImage>
       <S.TrackPlaySvg alt="music">
         <use
-          xlinkHref={
-            trackInPlayer?.logo
-              ? trackInPlayer.logo
-              : 'img/icon/sprite.svg#icon-note'
-          }
+          xlinkHref={track?.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
         />
       </S.TrackPlaySvg>
     </S.TrackPlayImage>
     <S.TrackPlayAuthor>
       <S.TrackPlayAuthorLink href="http://">
-        {trackInPlayer?.author}
+        {track?.author}
       </S.TrackPlayAuthorLink>
     </S.TrackPlayAuthor>
     <S.TrackPlayAlbum>
-      <S.TrackPlayAlbumLink href="http://">
-        {trackInPlayer?.name}
-      </S.TrackPlayAlbumLink>
+      <S.TrackPlayAlbumLink href="http://">{track?.name}</S.TrackPlayAlbumLink>
     </S.TrackPlayAlbum>
   </S.TrackPlayContain>
 )
