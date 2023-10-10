@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import * as S from './NavMenu.styles'
 import UserContext from '../../context'
-import { logIn } from '../../store/actions/creators/authCreator'
+import { logInState } from '../../store/actions/creators/authCreator'
 
 export const NavMenu = () => {
   const dispatch = useDispatch()
