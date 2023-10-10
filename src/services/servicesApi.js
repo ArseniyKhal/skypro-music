@@ -18,6 +18,10 @@ export const tracksApi = createApi({
   endpoints: (builder) => ({
     getTracks: builder.query({
       query: () => '/catalog/track/all/',
+      providesTags: (result) =>
+        result
+          ? [...result.map(({ id }) => ({ type: 'Tracks', id })), DATA_TAG]
+          : [DATA_TAG],
     }),
     getFavoriteTracks: builder.query({
       query: () => '/catalog/track/favorite/all/',
@@ -36,7 +40,7 @@ export const tracksApi = createApi({
       },
       invalidatesTags: [DATA_TAG],
     }),
-    delFavoriteTrack: builder.mutation({
+    dislikeTrack: builder.mutation({
       query(id) {
         return {
           url: `/catalog/track/${id}/favorite/`,

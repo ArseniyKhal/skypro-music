@@ -1,10 +1,10 @@
-import { Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { currentTrackSelector } from '../../store/selectors/audioplayerSelectors'
 import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import * as S from '../../App.styles'
+import { Centerblock } from '../../components/Centerblock/Centerblock'
 
 // Задачи:
 // сделать правильное отображение времени трека в списке
@@ -43,7 +43,7 @@ export const Main = () => {
     <>
       <S.Main>
         <NavMenu />
-        <Outlet />
+        <Centerblock />
         <Sidebar />
       </S.Main>
       {trackInPlayer && <BarPlayer />}

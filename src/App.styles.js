@@ -130,6 +130,13 @@ export const CenterBlock = styled.div`
   align-items: center;
   gap: 20px;
 `
+export const MainCenterblock = styled.div`
+  width: auto;
+  -webkit-box-flex: 3;
+  -ms-flex-positive: 3;
+  flex-grow: 3;
+  padding: 20px 40px 20px 111px;
+`
 export const BtnLogin = {
   width: '278px',
   height: '52px',

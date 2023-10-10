@@ -1,10 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { setCurrentTrack } from '../../store/actions/creators/audioplayerCreator'
 import {
   useLikeTrackMutation,
-  //   useDislikeTrackMutation,
+  useDislikeTrackMutation,
 } from '../../services/servicesApi'
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
@@ -81,24 +80,26 @@ const Track = ({ isLoading, track }) => {
 
   // обработчик лайков
   const trackId = track?.id
-  const [like, setLike] = useState(false)
+  // как получить функцию без isSuccess????
   const [likeTrack, { isSuccess }] = useLikeTrackMutation()
-  //   const [dalFavoriteTrack] = useDelFavoriteTrackMutation()
+  const [dislikeTrack, { isError }] = useDislikeTrackMutation()
   let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
   if (pathname === '/favorites') {
     isLike = true
   }
-  //   const isLike =
-  //     (track?.stared_user ?? []).find(({ id }) => id === idUser) &&
-  //     pathname === '/favorites'
 
   const toggleLike = async (e) => {
     e.stopPropagation()
-    setLike(!like)
-    await likeTrack(trackId).unwrap()
-    //  await dalFavoriteTrack(trackId).unwrap()
-    console.log('isSuccess:', isSuccess)
+    if (isLike) {
+      await dislikeTrack(trackId).unwrap()
+      console.log('isError:', isError)
+      isLike = false
+    } else {
+      await likeTrack(trackId).unwrap()
+      console.log('isSuccess:', isSuccess)
+      isLike = true
+    }
   }
   return (
     <S.Track onClick={() => dispatch(setCurrentTrack(track))}>
