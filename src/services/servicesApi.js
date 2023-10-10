@@ -19,10 +19,6 @@ export const tracksApi = createApi({
     // получить список треков
     getTracks: builder.query({
       query: () => '/catalog/track/all/',
-      providesTags: (result) =>
-        result
-          ? [...result.map(({ id }) => ({ type: 'Tracks', id })), DATA_TAG]
-          : [DATA_TAG],
     }),
     // получить список избранных треков
     getFavoriteTracks: builder.query({
@@ -42,7 +38,6 @@ export const tracksApi = createApi({
       },
       invalidatesTags: [DATA_TAG],
     }),
-    // дизлайкнуть трек
     dislikeTrack: builder.mutation({
       query(id) {
         return {

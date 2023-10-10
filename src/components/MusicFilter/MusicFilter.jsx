@@ -4,7 +4,7 @@ import * as S from './Filter.styles'
 
 export const MusicFilter = () => {
   const [visibleFilter, setvisibleFilter] = useState(null)
-  const { data, isLoading } = useGetTracksQuery()
+  const { data } = useGetTracksQuery()
   const playlistMusic = data
   const toggleVisibleFilter = (filter) => {
     setvisibleFilter(visibleFilter === filter ? null : filter)
@@ -19,7 +19,6 @@ export const MusicFilter = () => {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
       />
       <MusicFilterItem
         title="году выпуска"
@@ -28,7 +27,6 @@ export const MusicFilter = () => {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
       />
       <MusicFilterItem
         title="жанру"
@@ -37,7 +35,6 @@ export const MusicFilter = () => {
         )}
         visibleFilter={visibleFilter}
         toggleVisibleFilter={toggleVisibleFilter}
-        isLoading={isLoading}
       />
     </S.CenterblockFilter>
   )
@@ -48,26 +45,27 @@ const MusicFilterItem = ({
   title,
   visibleFilter,
   filterList,
-  isLoading,
-}) => (
-  //   const { isLoading } = useGetTracksQuery()
+}) => {
+  const { isLoading } = useGetTracksQuery()
 
-  <S.FilterItem
-    onClick={() => toggleVisibleFilter(title)}
-    disabled={{ isLoading }}
-    style={{ pointerEvents: isLoading && 'none' }}
-  >
-    <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
-    {visibleFilter === title && (
-      <S.FilterMenu>
-        <S.FilterContent>
-          <S.FilterList>
-            {filterList.map((track) => (
-              <S.FilterText key={track}>{track}</S.FilterText>
-            ))}
-          </S.FilterList>
-        </S.FilterContent>
-      </S.FilterMenu>
-    )}
-  </S.FilterItem>
-)
+  return (
+    <S.FilterItem
+      onClick={() => toggleVisibleFilter(title)}
+      disabled={{ isLoading }}
+      style={{ pointerEvents: isLoading && 'none' }}
+    >
+      <S.FilterButton className=" _btn-text">{title}</S.FilterButton>
+      {visibleFilter === title && (
+        <S.FilterMenu>
+          <S.FilterContent>
+            <S.FilterList>
+              {filterList.map((track) => (
+                <S.FilterText key={track}>{track}</S.FilterText>
+              ))}
+            </S.FilterList>
+          </S.FilterContent>
+        </S.FilterMenu>
+      )}
+    </S.FilterItem>
+  )
+}
