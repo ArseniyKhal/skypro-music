@@ -1,15 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { setCurrentTrack } from '../../store/actions/creators/audioplayerCreator'
+import {
+  setCurrentTrack,
+  addPlaylist,
+} from '../../store/actions/creators/audioplayerCreator'
 import {
   useLikeTrackMutation,
-  //   useDislikeTrackMutation,
+  useDislikeTrackMutation,
 } from '../../services/servicesApi'
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import {
   isPlauingSelector,
   //   isShuffledSelector,
-  //   playListSelector,
+  //  playListSelector,
 } from '../../store/selectors/audioplayerSelectors'
 
 import * as S from './Playlist.styles'
@@ -75,7 +78,7 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 
 // TRACK
 const Track = ({ isLoading, track, tracks }) => {
-  const navigate = useNavigate()
+  //   const navigate = useNavigate()
   const { pathname } = useLocation()
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
@@ -93,7 +96,6 @@ const Track = ({ isLoading, track, tracks }) => {
 
   // обработчик лайков
   const trackId = track?.id
-  const [like, setLike] = useState(false)
   const [likeTrack, { isSuccess }] = useLikeTrackMutation()
   const [dislikeTrack, { isError }] = useDislikeTrackMutation()
   let isLike = false
@@ -109,11 +111,11 @@ const Track = ({ isLoading, track, tracks }) => {
   const toggleLike = (e) => {
     e.stopPropagation()
     if (isLike) {
-      await dislikeTrack(trackId).unwrap()
+      dislikeTrack(trackId).unwrap()
       console.log('isError:', isError)
       isLike = false
     } else {
-      await likeTrack(trackId).unwrap()
+      likeTrack(trackId).unwrap()
       console.log('isSuccess:', isSuccess)
       isLike = true
     }

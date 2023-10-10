@@ -1,13 +1,10 @@
+import { Outlet } from 'react-router-dom'
 import * as S from './Centerblock.styles'
-import { MusicFilter } from '../MusicFilter/MusicFilter'
-import { Playlist } from '../Playlist/Playlist'
 
-export const Centerblock = ({ tracks, isLoading, title }) => (
+export const Centerblock = () => (
   <S.MainCenterblock>
     <Search />
-    <S.CenterblockH2>{title}</S.CenterblockH2>
-    <MusicFilter />
-    <Playlist tracks={tracks} isLoading={isLoading} />
+    <Outlet />
   </S.MainCenterblock>
 )
 
