@@ -17,6 +17,7 @@ import { Centerblock } from '../../components/Centerblock/Centerblock'
 // как через return передать две переменные?
 // если теперь есть данные о пользавотеле в сторе, нежен ли контекст?
 // надо ли чистить токены при при logout?
+// как получить функцию без isSuccess????
 
 export const Main = () => {
   const trackInPlayer = useSelector(currentTrackSelector)

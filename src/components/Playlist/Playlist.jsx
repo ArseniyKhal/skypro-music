@@ -1,12 +1,20 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { setCurrentTrack } from '../../store/actions/creators/audioplayerCreator'
+import {
+  setCurrentTrack,
+  addPlaylist,
+  toggleShuffle,
+} from '../../store/actions/creators/audioplayerCreator'
 import {
   useLikeTrackMutation,
   useDislikeTrackMutation,
 } from '../../services/servicesApi'
 import { idUserSelector } from '../../store/selectors/authSelectors'
-import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
+import {
+  isPlauingSelector,
+  isShuffledSelector,
+} from '../../store/selectors/audioplayerSelectors'
+
 import * as S from './Playlist.styles'
 
 // форматер времени трека
@@ -33,7 +41,12 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
   const mapTracks =
     tracks?.length > 0 ? (
       tracks.map((track) => (
-        <Track key={track.id} isLoading={isLoading} track={track} />
+        <Track
+          key={track.id}
+          isLoading={isLoading}
+          track={track}
+          tracks={tracks}
+        />
       ))
     ) : (
       <h3>В этом плейлисте нет треков</h3>
@@ -64,11 +77,13 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 }
 
 // TRACK
-const Track = ({ isLoading, track }) => {
+const Track = ({ isLoading, track, tracks }) => {
   const { pathname } = useLocation()
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
+  const isShuffled = useSelector(isShuffledSelector)
   const dispatch = useDispatch()
+
   // логика отображения фиолетового шара на обложке при восроизведении
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
@@ -85,6 +100,7 @@ const Track = ({ isLoading, track }) => {
   const [dislikeTrack, { isError }] = useDislikeTrackMutation()
   let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
+  // тут можно использовать props showAllTracksAsLiked
   if (pathname === '/favorites') {
     isLike = true
   }
@@ -101,8 +117,18 @@ const Track = ({ isLoading, track }) => {
       isLike = true
     }
   }
+
+  // клик по треку
+  const toggleTrackClick = () => {
+    dispatch(setCurrentTrack(track))
+    dispatch(addPlaylist(tracks))
+    if (isShuffled) {
+      dispatch(toggleShuffle())
+    }
+  }
+
   return (
-    <S.Track onClick={() => dispatch(setCurrentTrack(track))}>
+    <S.Track onClick={toggleTrackClick}>
       <S.PlaylistTrack>
         <S.TrackTitle>
           <S.TrackTitleImage>
