@@ -8,7 +8,7 @@ export const tracksApi = createApi({
     baseUrl: 'https://skypro-music-api.skyeng.tech',
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.accessToken
-      console.debug('Использую токен из стора', { token })
+      // console.debug('Использую токен из стора', { token })
       if (token) {
         headers.set('authorization', `Bearer ${token}`)
       }

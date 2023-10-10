@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   setCurrentTrack,
   addPlaylist,
@@ -11,7 +11,6 @@ import {
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import {
   isPlauingSelector,
-  //   isShuffledSelector,
   //  playListSelector,
 } from '../../store/selectors/audioplayerSelectors'
 
@@ -78,11 +77,9 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 
 // TRACK
 const Track = ({ isLoading, track, tracks }) => {
-  //   const navigate = useNavigate()
   const { pathname } = useLocation()
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
-  //   const isShuffled = useSelector(isShuffledSelector)
   const dispatch = useDispatch()
 
   // логика отображения фиолетового шара на обложке при восроизведении
@@ -97,6 +94,7 @@ const Track = ({ isLoading, track, tracks }) => {
   // обработчик лайков
   const trackId = track?.id
   const [likeTrack, { isSuccess }] = useLikeTrackMutation()
+  // как тут выцепить только функцию??
   const [dislikeTrack, { isError }] = useDislikeTrackMutation()
   let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
@@ -104,6 +102,8 @@ const Track = ({ isLoading, track, tracks }) => {
   if (pathname === '/favorites') {
     isLike = true
   }
+
+  // почему так не срабатывает???
   //   const isLike =
   //     (track?.stared_user ?? []).find(({ id }) => id === idUser) &&
   //     pathname === '/favorites'
@@ -111,6 +111,9 @@ const Track = ({ isLoading, track, tracks }) => {
   const toggleLike = (e) => {
     e.stopPropagation()
     if (isLike) {
+      if (isError) {
+        useNavigate('/login')
+      }
       dislikeTrack(trackId).unwrap()
       console.log('isError:', isError)
       isLike = false
@@ -125,10 +128,6 @@ const Track = ({ isLoading, track, tracks }) => {
   const toggleTrackClick = () => {
     dispatch(setCurrentTrack(track))
     dispatch(addPlaylist(tracks))
-
-    //  if (isShuffled) {
-    //    dispatch(toggleShuffle())
-    //  }
   }
 
   return (
