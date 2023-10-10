@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+
 import {
   setCurrentTrack,
   addPlaylist,
-  toggleShuffle,
+  //   toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
 import {
   useLikeTrackMutation,
@@ -12,7 +13,8 @@ import {
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import {
   isPlauingSelector,
-  isShuffledSelector,
+  //   isShuffledSelector,
+  //   playListSelector,
 } from '../../store/selectors/audioplayerSelectors'
 
 import * as S from './Playlist.styles'
@@ -78,10 +80,11 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 
 // TRACK
 const Track = ({ isLoading, track, tracks }) => {
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
-  const isShuffled = useSelector(isShuffledSelector)
+  //   const isShuffled = useSelector(isShuffledSelector)
   const dispatch = useDispatch()
 
   // логика отображения фиолетового шара на обложке при восроизведении
@@ -98,6 +101,9 @@ const Track = ({ isLoading, track, tracks }) => {
   // как получить функцию без isSuccess????
   const [likeTrack, { isSuccess }] = useLikeTrackMutation()
   const [dislikeTrack, { isError }] = useDislikeTrackMutation()
+  if (isError) {
+    navigate('/login')
+  }
   let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
   // тут можно использовать props showAllTracksAsLiked
@@ -105,14 +111,13 @@ const Track = ({ isLoading, track, tracks }) => {
     isLike = true
   }
 
-  const toggleLike = async (e) => {
+  const toggleLike = (e) => {
     e.stopPropagation()
     if (isLike) {
-      await dislikeTrack(trackId).unwrap()
-      console.log('isError:', isError)
+      dislikeTrack(trackId).unwrap()
       isLike = false
     } else {
-      await likeTrack(trackId).unwrap()
+      likeTrack(trackId).unwrap()
       console.log('isSuccess:', isSuccess)
       isLike = true
     }
@@ -122,9 +127,10 @@ const Track = ({ isLoading, track, tracks }) => {
   const toggleTrackClick = () => {
     dispatch(setCurrentTrack(track))
     dispatch(addPlaylist(tracks))
-    if (isShuffled) {
-      dispatch(toggleShuffle())
-    }
+
+    //  if (isShuffled) {
+    //    dispatch(toggleShuffle())
+    //  }
   }
 
   return (

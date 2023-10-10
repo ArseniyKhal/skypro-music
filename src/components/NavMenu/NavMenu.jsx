@@ -13,7 +13,7 @@ export const NavMenu = () => {
   const { logOutUser } = useContext(UserContext)
   const toggleExitButton = () => {
     logOutUser()
-    dispatch(logIn(false))
+    dispatch(logInState(false))
   }
   return (
     <S.MainNav>

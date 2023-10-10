@@ -5,7 +5,7 @@ export const setTokens = (tokens) => ({
   payload: { tokens },
 })
 
-export const logIn = (data) => ({
+export const logInState = (data) => ({
   type: USER_LOGIN,
   payload: { data },
 })

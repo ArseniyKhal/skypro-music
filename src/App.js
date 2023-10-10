@@ -4,7 +4,7 @@ import * as S from './App.styles'
 import UserContext from './context'
 
 export default function App() {
-  const [userDate, setUserDate] = useState({
+  const [userData, setUserData] = useState({
     login: false,
     email: '',
     first_name: '',
@@ -13,7 +13,7 @@ export default function App() {
   })
 
   const logInUser = (user) => {
-    setUserDate({
+    setUserData({
       login: true,
       email: user.email,
       first_name: user.first_name,
@@ -23,7 +23,7 @@ export default function App() {
   }
 
   const logOutUser = () => {
-    setUserDate({
+    setUserData({
       login: false,
       email: '',
       first_name: '',
@@ -32,20 +32,20 @@ export default function App() {
     })
   }
 
-  const сontextValue = useMemo(
+  const contextValue = useMemo(
     () => ({
       logInUser,
       logOutUser,
-      userDate,
+      userData,
     }),
-    [logInUser, logOutUser, userDate],
+    [logInUser, logOutUser, userData],
   )
   return (
     <>
       <S.GlobalStyle />
       <S.Wrapper>
         <S.Container>
-          <UserContext.Provider value={сontextValue}>
+          <UserContext.Provider value={contextValue}>
             <AppRoutes />
           </UserContext.Provider>
         </S.Container>

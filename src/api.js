@@ -55,18 +55,18 @@ export async function registration({ email, password }) {
 }
 
 // Обновить токен
-// export async function refreshToken() {
-//   const response = await fetch(
-//     'https://skypro-music-api.skyeng.tech/user/token/refresh/',
-//     {
-//       method: 'POST',
-//       body: JSON.stringify({
-//         refresh: refToken,
-//       }),
-//       headers: {
-//         'content-type': 'application/json',
-//       },
-//     },
-//   )
-//   accessToken = await response.json().then()
-// }
+export async function refreshToken(refToken) {
+  const response = await fetch(
+    'https://skypro-music-api.skyeng.tech/user/token/refresh/',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        refresh: refToken,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    },
+  )
+  return response.json()
+}

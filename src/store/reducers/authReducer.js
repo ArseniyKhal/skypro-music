@@ -1,7 +1,7 @@
 import { SET_TOKEN, USER_LOGIN } from '../actions/types/constants'
 
 const initialState = {
-  logIn: false,
+  logInState: false,
   accessToken: '',
   refreshToken: '',
   username: '',
@@ -21,12 +21,12 @@ export default function authReducer(state = initialState, action) {
       }
     }
 
-    // logIn/logOut юзера
+    // logInState/logOut юзера
     case USER_LOGIN: {
       const { data } = action.payload
       return {
         ...state,
-        logIn: data,
+        logInState: !!data,
         username: data.username,
         email: data.email,
         id: data.id,

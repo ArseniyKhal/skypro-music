@@ -4,20 +4,20 @@ import { useDispatch } from 'react-redux'
 import UserContext from '../../context'
 import * as S from './Sidebar.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
-import { logIn } from '../../store/actions/creators/authCreator'
+import { logInState } from '../../store/actions/creators/authCreator'
 
 export const Sidebar = () => {
   const dispatch = useDispatch()
-  const { logOutUser, userDate } = useContext(UserContext)
+  const { logOutUser, userData } = useContext(UserContext)
   const toggleExitButton = () => {
     logOutUser()
-    dispatch(logIn(false))
+    dispatch(logInState(false))
   }
 
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>
-        <S.SidebarPersonalName>{userDate.username}</S.SidebarPersonalName>
+        <S.SidebarPersonalName>{userData.username}</S.SidebarPersonalName>
         <S.SidebarIcon>
           <svg
             onClick={() => {

@@ -3,15 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login } from '../../api'
 import * as S from './LoginReg.styles'
-import { setTokens, logIn } from '../../store/actions/creators/authCreator'
+import { setTokens, logInState } from '../../store/actions/creators/authCreator'
 import UserContext from '../../context'
 
 // почему функция login не читает пропсы напрямую из стейта ???
 // не подключаются шрифты на страницах login и reg..
 // при клике по логотипу на страницах login и reg, куда должны попадать???
 
-// логин: yellow@cat.ru
-// пароль: 8symbol!
+// логин: yellow@cat.ru			 пароль: 8symbol!
 
 export const Login = () => {
   const [inputEmail, setInputEmail] = useState('')
@@ -51,7 +50,7 @@ export const Login = () => {
         .then((user) => {
           setLoginError(user.detail)
           logInUser(user)
-          dispatch(logIn(user))
+          dispatch(logInState(user))
         })
     } catch (error) {
       console.error(error)

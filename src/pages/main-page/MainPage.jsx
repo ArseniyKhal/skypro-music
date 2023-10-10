@@ -21,7 +21,6 @@ import { Centerblock } from '../../components/Centerblock/Centerblock'
 
 export const Main = () => {
   const trackInPlayer = useSelector(currentTrackSelector)
-  //   console.log(trackInPlayer)
   //   const [getPlaylistError, setGetPlaylistError] = useState(null)
 
   // загрузка треков с API

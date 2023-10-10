@@ -3,7 +3,7 @@ const audioplayerSelector = (store) => store.audioplayer
 // список треков с API
 export const playListSelector = (store) => audioplayerSelector(store)?.playlist
 
-// список треков с API
+// перемешанный список треков с API
 export const playListShuffleSelector = (store) =>
   audioplayerSelector(store).shuffledPlaylist
 

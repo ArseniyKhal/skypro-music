@@ -25,6 +25,8 @@ export default function audioplayerReducer(state = initialState, action) {
       return {
         ...state,
         playlist,
+        shuffled: false,
+        loop: false,
       }
     }
 
