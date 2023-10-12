@@ -30,10 +30,12 @@ export const prevTrack = () => ({
   type: PREV_TRACK,
 })
 
-export const toggleRepeat = () => ({
+export const toggleRepeat = (status) => ({
   type: REPEAT_PLAYLIST,
+  payload: { status },
 })
 
-export const toggleShuffle = () => ({
+export const toggleShuffle = (status) => ({
   type: SHUFFLE_PLAYLIST,
+  payload: { status },
 })

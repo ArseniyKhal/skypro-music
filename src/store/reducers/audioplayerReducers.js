@@ -25,8 +25,6 @@ export default function audioplayerReducer(state = initialState, action) {
       return {
         ...state,
         playlist,
-        shuffled: false,
-        loop: false,
       }
     }
 
@@ -82,17 +80,19 @@ export default function audioplayerReducer(state = initialState, action) {
 
     // воспроизведение трека по кругу
     case REPEAT_PLAYLIST: {
+      const { status } = action.payload
       return {
         ...state,
-        loop: !state.loop,
+        loop: status ? false : !state.loop,
       }
     }
 
     // перемешать треки в плейлисте
     case SHUFFLE_PLAYLIST: {
+      const { status } = action.payload
       return {
         ...state,
-        shuffled: !state.shuffled,
+        shuffled: status ? false : !state.shuffled,
         shuffledPlaylist: [...state.playlist].sort(() => 0.5 - Math.random()),
       }
     }

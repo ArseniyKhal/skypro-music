@@ -2,8 +2,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   setCurrentTrack,
-  //   addPlaylist,
+  addPlaylist,
+  toggleRepeat,
+  toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
+
 import {
   useLikeTrackMutation,
   useDislikeTrackMutation,
@@ -40,7 +43,12 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
   const mapTracks =
     tracks?.length > 0 ? (
       tracks.map((track) => (
-        <Track key={track.id} isLoading={isLoading} track={track} />
+        <Track
+          key={track.id}
+          isLoading={isLoading}
+          track={track}
+          playlist={tracks}
+        />
       ))
     ) : (
       <h3>В этом плейлисте нет треков</h3>
@@ -71,7 +79,7 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 }
 
 // TRACK
-const Track = ({ isLoading, track }) => {
+const Track = ({ isLoading, track, playlist }) => {
   const { pathname } = useLocation()
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
@@ -117,7 +125,9 @@ const Track = ({ isLoading, track }) => {
   // клик по треку
   const toggleTrackClick = () => {
     dispatch(setCurrentTrack(track))
-    //  dispatch(addPlaylist(tracks))
+    dispatch(addPlaylist(playlist))
+    dispatch(toggleRepeat('off'))
+    dispatch(toggleShuffle('off'))
   }
 
   return (
