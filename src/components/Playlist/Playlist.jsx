@@ -1,20 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, 
+	// useNavigate
+ } from 'react-router-dom'
 import {
   setCurrentTrack,
   addPlaylist,
 } from '../../store/actions/creators/audioplayerCreator'
-
 import {
   useLikeTrackMutation,
   useDislikeTrackMutation,
 } from '../../services/servicesApi'
 import { idUserSelector } from '../../store/selectors/authSelectors'
-import {
-  isPlauingSelector,
-  //  playListSelector,
-} from '../../store/selectors/audioplayerSelectors'
-
+import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import * as S from './Playlist.styles'
 
 // форматер времени трека
@@ -94,9 +91,11 @@ const Track = ({ isLoading, track, playlist }) => {
 
   // обработчик лайков
   const trackId = track?.id
-  const [likeTrack, { isSuccess }] = useLikeTrackMutation()
+//   const [likeTrack, { isSuccess }] = useLikeTrackMutation()
+  const [likeTrack:data] = useLikeTrackMutation()
   // как тут выцепить только функцию??
-  const [dislikeTrack, { isError }] = useDislikeTrackMutation()
+//   const [dislikeTrack, { isError }] = useDislikeTrackMutation()
+  const [dislikeTrack:data] = useDislikeTrackMutation()
   let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
   // тут можно использовать props showAllTracksAsLiked
@@ -107,15 +106,15 @@ const Track = ({ isLoading, track, playlist }) => {
   const toggleLike = (e) => {
     e.stopPropagation()
     if (isLike) {
-      if (isError) {
-        useNavigate('/login')
-      }
+      // if (isError) {
+      //   useNavigate('/login')
+      // }
       dislikeTrack(trackId).unwrap()
-      console.log('isError:', isError)
+      // console.log('isError:', isError)
       isLike = false
     } else {
       likeTrack(trackId).unwrap()
-      console.log('isSuccess:', isSuccess)
+      // console.log('isSuccess:', isSuccess)
       isLike = true
     }
   }

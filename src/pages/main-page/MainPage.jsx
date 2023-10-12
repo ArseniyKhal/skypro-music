@@ -19,7 +19,6 @@ import * as S from '../../App.styles'
 // как получить функцию без isSuccess????
 // почему функция login не читает пропсы напрямую из стейта ???
 // не подключаются шрифты на страницах login и reg..
-// ошибка на кнопке выхода
 
 export const Main = () => {
   const trackInPlayer = useSelector(currentTrackSelector)
