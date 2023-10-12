@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import UserContext from '../../context'
 import * as S from './Sidebar.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
-import { logInState } from '../../store/actions/creators/authCreator'
+import { logInState, setTokens } from '../../store/actions/creators/authCreator'
 
 export const Sidebar = () => {
   const dispatch = useDispatch()
@@ -12,6 +12,8 @@ export const Sidebar = () => {
   const toggleExitButton = () => {
     logOutUser()
     dispatch(logInState(false))
+    dispatch(setTokens(false))
+    localStorage.removeItem('userSkyproMusic')
   }
 
   return (

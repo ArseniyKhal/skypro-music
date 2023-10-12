@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import * as S from './NavMenu.styles'
 import UserContext from '../../context'
-import { logInState } from '../../store/actions/creators/authCreator'
+import { logInState, setTokens } from '../../store/actions/creators/authCreator'
 
 export const NavMenu = () => {
   const dispatch = useDispatch()
@@ -14,6 +14,8 @@ export const NavMenu = () => {
   const toggleExitButton = () => {
     logOutUser()
     dispatch(logInState(false))
+    dispatch(setTokens(false))
+    localStorage.removeItem('userSkyproMusic')
   }
   return (
     <S.MainNav>

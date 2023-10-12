@@ -6,10 +6,6 @@ import * as S from './LoginReg.styles'
 import { setTokens, logInState } from '../../store/actions/creators/authCreator'
 import UserContext from '../../context'
 
-// почему функция login не читает пропсы напрямую из стейта ???
-// не подключаются шрифты на страницах login и reg..
-// при клике по логотипу на страницах login и reg, куда должны попадать???
-
 // логин: yellow@cat.ru			 пароль: 8symbol!
 
 export const Login = () => {
@@ -42,6 +38,7 @@ export const Login = () => {
         .then(async ({ loginRes, tokenRes }) => {
           if (loginRes.status === 200) {
             logInUser({ login: true })
+            localStorage.setItem('userSkyproMusic', true)
             navigate('/')
           }
           const user = await loginRes.json()
@@ -55,6 +52,15 @@ export const Login = () => {
           // запись юзера и токена в state
           dispatch(logInState(user))
           dispatch(setTokens(token))
+          // запись юзера и токена в localStorage
+          const userInfo = JSON.stringify({
+            email,
+            password,
+            username: user.username,
+            id: user.id,
+            refresh: token.refresh,
+          })
+          localStorage.setItem('userSkyproMusic', userInfo)
         })
     } catch (error) {
       console.error(error)
