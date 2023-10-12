@@ -39,18 +39,22 @@ export const Login = () => {
       setLoginError('')
       setIsLoadingLogin(true)
       await login({ email, password })
-        .then(({ loginRes, tokenJsonData }) => {
+        .then(async ({ loginRes, tokenRes }) => {
           if (loginRes.status === 200) {
             logInUser({ login: true })
             navigate('/')
-            dispatch(setTokens(tokenJsonData))
           }
-          return loginRes.json()
+          const user = await loginRes.json()
+          const token = await tokenRes.json()
+          return { user, token }
         })
-        .then((user) => {
+        .then(({ user, token }) => {
           setLoginError(user.detail)
+          // запись юзера в context
           logInUser(user)
+          // запись юзера и токена в state
           dispatch(logInState(user))
+          dispatch(setTokens(token))
         })
     } catch (error) {
       console.error(error)

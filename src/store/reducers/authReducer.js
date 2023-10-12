@@ -1,4 +1,8 @@
-import { SET_TOKEN, USER_LOGIN } from '../actions/types/constants'
+import {
+  SET_TOKENS,
+  SET_ACC_TOKEN,
+  USER_LOGIN,
+} from '../actions/types/constants'
 
 const initialState = {
   logInState: false,
@@ -12,12 +16,21 @@ const initialState = {
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
     // получаем токены и записываем в state
-    case SET_TOKEN: {
+    case SET_TOKENS: {
       const { tokens } = action.payload
       return {
         ...state,
         accessToken: tokens.access,
         refreshToken: tokens.refresh,
+      }
+    }
+
+    // перезапись access токена в стейт
+    case SET_ACC_TOKEN: {
+      const { accToken } = action.payload
+      return {
+        ...state,
+        accessToken: accToken,
       }
     }
 

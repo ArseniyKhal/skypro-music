@@ -31,8 +31,7 @@ export async function login({ email, password }) {
       },
     }),
   ])
-  const tokenJsonData = await tokenRes.json()
-  return { loginRes, tokenJsonData }
+  return { loginRes, tokenRes }
 }
 
 // Регистрация

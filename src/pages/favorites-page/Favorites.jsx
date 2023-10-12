@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+// import { useNavigate } from 'react-router-dom'
+// import { useSelector } from 'react-redux'
 import { useGetFavoriteTracksQuery } from '../../services/servicesApi'
 import { Playlist } from '../../components/Playlist/Playlist'
-import { refreshTokenSelector } from '../../store/selectors/authSelectors'
-import { refreshToken } from '../../api'
+// import { refreshTokenSelector } from '../../store/selectors/authSelectors'
+// import { refreshToken } from '../../api'
 
 const titleStyle = {
   fontStyle: 'normal',
@@ -14,14 +14,17 @@ const titleStyle = {
   marginBottom: '45px',
 }
 export const Favorites = () => {
-  const navigate = useNavigate()
-  const refToken = useSelector(refreshTokenSelector)
-  const { data, isLoading, isError } = useGetFavoriteTracksQuery()
-  if (isError) {
-    navigate('/login')
-
-    refreshToken(refToken)
-  }
+  //   const navigate = useNavigate()
+  //   const refToken = useSelector(refreshTokenSelector)
+  const {
+    data,
+    isLoading,
+    //  isError
+  } = useGetFavoriteTracksQuery()
+  //   if (isError) {
+  //     navigate('/login')
+  //     refreshToken(refToken)
+  //   }
   return (
     <>
       <h2 style={titleStyle}>Мои треки</h2>

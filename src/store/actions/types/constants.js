@@ -7,5 +7,6 @@ export const PREV_TRACK = 'PREV_TRACK'
 export const REPEAT_PLAYLIST = 'REPEAT_PLAYLIST'
 export const SHUFFLE_PLAYLIST = 'SHUFFLE_PLAYLIST'
 // auth constants
-export const SET_TOKEN = 'SET_TOKEN'
+export const SET_TOKENS = 'SET_TOKEN'
+export const SET_ACC_TOKEN = 'SET_ACC_TOKEN'
 export const USER_LOGIN = 'USER_LOGIN'
