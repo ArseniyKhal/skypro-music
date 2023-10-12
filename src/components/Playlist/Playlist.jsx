@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   setCurrentTrack,
-  addPlaylist,
+  //   addPlaylist,
 } from '../../store/actions/creators/audioplayerCreator'
 import {
   useLikeTrackMutation,
@@ -40,12 +40,7 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
   const mapTracks =
     tracks?.length > 0 ? (
       tracks.map((track) => (
-        <Track
-          key={track.id}
-          isLoading={isLoading}
-          track={track}
-          tracks={tracks}
-        />
+        <Track key={track.id} isLoading={isLoading} track={track} />
       ))
     ) : (
       <h3>В этом плейлисте нет треков</h3>
@@ -76,7 +71,7 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 }
 
 // TRACK
-const Track = ({ isLoading, track, tracks }) => {
+const Track = ({ isLoading, track }) => {
   const { pathname } = useLocation()
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
@@ -86,7 +81,7 @@ const Track = ({ isLoading, track, tracks }) => {
   const trackInPleer = useSelector((state) => state.audioplayer.track)
   let visibolbubbleOut = false
   if (trackInPleer) {
-    if (trackInPleer.id === track.id) {
+    if (trackInPleer.id === track?.id) {
       visibolbubbleOut = true
     }
   }
@@ -102,11 +97,6 @@ const Track = ({ isLoading, track, tracks }) => {
   if (pathname === '/favorites') {
     isLike = true
   }
-
-  // почему так не срабатывает???
-  //   const isLike =
-  //     (track?.stared_user ?? []).find(({ id }) => id === idUser) &&
-  //     pathname === '/favorites'
 
   const toggleLike = (e) => {
     e.stopPropagation()
@@ -127,7 +117,7 @@ const Track = ({ isLoading, track, tracks }) => {
   // клик по треку
   const toggleTrackClick = () => {
     dispatch(setCurrentTrack(track))
-    dispatch(addPlaylist(tracks))
+    //  dispatch(addPlaylist(tracks))
   }
 
   return (
