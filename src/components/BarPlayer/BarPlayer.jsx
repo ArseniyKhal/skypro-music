@@ -6,6 +6,7 @@ import {
   isPlauingSelector,
   isLoopSelector,
   isShuffledSelector,
+  playListSelector,
 } from '../../store/selectors/audioplayerSelectors'
 import {
   nextTrack,
@@ -24,6 +25,7 @@ export const BarPlayer = () => {
   const isLoop = useSelector(isLoopSelector)
   const [volume, setvolume] = useState(0.3)
   const [play5sec, setPlay5sec] = useState(false)
+  const playlist = useSelector(playListSelector)
 
   //   громкость
   const volumeChange = (newVolume) => {
@@ -86,6 +88,12 @@ export const BarPlayer = () => {
     const divProgress = (offset / width) * 100
     setProgress((divProgress / 100) * duration.length)
   }
+
+  // сброс кнопок loop и shuffle при изменении плейлиста
+  useEffect(() => {
+    dispatch(toggleRepeat('off'))
+    dispatch(toggleShuffle('off'))
+  }, [playlist])
 
   return (
     <>

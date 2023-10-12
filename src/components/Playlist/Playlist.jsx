@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import {
   setCurrentTrack,
   addPlaylist,
-  toggleRepeat,
-  toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
 
 import {
@@ -126,8 +124,6 @@ const Track = ({ isLoading, track, playlist }) => {
   const toggleTrackClick = () => {
     dispatch(setCurrentTrack(track))
     dispatch(addPlaylist(playlist))
-    dispatch(toggleRepeat('off'))
-    dispatch(toggleShuffle('off'))
   }
 
   return (
