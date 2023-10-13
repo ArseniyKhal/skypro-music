@@ -1,7 +1,4 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation, 
-	// useNavigate
- } from 'react-router-dom'
 import {
   setCurrentTrack,
   addPlaylist,
@@ -34,7 +31,12 @@ export const formatTime = (t) => {
   return `${hour}${min}:${sec}`
 }
 // PLAYLIST
-export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
+export const Playlist = ({
+  tracks,
+  isLoading,
+  error,
+  showAllTracksAsLiked,
+}) => {
   const mapTracks =
     tracks?.length > 0 ? (
       tracks.map((track) => (
@@ -43,12 +45,12 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
           isLoading={isLoading}
           track={track}
           playlist={tracks}
+          showAllTracksAsLiked={showAllTracksAsLiked}
         />
       ))
     ) : (
       <h3>В этом плейлисте нет треков</h3>
     )
-
   return (
     <S.CenterblockContent>
       <S.ContentTitle>
@@ -61,7 +63,12 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
           </S.PlaylistTitleSvg>
         </S.PlaylistTitleCol4>
       </S.ContentTitle>
-      {getPlaylistError && <p>{getPlaylistError}</p>}
+      {error && (
+        <p>
+          Не удалось загрузить плейлист, попробуйте позже. Ошибка:{' '}
+          {error.message}
+        </p>
+      )}
       <S.ContentPlaylist>
         {isLoading
           ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
@@ -74,8 +81,7 @@ export const Playlist = ({ tracks, isLoading, getPlaylistError }) => {
 }
 
 // TRACK
-const Track = ({ isLoading, track, playlist }) => {
-  const { pathname } = useLocation()
+const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
   const idUser = useSelector(idUserSelector)
   const plauing = useSelector(isPlauingSelector)
   const dispatch = useDispatch()
@@ -91,30 +97,26 @@ const Track = ({ isLoading, track, playlist }) => {
 
   // обработчик лайков
   const trackId = track?.id
-//   const [likeTrack, { isSuccess }] = useLikeTrackMutation()
-  const [likeTrack:data] = useLikeTrackMutation()
-  // как тут выцепить только функцию??
-//   const [dislikeTrack, { isError }] = useDislikeTrackMutation()
-  const [dislikeTrack:data] = useDislikeTrackMutation()
+  const [likeTrack] = useLikeTrackMutation()
+  const [dislikeTrack, { error: dislikeError }] = useDislikeTrackMutation()
+  if (dislikeError) {
+    console.log(dislikeError.originalStatus)
+  }
   let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
-  // тут можно использовать props showAllTracksAsLiked
-  if (pathname === '/favorites') {
+  if (showAllTracksAsLiked) {
     isLike = true
   }
-
   const toggleLike = (e) => {
     e.stopPropagation()
     if (isLike) {
-      // if (isError) {
-      //   useNavigate('/login')
-      // }
-      dislikeTrack(trackId).unwrap()
-      // console.log('isError:', isError)
+      dislikeTrack(trackId)
       isLike = false
     } else {
-      likeTrack(trackId).unwrap()
-      // console.log('isSuccess:', isSuccess)
+      likeTrack(trackId)
+        .unwrap()
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error))
       isLike = true
     }
   }

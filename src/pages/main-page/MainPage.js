@@ -4,7 +4,7 @@ import { NavMenu } from '../../components/NavMenu/NavMenu'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import { BarPlayer } from '../../components/BarPlayer/BarPlayer'
 import { Centerblock } from '../../components/Centerblock/Centerblock'
-import { logInState, setTokens } from '../../store/actions/creators/authCreator'
+import { logInState } from '../../store/actions/creators/authCreator'
 import * as S from '../../App.styles'
 
 // Задачи:
@@ -13,10 +13,8 @@ import * as S from '../../App.styles'
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
 // отладить адаптивность
 // неправильно отображение фильтра по дате
-// getPlaylistError надо?
 // если теперь есть данные о пользавотеле в сторе, нежен ли контекст?
 // надо ли чистить токены при logout?
-// как получить функцию без isSuccess????
 // почему функция login не читает пропсы напрямую из стейта ???
 // не подключаются шрифты на страницах login и reg..
 
@@ -26,25 +24,7 @@ export const Main = () => {
   const dispatch = useDispatch()
   if (userInfo) {
     dispatch(logInState(userInfo))
-    dispatch(setTokens(userInfo))
   }
-  //   const [getPlaylistError, setGetPlaylistError] = useState(null)
-
-  // загрузка треков с API
-  //   const fetchTracks = async () => {
-  //     try {
-  //       setGetPlaylistError('')
-  //		const tracks = await getPlaylist()
-  //       if (playlist) {
-  //       }
-  //     } catch (error) {
-  //       console.error(error)
-  //       setGetPlaylistError(
-  //         `Не удалось загрузить плейлист, попробуйте позже. Ошибка: ${error.message}`,
-  //       )
-  //     }
-  //     //  finally {    }
-  //   }
 
   return (
     <>

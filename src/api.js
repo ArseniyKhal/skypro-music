@@ -31,7 +31,15 @@ export async function login({ email, password }) {
       },
     }),
   ])
-  return { loginRes, tokenRes }
+  const loginJsonData = await loginRes.json()
+  const tokenJsonData = await tokenRes.json()
+  if (!loginRes.ok) {
+    throw new Error(loginJsonData.detail ?? 'ошибка сервера')
+  }
+  if (!tokenRes.ok) {
+    throw new Error(tokenJsonData.detail ?? 'ошибка сервера')
+  }
+  return { ...loginJsonData, ...tokenJsonData }
 }
 
 // Регистрация

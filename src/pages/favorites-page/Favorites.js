@@ -10,11 +10,16 @@ const titleStyle = {
   marginBottom: '45px',
 }
 export const Favorites = () => {
-  const { data, isLoading } = useGetFavoriteTracksQuery()
+  const { data, isLoading, error } = useGetFavoriteTracksQuery()
   return (
     <>
       <h2 style={titleStyle}>Мои треки</h2>
-      <Playlist tracks={data} isLoading={isLoading} />
+      <Playlist
+        tracks={data}
+        isLoading={isLoading}
+        error={error}
+        showAllTracksAsLiked
+      />
     </>
   )
 }

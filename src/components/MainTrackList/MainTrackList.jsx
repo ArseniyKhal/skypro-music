@@ -12,13 +12,13 @@ const titleStyle = {
 }
 
 export const MainTrackList = () => {
-  const { data, isLoading } = useGetTracksQuery()
+  const { data, isLoading, error } = useGetTracksQuery()
 
   return (
     <>
       <h2 style={titleStyle}>Треки</h2>
       <MusicFilter />
-      <Playlist tracks={data} isLoading={isLoading} />
+      <Playlist tracks={data} isLoading={isLoading} error={error} />
     </>
   )
 }
