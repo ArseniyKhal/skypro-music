@@ -6,7 +6,7 @@ import {
   PREV_TRACK,
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
-} from '../actions/types/tracks'
+} from '../actions/types/constants'
 
 const initialState = {
   plauing: false,
@@ -17,7 +17,7 @@ const initialState = {
   shuffledPlaylist: [],
 }
 
-export default function tracksReducer(state = initialState, action) {
+export default function audioplayerReducer(state = initialState, action) {
   switch (action.type) {
     // загрузка плей-листа
     case ADD_PLAYLIST: {
@@ -30,10 +30,10 @@ export default function tracksReducer(state = initialState, action) {
 
     // загрузка трека в плеер
     case SET_CURRENT_TRACK: {
-      const { id } = action.payload
+      const { track } = action.payload
       return {
         ...state,
-        track: state.playlist.filter((item) => item.id === id)[0],
+        track,
         plauing: true,
       }
     }
@@ -80,17 +80,19 @@ export default function tracksReducer(state = initialState, action) {
 
     // воспроизведение трека по кругу
     case REPEAT_PLAYLIST: {
+      const { status } = action.payload
       return {
         ...state,
-        loop: !state.loop,
+        loop: status ? false : !state.loop,
       }
     }
 
     // перемешать треки в плейлисте
     case SHUFFLE_PLAYLIST: {
+      const { status } = action.payload
       return {
         ...state,
-        shuffled: !state.shuffled,
+        shuffled: status ? false : !state.shuffled,
         shuffledPlaylist: [...state.playlist].sort(() => 0.5 - Math.random()),
       }
     }

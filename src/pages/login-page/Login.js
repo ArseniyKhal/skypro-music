@@ -1,15 +1,12 @@
 import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { login } from '../../api'
 import * as S from './LoginReg.styles'
+import { logInState } from '../../store/actions/creators/authCreator'
 import UserContext from '../../context'
 
-// почему функция login не читает пропсы напрямую из стейта ???
-// не подключаются шрифты на страницах login и reg..
-// при клике по логотипу на страницах login и reg, куда должны попадать???
-
-// логин: yellow@cat.ru
-// пароль: 8symbol!
+// логин: yellow@cat.ru			 пароль: 8symbol!
 
 export const Login = () => {
   const [inputEmail, setInputEmail] = useState('')
@@ -18,6 +15,7 @@ export const Login = () => {
   const [loginError, setLoginError] = useState('')
   const { logInUser } = useContext(UserContext)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   // авторизуемся
   const email = inputEmail
@@ -36,21 +34,42 @@ export const Login = () => {
       }
       setLoginError('')
       setIsLoadingLogin(true)
-      await login({ email, password })
-        .then((response) => {
-          if (response.status === 200) {
-            logInUser({ login: true })
-            navigate('/')
-          }
-          return response.json()
-        })
-        .then((user) => {
-          setLoginError(user.detail)
-          logInUser(user)
-        })
+      const loginData = await login({ email, password })
+      dispatch(logInState(loginData))
+      logInUser(loginData)
+      // запись юзера и токена в localStorage
+      const userInfo = JSON.stringify({
+        email: loginData.email,
+        firstName: loginData.first_name,
+        lastName: loginData.last_name,
+        username: loginData.username,
+        id: loginData.id,
+        refresh: loginData.refresh,
+        access: loginData.access,
+      })
+      localStorage.setItem('userSkyproMusic', userInfo)
+      navigate('/')
+
+      //   .then(async ({ loginRes, tokenRes }) => {
+      //     if (loginRes.status === 200) {
+      //       logInUser({ login: true })
+      //       localStorage.setItem('userSkyproMusic', true)
+      //       navigate('/')
+      //     }
+      //     const user = await loginRes.json()
+      //     const token = await tokenRes.json()
+      //     return { user, token }
+      //   })
+      //   .then(({ user, token }) => {
+      //     setLoginError(user.detail)
+      //     // запись юзера в context
+      //     logInUser(user)
+      //     // запись юзера и токена в state
+      //     dispatch(logInState(user))
+      //   })
     } catch (error) {
       console.error(error)
-      setLoginError(`Не удалось... Ошибка: ${error.message}`)
+      setLoginError(`Ошибка: ${error.message}`)
     } finally {
       setIsLoadingLogin(false)
     }

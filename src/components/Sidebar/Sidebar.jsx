@@ -1,19 +1,28 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
+import { useDispatch } from 'react-redux'
 import UserContext from '../../context'
 import * as S from './Sidebar.styles'
+import { useGetTracksQuery } from '../../services/servicesApi'
+import { logInState } from '../../store/actions/creators/authCreator'
 
-export const Sidebar = ({ isLoading }) => {
-  const { logOutUser, userDate } = useContext(UserContext)
+export const Sidebar = () => {
+  const dispatch = useDispatch()
+  const { logOutUser, userData } = useContext(UserContext)
+  const toggleExitButton = () => {
+    logOutUser()
+    dispatch(logInState(false))
+    localStorage.removeItem('userSkyproMusic')
+  }
 
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>
-        <S.SidebarPersonalName>{userDate.username}</S.SidebarPersonalName>
+        <S.SidebarPersonalName>{userData.username}</S.SidebarPersonalName>
         <S.SidebarIcon>
           <svg
             onClick={() => {
-              logOutUser()
+              toggleExitButton()
             }}
             alt="logout"
           >
@@ -26,19 +35,16 @@ export const Sidebar = ({ isLoading }) => {
           <SidebarItem
             imgUrl="img/playlist01.png"
             imgAlt={"day's playlist"}
-            isLoading={isLoading}
             id={1}
           />
           <SidebarItem
             imgUrl="img/playlist02.png"
             imgAlt={"day's playlist"}
-            isLoading={isLoading}
             id={2}
           />
           <SidebarItem
             imgUrl="img/playlist03.png"
             imgAlt={"day's playlist"}
-            isLoading={isLoading}
             id={3}
           />
         </S.SidebarList>
@@ -47,11 +53,14 @@ export const Sidebar = ({ isLoading }) => {
   )
 }
 
-const SidebarItem = ({ imgUrl, imgAlt, isLoading, id }) => (
-  <S.SidebarItem>
-    <Link to={`/category/${id}`}>
-      <S.SidebarImg src={imgUrl} alt={imgAlt} />
-    </Link>
-    {isLoading && <div className="skeleton" />}
-  </S.SidebarItem>
-)
+const SidebarItem = ({ imgUrl, imgAlt, id }) => {
+  const { isLoading } = useGetTracksQuery()
+  return (
+    <S.SidebarItem>
+      <Link to={`/category/${id}`}>
+        <S.SidebarImg src={imgUrl} alt={imgAlt} />
+      </Link>
+      {isLoading && <div className="skeleton" />}
+    </S.SidebarItem>
+  )
+}

@@ -6,16 +6,16 @@ import {
   PREV_TRACK,
   REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
-} from '../types/tracks'
+} from '../types/constants'
 
 export const addPlaylist = (playlist) => ({
   type: ADD_PLAYLIST,
   payload: { playlist },
 })
 
-export const setCurrentTrack = ({ id }) => ({
+export const setCurrentTrack = (track) => ({
   type: SET_CURRENT_TRACK,
-  payload: { id },
+  payload: { track },
 })
 
 export const togglePause = () => ({
@@ -30,10 +30,12 @@ export const prevTrack = () => ({
   type: PREV_TRACK,
 })
 
-export const toggleRepeat = () => ({
+export const toggleRepeat = (status) => ({
   type: REPEAT_PLAYLIST,
+  payload: { status },
 })
 
-export const toggleShuffle = () => ({
+export const toggleShuffle = (status) => ({
   type: SHUFFLE_PLAYLIST,
+  payload: { status },
 })

@@ -1,13 +1,21 @@
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import * as S from './NavMenu.styles'
 import UserContext from '../../context'
+import { logInState } from '../../store/actions/creators/authCreator'
 
 export const NavMenu = () => {
+  const dispatch = useDispatch()
+
   // Обработчик нажатия на бургер
   const [showNavMenu, setShowNavMenu] = useState(false)
   const { logOutUser } = useContext(UserContext)
-
+  const toggleExitButton = () => {
+    logOutUser()
+    dispatch(logInState(false))
+    localStorage.removeItem('userSkyproMusic')
+  }
   return (
     <S.MainNav>
       <S.NavLogo>
@@ -42,7 +50,7 @@ export const NavMenu = () => {
               <Link
                 to="/login"
                 onClick={() => {
-                  logOutUser()
+                  toggleExitButton()
                 }}
                 style={S.MenuLink}
               >

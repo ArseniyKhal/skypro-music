@@ -7,11 +7,10 @@ export async function getPlaylist() {
   return response.json()
 }
 
-// Авторизация
+// Авторизация + tokens
 export async function login({ email, password }) {
-  const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/login/',
-    {
+  const [loginRes, tokenRes] = await Promise.all([
+    fetch('https://skypro-music-api.skyeng.tech/user/login/', {
       method: 'POST',
       body: JSON.stringify({
         email,
@@ -20,9 +19,27 @@ export async function login({ email, password }) {
       headers: {
         'content-type': 'application/json',
       },
-    },
-  )
-  return response
+    }),
+    fetch('https://skypro-music-api.skyeng.tech/user/token/', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  ])
+  const loginJsonData = await loginRes.json()
+  const tokenJsonData = await tokenRes.json()
+  if (!loginRes.ok) {
+    throw new Error(loginJsonData.detail ?? 'ошибка сервера')
+  }
+  if (!tokenRes.ok) {
+    throw new Error(tokenJsonData.detail ?? 'ошибка сервера')
+  }
+  return { ...loginJsonData, ...tokenJsonData }
 }
 
 // Регистрация
@@ -41,43 +58,22 @@ export async function registration({ email, password }) {
       },
     },
   )
-  console.log(response)
-
   return response
 }
 
-// Получить токен
-// export async function getToken() {
-//   const response = await fetch(
-//     'https://skypro-music-api.skyeng.tech/user/token/',
-//     {
-//       method: 'POST',
-//       body: JSON.stringify({
-//         email: emailUser,
-//         password: passwordUser,
-//       }),
-//       headers: {
-//         'content-type': 'application/json',
-//       },
-//     },
-//   )
-//   const data = await response.json()
-//   return data
-// }
-
 // Обновить токен
-// export async function refreshToken() {
-//   const response = await fetch(
-//     'https://skypro-music-api.skyeng.tech/user/token/refresh/',
-//     {
-//       method: 'POST',
-//       body: JSON.stringify({
-//         refresh: refToken,
-//       }),
-//       headers: {
-//         'content-type': 'application/json',
-//       },
-//     },
-//   )
-//   accessToken = await response.json().then()
-// }
+export async function refreshToken(refToken) {
+  const response = await fetch(
+    'https://skypro-music-api.skyeng.tech/user/token/refresh/',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        refresh: refToken,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    },
+  )
+  return response.json()
+}
