@@ -11,8 +11,8 @@ import { logInState } from '../../store/actions/creators/authCreator'
 export const saveUserInfoInLocalStorage = (loginData) => {
   const userInfo = JSON.stringify({
     email: loginData.email,
-    firstName: loginData.first_name,
-    lastName: loginData.last_name,
+    first_name: loginData.first_name,
+    last_name: loginData.last_name,
     username: loginData.username,
     id: loginData.id,
     refresh: loginData.refresh,

@@ -66,20 +66,3 @@ export async function registration({ email, password }) {
   }
   return regJsonData
 }
-
-// Обновить токен
-export async function refreshToken(refToken) {
-  const response = await fetch(
-    'https://skypro-music-api.skyeng.tech/user/token/refresh/',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        refresh: refToken,
-      }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    },
-  )
-  return response.json()
-}

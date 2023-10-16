@@ -1,16 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {
-  setAccessToken,
-  logInState,
-} from '../store/actions/creators/authCreator'
-import { refreshToken } from '../api'
+import { logInState } from '../store/actions/creators/authCreator'
 
 const DATA_TAG = 'Tracks'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://skypro-music-api.skyeng.tech',
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.accessToken
+    const token = getState().auth.access
     // console.debug('Использую токен из стора', { token })
     if (token) {
       headers.set('authorization', `Bearer ${token}`)
@@ -20,24 +16,53 @@ const baseQuery = fetchBaseQuery({
 })
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  const refToken = api.getState().auth.refreshToken
-  let result = await baseQuery(args, api, extraOptions)
-  if (result.error && result.error.status === 401) {
-    // пробуем получить новый токен
-    //  console.log('пробуем получить новый токен')
-    const refreshResult = await refreshToken(refToken)
-    if (refreshResult.access) {
-      // сохраняем новый токен
-      // console.log('сохраняем новый токен')
-      api.dispatch(setAccessToken(refreshResult.access))
-      // повторяем первоначальный запрос
-      result = await baseQuery(args, api, extraOptions)
-    } else {
-      api.dispatch(logInState(false))
-      // console.log('на выход!')
-    }
+  const result = await baseQuery(args, api, extraOptions)
+  if (result?.error?.status !== 401) {
+    return result
   }
-  return result
+
+  // Функция которая отчищает данные о юзере в сторе и отправляет на страницу логина
+  const forceLogout = () => {
+    console.log('на выход!')
+    api.dispatch(logInState(false))
+    window.location.href = '/login'
+  }
+
+  const { auth } = api.getState()
+  // Если в сторе нет refresh токена, разлогиниваем его и отправляем авторизоваться руками
+  if (!auth.refresh) {
+    return forceLogout()
+  }
+
+  // Делаем запрос за новым access токеном в API обновления токена
+  console.log('Делаем запрос за новым access токеном')
+  const refreshResult = await baseQuery(
+    {
+      url: '/user/token/refresh/',
+      method: 'POST',
+      body: {
+        refresh: auth.refresh,
+      },
+    },
+    api,
+    extraOptions,
+  )
+
+  // Если api обновления токена не вернуло новый access токен, то разлогиниваем юзера
+  if (!refreshResult.data.access) {
+    return forceLogout()
+  }
+  // получили новый access токен, сохраняем его в стор
+  api.dispatch(logInState({ ...auth, access: refreshResult.data.access }))
+  // Делаем повторный запрос с теми же параметрами что и исходный
+  const retryResult = await baseQuery(args, api, extraOptions)
+
+  // Если повторный запрос выполнился с 401 кодом, то что-то совсем пошло не так,
+  // отправляем на принудительную ручную авторизацию
+  if (retryResult?.error?.status === 401) {
+    return forceLogout()
+  }
+  return retryResult
 }
 
 export const tracksApi = createApi({

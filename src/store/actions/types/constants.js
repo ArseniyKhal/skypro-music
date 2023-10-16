@@ -8,4 +8,3 @@ export const REPEAT_PLAYLIST = 'REPEAT_PLAYLIST'
 export const SHUFFLE_PLAYLIST = 'SHUFFLE_PLAYLIST'
 // auth constants
 export const USER_LOGIN = 'USER_LOGIN'
-export const SET_ACC_TOKEN = 'SET_ACC_TOKEN'
