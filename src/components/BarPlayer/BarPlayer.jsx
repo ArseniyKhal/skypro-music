@@ -152,19 +152,21 @@ const PlayerButtons = ({ togglePrevTreck }) => {
     <S.PlayerControls>
       <S.PlayerBtnPrev onClick={togglePrevTreck}>
         <S.PlayerBtnPrevSvg alt="prev">
-          <use xlinkHref="img/icon/sprite.svg#icon-prev" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-prev" />
         </S.PlayerBtnPrevSvg>
       </S.PlayerBtnPrev>
       <S.PlayerBtnPlay onClick={() => dispatch(togglePause())}>
         <S.PlayerBtnPlaySvg alt="play">
           <use
-            xlinkHref={`img/icon/sprite.svg#icon-${plauing ? 'pause' : 'play'}`}
+            xlinkHref={`/img/icon/sprite.svg#icon-${
+              plauing ? 'pause' : 'play'
+            }`}
           />
         </S.PlayerBtnPlaySvg>
       </S.PlayerBtnPlay>
       <S.PlayerBtnNext onClick={() => dispatch(nextTrack())}>
         <S.PlayerBtnNextSvg alt="next">
-          <use xlinkHref="img/icon/sprite.svg#icon-next" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-next" />
         </S.PlayerBtnNextSvg>
       </S.PlayerBtnNext>
       <S.PlayerBtnRepeat
@@ -175,7 +177,7 @@ const PlayerButtons = ({ togglePrevTreck }) => {
           style={{ stroke: `${loop ? '#ACACAC' : '#696969'}` }}
           alt="repeat"
         >
-          <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
         </S.PlayerBtnRepeatSvg>
       </S.PlayerBtnRepeat>
       <S.PlayerBtnShuffle
@@ -186,7 +188,7 @@ const PlayerButtons = ({ togglePrevTreck }) => {
           style={{ stroke: `${shuffled ? '#ACACAC' : '#696969'}` }}
           alt="shuffle"
         >
-          <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
         </S.PlayerBtnShuffleSvg>
       </S.PlayerBtnShuffle>
     </S.PlayerControls>
@@ -198,7 +200,9 @@ const TrackPlay = ({ track }) => (
     <S.TrackPlayImage>
       <S.TrackPlaySvg alt="music">
         <use
-          xlinkHref={track?.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
+          xlinkHref={
+            track?.logo ? track.logo : '/img/icon/sprite.svg#icon-note'
+          }
         />
       </S.TrackPlaySvg>
     </S.TrackPlayImage>
@@ -225,7 +229,7 @@ const Likes = ({ trackId }) => {
           className="track-play__like-svg"
           alt="like"
         >
-          <use xlinkHref="img/icon/sprite.svg#icon-like" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-like" />
         </S.TrackPlayLikesSvg>
       </S.TrackPlayLikes>
       <S.TrackPlayDislikes className=" _btn-icon">
@@ -234,7 +238,7 @@ const Likes = ({ trackId }) => {
           className="track-play__dislike-svg"
           alt="dislike"
         >
-          <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
         </S.TrackPlayDislikesSvg>
       </S.TrackPlayDislikes>
     </S.TrackPlayLikesDis>
@@ -258,7 +262,9 @@ const VolumeSlider = ({ volume, volumeChange }) => {
       <S.VolumeImage onClick={toggleVolume}>
         <S.VolumeSvg alt="volume">
           <use
-            xlinkHref={`img/icon/sprite.svg#icon-volume${+volume ? '' : 'non'}`}
+            xlinkHref={`/img/icon/sprite.svg#icon-volume${
+              +volume ? '' : 'non'
+            }`}
           />
         </S.VolumeSvg>
       </S.VolumeImage>

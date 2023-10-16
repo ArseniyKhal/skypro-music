@@ -59,7 +59,7 @@ export const Playlist = ({
         <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
         <S.PlaylistTitleCol4>
           <S.PlaylistTitleSvg alt="time">
-            <use xlinkHref="img/icon/sprite.svg#icon-watch" />
+            <use xlinkHref="/img/icon/sprite.svg#icon-watch" />
           </S.PlaylistTitleSvg>
         </S.PlaylistTitleCol4>
       </S.ContentTitle>
@@ -134,7 +134,7 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
             <S.TrackTitleSvg alt="music">
               <use
                 xlinkHref={
-                  track?.logo ? track.logo : 'img/icon/sprite.svg#icon-note'
+                  track?.logo ? track.logo : '/img/icon/sprite.svg#icon-note'
                 }
               />
             </S.TrackTitleSvg>
@@ -175,7 +175,7 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
               fill: `${isLike ? '#B672FF' : ''}`,
             }}
           >
-            <use xlinkHref="img/icon/sprite.svg#icon-like" />
+            <use xlinkHref="/img/icon/sprite.svg#icon-like" />
           </S.TrackTimeSvg>
           <S.TrackTimeText>
             {formatTime(track?.duration_in_seconds)}

@@ -28,24 +28,24 @@ export const Sidebar = () => {
             }}
             alt="logout"
           >
-            <use xlinkHref="img/icon/sprite.svg#logout" />
+            <use xlinkHref="/img/icon/sprite.svg#logout" />
           </svg>
         </S.SidebarIcon>
       </S.SidebarPersonal>
       <S.SidebarBlock>
         <S.SidebarList>
           <SidebarItem
-            imgUrl="img/playlist01.png"
+            imgUrl="/img/playlist01.png"
             imgAlt={"day's playlist"}
             id={1}
           />
           <SidebarItem
-            imgUrl="img/playlist02.png"
+            imgUrl="/img/playlist02.png"
             imgAlt={"day's playlist"}
             id={2}
           />
           <SidebarItem
-            imgUrl="img/playlist03.png"
+            imgUrl="/img/playlist03.png"
             imgAlt={"day's playlist"}
             id={3}
           />

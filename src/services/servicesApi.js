@@ -69,17 +69,31 @@ export const tracksApi = createApi({
   reducerPath: 'tracksApi',
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
-    // получить список треков
+    // Получить все треки
     getTracks: builder.query({
       query: () => '/catalog/track/all/',
       providesTags: () => [DATA_TAG],
     }),
-    // получить список избранных треков
+
+    // Посмотреть подборку по id
+    getСollections: builder.query({
+      query(id) {
+        console.log(id)
+        return {
+          url: `/catalog/selection/${id}/`,
+          method: 'GET',
+        }
+      },
+      providesTags: () => [DATA_TAG],
+    }),
+
+    // Получить все избранные треки
     getFavoriteTracks: builder.query({
       query: () => '/catalog/track/favorite/all/',
       providesTags: () => [DATA_TAG],
     }),
-    // лайкнуть трек
+
+    // Добавить трек в избранное по id (лайкнуть трек)
     likeTrack: builder.mutation({
       query(id) {
         return {
@@ -89,7 +103,8 @@ export const tracksApi = createApi({
       },
       invalidatesTags: [DATA_TAG],
     }),
-    // дизлайкнуть трек
+
+    // Удалить трек из избранного по id (дизлайкнуть трек)
     dislikeTrack: builder.mutation({
       query(id) {
         return {
@@ -104,6 +119,7 @@ export const tracksApi = createApi({
 
 export const {
   useGetTracksQuery,
+  useGetСollectionsQuery,
   useGetFavoriteTracksQuery,
   useLikeTrackMutation,
   useDislikeTrackMutation,
