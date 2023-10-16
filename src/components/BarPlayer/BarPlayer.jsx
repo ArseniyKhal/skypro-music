@@ -15,6 +15,10 @@ import {
   toggleRepeat,
   toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
+import {
+  useLikeTrackMutation,
+  useDislikeTrackMutation,
+} from '../../services/servicesApi'
 import * as S from './BarPlayer.styles'
 
 export const BarPlayer = () => {
@@ -94,7 +98,6 @@ export const BarPlayer = () => {
     dispatch(toggleRepeat('off'))
     dispatch(toggleShuffle('off'))
   }, [playlist])
-
   return (
     <>
       <audio
@@ -125,7 +128,7 @@ export const BarPlayer = () => {
               <PlayerButtons togglePrevTreck={togglePrevTreck} />
               <S.BarPlayerTrackPlay>
                 <TrackPlay track={trackInPlayer} />
-                {/* <Likes /> */}
+                <Likes like={trackInPlayer.like} trackId={trackInPlayer.id} />
               </S.BarPlayerTrackPlay>
             </S.BarPlayer>
             <S.BarVolumeBlock>
@@ -210,20 +213,33 @@ const TrackPlay = ({ track }) => (
   </S.TrackPlayContain>
 )
 
-// const Likes = () => (
-//   <S.TrackPlayLikesDis>
-//     <S.TrackPlayLikes className=" _btn-icon">
-//       <S.TrackPlayLikesSvg className="track-play__like-svg" alt="like">
-//         <use xlinkHref="img/icon/sprite.svg#icon-like" />
-//       </S.TrackPlayLikesSvg>
-//     </S.TrackPlayLikes>
-//     <S.TrackPlayDislikes className=" _btn-icon">
-//       <S.TrackPlayDislikesSvg className="track-play__dislike-svg" alt="dislike">
-//         <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
-//       </S.TrackPlayDislikesSvg>
-//     </S.TrackPlayDislikes>
-//   </S.TrackPlayLikesDis>
-// )
+const Likes = ({ trackId }) => {
+  const [likeTrack] = useLikeTrackMutation()
+  const [dislikeTrack] = useDislikeTrackMutation()
+
+  return (
+    <S.TrackPlayLikesDis>
+      <S.TrackPlayLikes className=" _btn-icon">
+        <S.TrackPlayLikesSvg
+          onClick={() => likeTrack(trackId)}
+          className="track-play__like-svg"
+          alt="like"
+        >
+          <use xlinkHref="img/icon/sprite.svg#icon-like" />
+        </S.TrackPlayLikesSvg>
+      </S.TrackPlayLikes>
+      <S.TrackPlayDislikes className=" _btn-icon">
+        <S.TrackPlayDislikesSvg
+          onClick={() => dislikeTrack(trackId)}
+          className="track-play__dislike-svg"
+          alt="dislike"
+        >
+          <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
+        </S.TrackPlayDislikesSvg>
+      </S.TrackPlayDislikes>
+    </S.TrackPlayLikesDis>
+  )
+}
 
 // громкость
 const VolumeSlider = ({ volume, volumeChange }) => {

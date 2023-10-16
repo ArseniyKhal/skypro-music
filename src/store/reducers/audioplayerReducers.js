@@ -12,6 +12,7 @@ const initialState = {
   plauing: false,
   playlist: [],
   track: null,
+  isLike: false,
   loop: false,
   shuffled: false,
   shuffledPlaylist: [],

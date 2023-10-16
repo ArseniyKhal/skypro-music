@@ -99,10 +99,10 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
   const trackId = track?.id
   const [likeTrack] = useLikeTrackMutation()
   const [dislikeTrack, { error: dislikeError }] = useDislikeTrackMutation()
+  let isLike = false
   if (dislikeError) {
     console.log(dislikeError.originalStatus)
   }
-  let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
   if (showAllTracksAsLiked) {
     isLike = true
@@ -120,10 +120,9 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
       isLike = true
     }
   }
-
   // клик по треку
   const toggleTrackClick = () => {
-    dispatch(setCurrentTrack(track))
+    dispatch(setCurrentTrack({ ...track, like: !!isLike }))
     dispatch(addPlaylist(playlist))
   }
 
