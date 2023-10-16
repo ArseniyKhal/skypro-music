@@ -11,3 +11,6 @@ export const refreshTokenSelector = (store) => authSelector(store).refreshToken
 
 // ID юзера
 export const idUserSelector = (store) => authSelector(store).id
+
+// Имя юзера
+export const nameUserSelector = (store) => authSelector(store).username

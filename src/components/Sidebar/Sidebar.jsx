@@ -1,24 +1,26 @@
-import { Link } from 'react-router-dom'
-import { useContext } from 'react'
-import { useDispatch } from 'react-redux'
-import UserContext from '../../context'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import * as S from './Sidebar.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
 import { logInState } from '../../store/actions/creators/authCreator'
 
+import { nameUserSelector } from '../../store/selectors/authSelectors'
+
 export const Sidebar = () => {
   const dispatch = useDispatch()
-  const { logOutUser, userData } = useContext(UserContext)
+  const navigate = useNavigate()
+  const userName = useSelector(nameUserSelector)
+
   const toggleExitButton = () => {
-    logOutUser()
     dispatch(logInState(false))
     localStorage.removeItem('userSkyproMusic')
+    navigate('/login')
   }
 
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>
-        <S.SidebarPersonalName>{userData.username}</S.SidebarPersonalName>
+        <S.SidebarPersonalName>{userName}</S.SidebarPersonalName>
         <S.SidebarIcon>
           <svg
             onClick={() => {

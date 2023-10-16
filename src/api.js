@@ -44,7 +44,7 @@ export async function login({ email, password }) {
 
 // Регистрация
 export async function registration({ email, password }) {
-  const response = await fetch(
+  const regRes = await fetch(
     'https://skypro-music-api.skyeng.tech/user/signup/',
     {
       method: 'POST',
@@ -58,7 +58,13 @@ export async function registration({ email, password }) {
       },
     },
   )
-  return response
+  const regJsonData = await regRes.json()
+  if (!regRes.ok) {
+    throw new Error(
+      regJsonData.email ?? regJsonData.password ?? 'ошибка сервера',
+    )
+  }
+  return regJsonData
 }
 
 // Обновить токен
