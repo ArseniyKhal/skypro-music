@@ -1,20 +1,19 @@
-import { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import * as S from './NavMenu.styles'
-import UserContext from '../../context'
 import { logInState } from '../../store/actions/creators/authCreator'
 
 export const NavMenu = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   // Обработчик нажатия на бургер
   const [showNavMenu, setShowNavMenu] = useState(false)
-  const { logOutUser } = useContext(UserContext)
   const toggleExitButton = () => {
-    logOutUser()
     dispatch(logInState(false))
     localStorage.removeItem('userSkyproMusic')
+    navigate('/login')
   }
   return (
     <S.MainNav>

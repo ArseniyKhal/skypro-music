@@ -1,8 +1,10 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as S from '../login-page/LoginReg.styles'
-import { registration } from '../../api'
-import UserContext from '../../context'
+import { registration, login } from '../../api'
+import { logInState } from '../../store/actions/creators/authCreator'
+import { saveUserInfoInLocalStorage } from '../login-page/Login'
 
 export const Register = () => {
   const [inputEmail, setInputEmail] = useState('')
@@ -10,8 +12,8 @@ export const Register = () => {
   const [input2Pass, setInput2Pass] = useState('')
   const [isLoadingReg, setIsLoadingReg] = useState(false)
   const [regError, setRegError] = useState('')
-  const { logInUser } = useContext(UserContext)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   // регистрация
   const email = inputEmail
@@ -36,20 +38,13 @@ export const Register = () => {
       setRegError('')
       setIsLoadingReg(true)
       await registration({ email, password })
-        .then((response) => {
-          if (response.status === 201) {
-            logInUser({ login: true })
-            navigate('/')
-          }
-          return response.json()
-        })
-        .then((user) => {
-          setRegError(user.password)
-          logInUser(user)
-        })
+      const loginData = await login({ email, password })
+      dispatch(logInState(loginData))
+      saveUserInfoInLocalStorage(loginData)
+      navigate('/')
     } catch (error) {
       console.error(error)
-      setIsLoadingReg(`Не удалось... Ошибка: ${error.message}`)
+      setRegError(error.message)
     } finally {
       setIsLoadingReg(false)
     }
