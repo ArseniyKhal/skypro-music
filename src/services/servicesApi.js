@@ -35,7 +35,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   }
 
   // Делаем запрос за новым access токеном в API обновления токена
-  console.log('Делаем запрос за новым access токеном')
+  //   console.log('Делаем запрос за новым access токеном')
   const refreshResult = await baseQuery(
     {
       url: '/user/token/refresh/',
@@ -78,7 +78,6 @@ export const tracksApi = createApi({
     // Посмотреть подборку по id
     getСollections: builder.query({
       query(id) {
-        console.log(id)
         return {
           url: `/catalog/selection/${id}/`,
           method: 'GET',
