@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addPlaylist } from '../../store/actions/creators/audioplayerCreator'
 import { useGetTracksQuery } from '../../services/servicesApi'
 import * as S from './Filter.styles'
+import { playListSelector } from '../../store/selectors/audioplayerSelectors'
 
 export const MusicFilter = () => {
   // отображение/скрытие меню фильтра
   const [visibleFilter, setVisibleFilter] = useState(null)
+  const playlistMusic = useSelector(playListSelector)
   const toggleVisibleFilter = (filter) => {
     setVisibleFilter(visibleFilter === filter ? null : filter)
   }
-  const { data: playlistMusic, isLoading } = useGetTracksQuery()
+  const { data: playlistAPI, isLoading } = useGetTracksQuery()
+  const [selectedFilter, setSelectedFilter] = useState([])
   return (
     <S.CenterblockFilter>
       <S.FilterSearc>
@@ -18,22 +21,26 @@ export const MusicFilter = () => {
         <MusicFilterItem
           title="исполнителю"
           filterList={Array.from(
-            new Set(playlistMusic?.map((track) => track.author)),
+            new Set(playlistAPI?.map((track) => track.author)),
           )}
           isLoading={isLoading}
           visibleFilter={visibleFilter}
           toggleVisibleFilter={toggleVisibleFilter}
-          playlistMusic={playlistMusic}
+          playlistMusic={playlistAPI}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
         />
         <MusicFilterItem
           title="жанру"
           filterList={Array.from(
-            new Set(playlistMusic?.map((track) => track.genre)),
+            new Set(playlistAPI?.map((track) => track.genre)),
           )}
           isLoading={isLoading}
           visibleFilter={visibleFilter}
           toggleVisibleFilter={toggleVisibleFilter}
-          playlistMusic={playlistMusic}
+          playlistMusic={playlistAPI}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
         />
       </S.FilterSearc>
       <S.FilterSort>
@@ -41,7 +48,7 @@ export const MusicFilter = () => {
         <MusicFilterItem
           title="году выпуска"
           filterList={Array.from(
-            new Set(playlistMusic?.map((track) => track.release_date)),
+            new Set(playlistAPI?.map((track) => track.release_date)),
           )}
           isLoading={isLoading}
           visibleFilter={visibleFilter}
@@ -60,11 +67,22 @@ const MusicFilterItem = ({
   visibleFilter,
   toggleVisibleFilter,
   playlistMusic,
+  selectedFilter,
+  setSelectedFilter,
 }) => {
-  // массив критерия поиска фильтра
-  const [selectedFilter, setSelectedFilter] = useState([])
   const dispatch = useDispatch()
+  // выбираем тип фильтра
+  //   let type = ''
+  //   if (title === 'исполнителю') {
+  //     type = 'author'
+  //   } else if (title === 'жанру') {
+  //     type = 'genre'
+  //   } else {
+  //     type = 'release_date'
+  //     console.log(type)
+  //   }
 
+  // массив критерия поиска фильтра
   let filterPlayList = []
   // выбираем критерый фильтрации
   const toggleFilter = (track) => {
@@ -76,11 +94,16 @@ const MusicFilterItem = ({
   }
 
   useEffect(() => {
-    for (let i = 0; i < selectedFilter.length; i++) {
+    for (let i = 0; i < selectedFilter?.length; i++) {
       const a = playlistMusic.filter((el) => el.author === selectedFilter[i])
-      filterPlayList = [...filterPlayList, ...a]
+      const b = playlistMusic.filter((el) => el.genre === selectedFilter[i])
+      filterPlayList = [...filterPlayList, ...a, ...b]
     }
-    dispatch(addPlaylist(filterPlayList))
+    dispatch(
+      addPlaylist(
+        selectedFilter?.length === 0 ? playlistMusic : filterPlayList,
+      ),
+    )
   }, [selectedFilter])
 
   return (
@@ -90,7 +113,7 @@ const MusicFilterItem = ({
     >
       <S.FilterButton
         onClick={() => toggleVisibleFilter(title)}
-        className=" _btn-text"
+        className="_btn-text"
         style={{
           borderColor: selectedFilter?.length ? '#9A48F1' : '',
           color: selectedFilter?.length ? '#9A48F1' : '',
