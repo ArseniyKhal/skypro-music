@@ -1,7 +1,6 @@
 import { USER_LOGIN } from '../actions/types/constants'
 
 const initialState = {
-  logInState: false,
   access: '',
   refresh: '',
   username: '',
@@ -18,14 +17,13 @@ export default function authReducer(state = initialState, action) {
       const { data } = action.payload
       return {
         ...state,
-        logInState: !!data,
-        username: data.username,
-        email: data.email,
-        id: data.id,
-        access: data.access,
-        refresh: data.refresh,
-        first_name: data.first_name,
-        last_name: data.last_name,
+        username: data?.username,
+        email: data?.email,
+        id: data?.id,
+        access: data?.access,
+        refresh: data?.refresh,
+        first_name: data?.first_name,
+        last_name: data?.last_name,
       }
     }
 

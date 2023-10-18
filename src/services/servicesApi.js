@@ -24,7 +24,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   // Функция которая отчищает данные о юзере в сторе и отправляет на страницу логина
   const forceLogout = () => {
     console.log('на выход!')
-    api.dispatch(logInState(false))
+    api.dispatch(logInState(null))
     window.location.href = '/login'
   }
 

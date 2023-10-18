@@ -11,7 +11,7 @@ export const NavMenu = () => {
   // Обработчик нажатия на бургер
   const [showNavMenu, setShowNavMenu] = useState(false)
   const toggleExitButton = () => {
-    dispatch(logInState(false))
+    dispatch(logInState(null))
     localStorage.removeItem('userSkyproMusic')
     navigate('/login')
   }

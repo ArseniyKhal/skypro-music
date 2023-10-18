@@ -12,7 +12,7 @@ export const Sidebar = () => {
   const userName = useSelector(nameUserSelector)
 
   const toggleExitButton = () => {
-    dispatch(logInState(false))
+    dispatch(logInState(null))
     localStorage.removeItem('userSkyproMusic')
     navigate('/login')
   }
