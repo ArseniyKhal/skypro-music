@@ -4,7 +4,6 @@ import { formatTime } from '../Playlist/Playlist'
 import {
   currentTrackSelector,
   isPlauingSelector,
-  isLoopSelector,
   isShuffledSelector,
   playListSelector,
 } from '../../store/selectors/audioplayerSelectors'
@@ -12,7 +11,6 @@ import {
   nextTrack,
   prevTrack,
   togglePause,
-  toggleRepeat,
   toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
 import {
@@ -26,8 +24,7 @@ export const BarPlayer = () => {
   const dispatch = useDispatch()
   const trackInPlayer = useSelector(currentTrackSelector)
   const plauing = useSelector(isPlauingSelector)
-  const isLoop = useSelector(isLoopSelector)
-  const [volume, setvolume] = useState(0.3)
+  const [volume, setvolume] = useState(0.1)
   const [play5sec, setPlay5sec] = useState(false)
   const playlist = useSelector(playListSelector)
 
@@ -93,11 +90,16 @@ export const BarPlayer = () => {
     setProgress((divProgress / 100) * duration.length)
   }
 
-  // сброс кнопок loop и shuffle при изменении плейлиста
+  // сброс shuffle при изменении плейлиста
   useEffect(() => {
-    dispatch(toggleRepeat('off'))
     dispatch(toggleShuffle('off'))
   }, [playlist])
+
+  const [loop2, setLoop2] = useState(false)
+  const toggleLoop = () => {
+    setLoop2(!loop2)
+  }
+
   return (
     <>
       <audio
@@ -107,7 +109,7 @@ export const BarPlayer = () => {
         onTimeUpdate={onPlaying}
         style={{ display: 'none' }}
         src={trackInPlayer?.track_file}
-        loop={isLoop ? 'loop' : ''}
+        loop={loop2 ? 'loop' : ''}
       >
         <track kind="captions" />
       </audio>
@@ -125,7 +127,11 @@ export const BarPlayer = () => {
           </S.BarPlayerProgress>
           <S.BarPlayerBlock>
             <S.BarPlayer>
-              <PlayerButtons togglePrevTreck={togglePrevTreck} />
+              <PlayerButtons
+                togglePrevTreck={togglePrevTreck}
+                loop2={loop2}
+                toggleLoop={toggleLoop}
+              />
               <S.BarPlayerTrackPlay>
                 <TrackPlay track={trackInPlayer} />
                 <Likes like={trackInPlayer.like} trackId={trackInPlayer.id} />
@@ -142,9 +148,8 @@ export const BarPlayer = () => {
 }
 
 // кнопки плеера
-const PlayerButtons = ({ togglePrevTreck }) => {
+const PlayerButtons = ({ togglePrevTreck, loop2, toggleLoop }) => {
   const plauing = useSelector(isPlauingSelector)
-  const loop = useSelector(isLoopSelector)
   const shuffled = useSelector(isShuffledSelector)
   const dispatch = useDispatch()
 
@@ -169,12 +174,9 @@ const PlayerButtons = ({ togglePrevTreck }) => {
           <use xlinkHref="/img/icon/sprite.svg#icon-next" />
         </S.PlayerBtnNextSvg>
       </S.PlayerBtnNext>
-      <S.PlayerBtnRepeat
-        onClick={() => dispatch(toggleRepeat())}
-        className=" _btn-icon"
-      >
+      <S.PlayerBtnRepeat onClick={toggleLoop} className=" _btn-icon">
         <S.PlayerBtnRepeatSvg
-          style={{ stroke: `${loop ? '#ACACAC' : '#696969'}` }}
+          style={{ stroke: `${loop2 ? '#ACACAC' : '#696969'}` }}
           alt="repeat"
         >
           <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
