@@ -13,7 +13,7 @@ export const MusicFilter = () => {
     setVisibleFilter(visibleFilter === filter ? null : filter)
   }
   const { data: playlistAPI, isLoading } = useGetTracksQuery()
-  const [selectedFilter, setSelectedFilter] = useState([])
+  //   const [selectedFilter, setSelectedFilter] = useState([])
   return (
     <S.CenterblockFilter>
       <S.FilterSearc>
@@ -27,8 +27,8 @@ export const MusicFilter = () => {
           visibleFilter={visibleFilter}
           toggleVisibleFilter={toggleVisibleFilter}
           playlistMusic={playlistAPI}
-          selectedFilter={selectedFilter}
-          setSelectedFilter={setSelectedFilter}
+          //  selectedFilter={selectedFilter}
+          //  setSelectedFilter={setSelectedFilter}
         />
         <MusicFilterItem
           title="жанру"
@@ -39,17 +39,15 @@ export const MusicFilter = () => {
           visibleFilter={visibleFilter}
           toggleVisibleFilter={toggleVisibleFilter}
           playlistMusic={playlistAPI}
-          selectedFilter={selectedFilter}
-          setSelectedFilter={setSelectedFilter}
+          //  selectedFilter={selectedFilter}
+          //  setSelectedFilter={setSelectedFilter}
         />
       </S.FilterSearc>
       <S.FilterSort>
         <S.FilterTitle>Сортировка:</S.FilterTitle>
         <MusicFilterItem
           title="году выпуска"
-          filterList={Array.from(
-            new Set(playlistAPI?.map((track) => track.release_date)),
-          )}
+          filterList={['По умолчанию', 'Сначала новые', 'Сначала старые']}
           isLoading={isLoading}
           visibleFilter={visibleFilter}
           toggleVisibleFilter={toggleVisibleFilter}
@@ -67,11 +65,13 @@ const MusicFilterItem = ({
   visibleFilter,
   toggleVisibleFilter,
   playlistMusic,
-  selectedFilter,
-  setSelectedFilter,
+  //   selectedFilter,
+  //   setSelectedFilter,
 }) => {
+  const [selectedFilter, setSelectedFilter] = useState([])
   const dispatch = useDispatch()
-  // выбираем тип фильтра
+
+  //   // выбираем тип фильтра
   //   let type = ''
   //   if (title === 'исполнителю') {
   //     type = 'author'
@@ -84,7 +84,7 @@ const MusicFilterItem = ({
 
   // массив критерия поиска фильтра
   let filterPlayList = []
-  // выбираем критерый фильтрации
+  //   // выбираем критерый фильтрации
   const toggleFilter = (track) => {
     if (selectedFilter?.includes(track)) {
       setSelectedFilter(selectedFilter.filter((e) => e !== track))
@@ -95,9 +95,11 @@ const MusicFilterItem = ({
 
   useEffect(() => {
     for (let i = 0; i < selectedFilter?.length; i++) {
-      const a = playlistMusic.filter((el) => el.author === selectedFilter[i])
-      const b = playlistMusic.filter((el) => el.genre === selectedFilter[i])
-      filterPlayList = [...filterPlayList, ...a, ...b]
+      const author = playlistMusic.filter(
+        (el) => el.author === selectedFilter[i],
+      )
+      const genre = playlistMusic.filter((el) => el.genre === selectedFilter[i])
+      filterPlayList = [...filterPlayList, ...author, ...genre]
     }
     dispatch(
       addPlaylist(
@@ -119,14 +121,19 @@ const MusicFilterItem = ({
           color: selectedFilter?.length ? '#9A48F1' : '',
         }}
       >
-        {title}
+        {title === 'году выпуска' ? filterList[0] : title}
       </S.FilterButton>
       {selectedFilter?.length > 0 && (
         <S.FilterLabel>{selectedFilter.length}</S.FilterLabel>
       )}
 
       {visibleFilter === title && (
-        <S.FilterMenu>
+        <S.FilterMenu
+          style={{
+            right: title === 'году выпуска' ? '0px' : '',
+            left: title === 'году выпуска' ? 'auto' : '',
+          }}
+        >
           <S.FilterContent>
             <S.FilterList>
               {filterList.map((track) => (
