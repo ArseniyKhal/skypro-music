@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { useContext } from 'react'
 import {
   setCurrentTrack,
   addPlaylist,
@@ -10,6 +11,7 @@ import {
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import * as S from './Playlist.styles'
+import { SearchContext } from '../Centerblock/Centerblock'
 
 // форматер времени трека
 export const formatTime = (t) => {
@@ -37,9 +39,19 @@ export const Playlist = ({
   error,
   showAllTracksAsLiked,
 }) => {
-  const mapTracks =
+  // поиск
+  const searchText = useContext(SearchContext)
+  let playlist = tracks
+  if (searchText.length) {
+    playlist = tracks.filter((el) =>
+      el.name.toLowerCase().includes(searchText.toLowerCase()),
+    )
+  }
+
+  let mapTracks = ''
+  mapTracks =
     tracks?.length > 0 ? (
-      tracks.map((track) => (
+      playlist.map((track) => (
         <Track
           key={track.id}
           isLoading={isLoading}
@@ -49,8 +61,12 @@ export const Playlist = ({
         />
       ))
     ) : (
-      <h3>В этом плейлисте нет треков</h3>
+      <h2>В этом плейлисте нет треков</h2>
     )
+  if (!playlist?.length && searchText.length) {
+    mapTracks = <h2>Ничего не найдено *_*</h2>
+  }
+
   return (
     <S.CenterblockContent>
       <S.ContentTitle>

@@ -13,10 +13,6 @@ const initialState = {
   track: null,
   shuffled: false,
   shuffledPlaylist: [],
-  playlistFilter: {
-    author: [],
-    genre: [],
-  },
 }
 
 export default function audioplayerReducer(state = initialState, action) {
