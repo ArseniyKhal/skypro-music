@@ -138,7 +138,7 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
   }
   // клик по треку
   const toggleTrackClick = () => {
-    dispatch(setCurrentTrack({ ...track, like: !!isLike }))
+    dispatch(setCurrentTrack(track))
     dispatch(addPlaylist(playlist))
   }
 

@@ -80,7 +80,6 @@ export const tracksApi = createApi({
       query(id) {
         return {
           url: `/catalog/selection/${id}/`,
-          method: 'GET',
         }
       },
       providesTags: () => [DATA_TAG],
@@ -89,6 +88,16 @@ export const tracksApi = createApi({
     // Получить все избранные треки
     getFavoriteTracks: builder.query({
       query: () => '/catalog/track/favorite/all/',
+      providesTags: () => [DATA_TAG],
+    }),
+
+    // Получить трек по id
+    getIdTrack: builder.query({
+      query(id) {
+        return {
+          url: `/catalog/track/${id}/`,
+        }
+      },
       providesTags: () => [DATA_TAG],
     }),
 
@@ -119,6 +128,7 @@ export const tracksApi = createApi({
 export const {
   useGetTracksQuery,
   useGetСollectionsQuery,
+  useGetIdTrackQuery,
   useGetFavoriteTracksQuery,
   useLikeTrackMutation,
   useDislikeTrackMutation,
