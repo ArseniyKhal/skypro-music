@@ -8,6 +8,7 @@ export const GlobalStyle = createGlobalStyle`
 		url("/fonts/StratosSkyeng.woff") format("woff");
 	font-weight: 400;
 	font-style: normal;
+
 }
 * {
 	margin: 0;
@@ -25,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
 a,
 a:visited {
 	text-decoration: none;
-	font-family: "StratosSkyeng", sans-serif;
+	// font-family: "StratosSkyeng", sans-serif;
 	cursor: pointer;
 	color: inherit;
 }
@@ -120,6 +121,9 @@ export const Main = styled.main`
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  @media (width <= 1900px) {
+    display: block;
+  }
 `
 export const CenterBlock = styled.div`
   position: relative;

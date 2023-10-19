@@ -32,33 +32,46 @@ export const NavMenu = () => {
         <S.BurgerLine />
         <S.BurgerLine />
       </S.NavBurger>
-      {showNavMenu && (
-        <S.NavMenu>
-          <S.MenuList>
-            <S.MenuItem>
-              <Link to="/" style={S.MenuLink}>
-                Главное
-              </Link>
-            </S.MenuItem>
-            <S.MenuItem>
-              <Link to="/favorites" style={S.MenuLink}>
-                Мой плейлист
-              </Link>
-            </S.MenuItem>
-            <S.MenuItem>
-              <Link
-                to="/login"
-                onClick={() => {
-                  toggleExitButton()
-                }}
-                style={S.MenuLink}
-              >
-                Выйти
-              </Link>
-            </S.MenuItem>
-          </S.MenuList>
-        </S.NavMenu>
-      )}
+      <S.NavMenu style={{ visibility: showNavMenu ? 'visible' : '' }}>
+        <S.MenuList>
+          <S.MenuItem>
+            <Link to="/" style={S.MenuLink}>
+              Главное
+            </Link>
+          </S.MenuItem>
+          <S.MenuItem>
+            <Link to="/favorites" style={S.MenuLink}>
+              Мои треки
+            </Link>
+          </S.MenuItem>
+          <S.MenuItemVisib>
+            <Link to="/category/1" style={S.MenuLink}>
+              Классическая музыка
+            </Link>
+          </S.MenuItemVisib>
+          <S.MenuItemVisib>
+            <Link to="/category/2" style={S.MenuLink}>
+              Электронная музыка
+            </Link>
+          </S.MenuItemVisib>
+          <S.MenuItemVisib>
+            <Link to="/category/3" style={S.MenuLink}>
+              Рок музыка
+            </Link>
+          </S.MenuItemVisib>
+          <S.MenuItem>
+            <Link
+              to="/login"
+              onClick={() => {
+                toggleExitButton()
+              }}
+              style={S.MenuLink}
+            >
+              Выйти
+            </Link>
+          </S.MenuItem>
+        </S.MenuList>
+      </S.NavMenu>
     </S.MainNav>
   )
 }

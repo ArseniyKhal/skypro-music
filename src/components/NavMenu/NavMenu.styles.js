@@ -5,6 +5,14 @@ export const MainNav = styled.nav`
   background-color: #181818;
   padding: 20px 0 20px 36px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  @media (width <= 1900px) {
+    width: auto;
+    flex-direction: row;
+    padding: 20px 36px 0px 36px;
+    justify-content: space-between;
+  }
 `
 export const NavLogo = styled.div`
   width: 113.33px;
@@ -35,6 +43,9 @@ export const NavBurger = styled.button`
   cursor: pointer;
   background-color: inherit;
   border: none;
+  @media (width <= 1900px) {
+    display: none;
+  }
 `
 export const BurgerLine = styled.span`
   display: inline-block;
@@ -45,14 +56,29 @@ export const BurgerLine = styled.span`
 export const NavMenu = styled.div`
   display: block;
   transition: all 0.2s ease;
+  visibility: hidden;
+  @media (width <= 1900px) {
+    visibility: visible;
+  }
 `
 export const MenuList = styled.ul`
   padding: 18px 0 10px 0;
+  @media (width <= 1900px) {
+    display: flex;
+    gap: 20px;
+  }
 `
 export const MenuItem = styled.li`
   padding: 5px 0;
   margin-bottom: 16px;
 `
+
+export const MenuItemVisib = styled(MenuItem)`
+  @media (width >= 1900px) {
+    display: none;
+  }
+`
+
 export const MenuLink = {
   color: '#ffffff',
   fontWeight: '400',

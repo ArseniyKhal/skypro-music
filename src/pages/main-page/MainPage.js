@@ -11,8 +11,7 @@ import * as S from '../../App.styles'
 // Задачи:
 // сделать время на прогрессе при наведении
 // нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
-// отладить адаптивность
-// не подключаются шрифты на страницах login и reg..
+// не пойму почему не подключаются шрифты на страницах login и reg..
 
 export const Main = () => {
   const trackInPlayer = useSelector(currentTrackSelector)

@@ -1,7 +1,6 @@
 import { styled } from 'styled-components'
 
 export const ModalBlock = styled.div`
-  font-family: 'StratosSkyeng', sans-serif;
   position: absolute;
   z-index: 2;
   left: calc(50% - (366px / 2));

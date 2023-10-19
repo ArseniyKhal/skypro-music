@@ -6,6 +6,9 @@ export const MainCenterblock = styled.div`
   -ms-flex-positive: 3;
   flex-grow: 3;
   padding: 20px 40px 20px 111px;
+  @media (width <= 1900px) {
+    padding: 0px 40px;
+  }
 `
 export const CenterblockSearch = styled.div`
   width: 100%;

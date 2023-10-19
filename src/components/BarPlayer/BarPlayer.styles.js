@@ -8,7 +8,7 @@ export const BarContent = styled.div`
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  background: rgba(28, 28, 28, 0.5);
+  background: rgba(28, 28, 28);
 `
 
 export const BarPlayerTime = styled.div`
