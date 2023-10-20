@@ -21,7 +21,7 @@ export const MusicFilter = ({ setMusic }) => {
   const [genreFilter, setGenreFilter] = useState([])
   const [dateSort, setDateSort] = useState([])
 
-  let playlistAfterFilter = playlistAPI
+  let playlistAfterFilter = []
   if (authorFilter.length || genreFilter.length) {
     //  const [genreFilterList, setGenreFilterList] = useState([])
 
@@ -60,8 +60,6 @@ export const MusicFilter = ({ setMusic }) => {
         .reduce((map, obj) => map.set(obj.id, obj), new Map())
         .values(),
     ]
-  } else {
-    setMusic(playlistAPI)
   }
 
   // ======================= СОРТИРОВКА ПО ДАТЕ ============================
@@ -84,24 +82,23 @@ export const MusicFilter = ({ setMusic }) => {
       ...sortList,
       ...filterSortList.filter((el) => el.release_date === null),
     ]
-    console.log(result)
-  } else {
-    setMusic(playlistAPI)
+    playlistAfterFilter = result
   }
 
   useEffect(() => {
     if (
-      !authorFilter.length ||
-      !genreFilter.length
-      //  ||      selectedSort !== 'По умолчанию'
+      !authorFilter.length &&
+      !genreFilter.length &&
+      selectedSort === 'По умолчанию'
     ) {
-      setFilterSortList(playlistAfterFilter)
-    } else {
+      // console.log('всё по 0')
       setFilterSortList(playlistAPI)
+      setMusic(playlistAPI)
+    } else {
+      // console.log('есть какой то фильтр')
+      setFilterSortList(playlistAfterFilter)
+      setMusic(playlistAfterFilter)
     }
-
-    console.log(filterSortList)
-    setMusic(playlistAfterFilter)
   }, [authorFilter, genreFilter, selectedSort])
 
   return (
