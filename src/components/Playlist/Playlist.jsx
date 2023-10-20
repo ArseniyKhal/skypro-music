@@ -193,6 +193,7 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
           >
             <use xlinkHref="/img/icon/sprite.svg#icon-like" />
           </S.TrackTimeSvg>
+
           <S.TrackTimeText>
             {formatTime(track?.duration_in_seconds)}
             {isLoading && <S.Skeleton />}
