@@ -293,9 +293,54 @@ export const VolumeSvg = styled.svg`
   fill: transparent;
 `
 export const VolumeProgress = styled.div`
-  width: 109px;
+  //   width: 109px;
   display: flex;
+  position: relative;
+  width: 109px; /*input range width*/
+  height: 20px; /*input range height*/
+  overflow: hidden;
 `
 export const VolumeProgressLine = styled.input`
   width: 109px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: inherit;
+  position: absolute;
+  height: 5px;
+  top: 8px;
+
+  &::-webkit-slider-runnable-track {
+    height: 3px;
+    -webkit-appearance: none;
+    background-color: #797979;
+    color: #13bba4;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #313131;
+    border: 3px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: -6.5px;
+  }
+  &::-moz-range-progress {
+    background-color: white;
+  }
+  &::-moz-range-track {
+    top: 8px;
+    background-color: #797979;
+  }
+  &::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    background: #313131;
+    border: 3px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 `

@@ -26,7 +26,7 @@ export const BarPlayer = () => {
   const dispatch = useDispatch()
   const trackInPlayer = useSelector(currentTrackSelector)
   const plauing = useSelector(isPlauingSelector)
-  const [volume, setvolume] = useState(0.1)
+  const [volume, setvolume] = useState(0.5)
   const [play5sec, setPlay5sec] = useState(false)
   const playlist = useSelector(playListSelector)
 
@@ -290,7 +290,7 @@ const VolumeSlider = ({ volume, volumeChange }) => {
           name="range"
           min={0}
           max={1}
-          step={0.1}
+          step={0.01}
           value={volume}
           onChange={(e) => {
             volumeChange(+e.target.value)

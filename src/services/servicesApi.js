@@ -17,14 +17,13 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions)
-  console.log(result)
   if (result?.error?.status !== 401) {
     return result
   }
 
   // Функция которая отчищает данные о юзере в сторе и отправляет на страницу логина
   const forceLogout = () => {
-    console.log('на выход!')
+    //  console.log('на выход!')
     api.dispatch(logInState(null))
     window.location.href = '/login'
   }
@@ -48,7 +47,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     api,
     extraOptions,
   )
-  console.log(refreshResult)
 
   // Если api обновления токена не вернуло новый access токен, то разлогиниваем юзера
   if (!refreshResult.data.access) {
