@@ -17,6 +17,7 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions)
+  console.log(result)
   if (result?.error?.status !== 401) {
     return result
   }
@@ -47,6 +48,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     api,
     extraOptions,
   )
+  console.log(refreshResult)
 
   // Если api обновления токена не вернуло новый access токен, то разлогиниваем юзера
   if (!refreshResult.data.access) {

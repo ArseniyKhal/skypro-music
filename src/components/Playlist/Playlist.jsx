@@ -49,24 +49,24 @@ export const Playlist = ({
   }
 
   let mapTracks = ''
-  mapTracks =
-    tracks?.length > 0 ? (
-      playlist.map((track) => (
-        <Track
-          key={track.id}
-          isLoading={isLoading}
-          track={track}
-          playlist={tracks}
-          showAllTracksAsLiked={showAllTracksAsLiked}
-        />
-      ))
-    ) : (
-      <h2>В этом плейлисте нет треков</h2>
-    )
-  if (!playlist?.length && searchText.length) {
+  if (playlist === 'not found') {
     mapTracks = <h2>Ничего не найдено *_*</h2>
+  } else {
+    mapTracks =
+      tracks?.length > 0 ? (
+        playlist.map((track) => (
+          <Track
+            key={track.id}
+            isLoading={isLoading}
+            track={track}
+            playlist={tracks}
+            showAllTracksAsLiked={showAllTracksAsLiked}
+          />
+        ))
+      ) : (
+        <h2>В этом плейлисте нет треков</h2>
+      )
   }
-
   return (
     <S.CenterblockContent>
       <S.ContentTitle>
