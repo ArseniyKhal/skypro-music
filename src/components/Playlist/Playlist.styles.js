@@ -45,7 +45,7 @@ export const PlaylistTitleCol = styled.div`
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 2px;
-  color: #696969;
+  color: var(--color-text-2);
   text-transform: uppercase;
 `
 export const PlaylistTitleCol1 = styled(PlaylistTitleCol)`
@@ -73,7 +73,7 @@ export const Track = styled.div`
   margin-bottom: 12px;
   cursor: pointer;
   &:hover {
-    background-color: #131313;
+    background-color: var(--color-hover-track);
   }
 `
 export const PlaylistTrack = styled.div`
@@ -109,7 +109,7 @@ export const TrackTitleImage = styled.div`
   width: 51px;
   height: 51px;
   padding: 16px;
-  background: #313131;
+  background-color: var(--color-bg-wrap);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -137,7 +137,6 @@ export const TrackTitleLink = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -159,7 +158,6 @@ export const TrackAuthorLink = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
@@ -175,11 +173,11 @@ export const TrackAlbumLink = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #696969;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   padding-right: 10%;
+  color: var(--color-text-2);
 `
 export const TrackTime = styled.div`
   position: relative;
@@ -197,14 +195,13 @@ export const TrackTimeText = styled.span`
   font-size: 16px;
   line-height: 24px;
   text-align: right;
-  color: #696969;
+  color: var(--color-text-2);
 `
 export const TrackTimeSpan = styled.span`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #4e4e4e;
   margin-left: 5px;
 `
 
@@ -234,7 +231,7 @@ export const bubbleOut = styled.div`
 export const Skeleton = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #313131;
+  background-color: var(--color-bg);
   position: absolute;
   top: 0;
   left: 0;

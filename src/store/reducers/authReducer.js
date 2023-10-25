@@ -1,4 +1,7 @@
-import { USER_LOGIN } from '../actions/types/constants'
+import { USER_LOGIN, TGL_THEME } from '../actions/types/constants'
+
+const isDarkTheme = window?.matchMedia('(prefers-color-scheme:dark)').matches
+const defaultTheme = isDarkTheme ? 'dark' : 'light'
 
 const initialState = {
   access: '',
@@ -8,6 +11,7 @@ const initialState = {
   last_name: '',
   email: '',
   id: '',
+  theme: defaultTheme,
 }
 
 export default function authReducer(state = initialState, action) {
@@ -24,6 +28,13 @@ export default function authReducer(state = initialState, action) {
         refresh: data?.refresh,
         first_name: data?.first_name,
         last_name: data?.last_name,
+      }
+    }
+    // смена темы
+    case TGL_THEME: {
+      return {
+        ...state,
+        theme: state.theme === 'dark' ? 'light' : 'dark',
       }
     }
 

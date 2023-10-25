@@ -11,3 +11,6 @@ export const idUserSelector = (store) => authSelector(store).id
 
 // Имя юзера
 export const nameUserSelector = (store) => authSelector(store).username
+
+// тема
+export const themeSelector = (store) => authSelector(store).theme

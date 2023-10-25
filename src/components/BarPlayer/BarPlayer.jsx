@@ -19,7 +19,10 @@ import {
   useGetIdTrackQuery,
 } from '../../services/servicesApi'
 import * as S from './BarPlayer.styles'
-import { idUserSelector } from '../../store/selectors/authSelectors'
+import {
+  idUserSelector,
+  themeSelector,
+} from '../../store/selectors/authSelectors'
 
 export const BarPlayer = () => {
   const audioElem = useRef(null)
@@ -271,15 +274,15 @@ const VolumeSlider = ({ volume, volumeChange }) => {
       volumeChange(tempVolume)
     }
   }
-
+  const theme = useSelector(themeSelector)
   return (
     <S.VolumeContent>
       <S.VolumeImage onClick={toggleVolume}>
         <S.VolumeSvg alt="volume">
           <use
             xlinkHref={`/img/icon/sprite.svg#icon-volume${
-              +volume ? '' : 'non'
-            }`}
+              theme === 'dark' ? '' : '_black'
+            }${+volume ? '' : '_non'}`}
           />
         </S.VolumeSvg>
       </S.VolumeImage>

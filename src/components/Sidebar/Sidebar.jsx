@@ -4,7 +4,10 @@ import * as S from './Sidebar.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
 import { logInState } from '../../store/actions/creators/authCreator'
 
-import { nameUserSelector } from '../../store/selectors/authSelectors'
+import {
+  nameUserSelector,
+  themeSelector,
+} from '../../store/selectors/authSelectors'
 
 export const Sidebar = () => {
   const dispatch = useDispatch()
@@ -16,7 +19,7 @@ export const Sidebar = () => {
     localStorage.removeItem('userSkyproMusic')
     navigate('/login')
   }
-
+  const theme = useSelector(themeSelector)
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>
@@ -28,7 +31,11 @@ export const Sidebar = () => {
             }}
             alt="logout"
           >
-            <use xlinkHref="/img/icon/sprite.svg#logout" />
+            <use
+              xlinkHref={`img/icon/sprite.svg#logout${
+                theme === 'dark' ? '' : 'Light'
+              }`}
+            />
           </svg>
         </S.SidebarIcon>
       </S.SidebarPersonal>

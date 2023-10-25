@@ -7,3 +7,4 @@ export const PREV_TRACK = 'PREV_TRACK'
 export const SHUFFLE_PLAYLIST = 'SHUFFLE_PLAYLIST'
 // auth constants
 export const USER_LOGIN = 'USER_LOGIN'
+export const TGL_THEME = 'TGL_THEME'

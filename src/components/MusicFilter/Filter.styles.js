@@ -74,7 +74,7 @@ export const FilterButton = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--color-text);
   border-radius: 60px;
   padding: 6px 20px;
 `

@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 
 export const MainNav = styled.nav`
   width: 244px;
-  background-color: #181818;
+  background-color: var(--color-bg);
   padding: 20px 0 20px 36px;
   overflow: hidden;
   display: flex;
@@ -24,11 +24,10 @@ export const NavLogo = styled.div`
 export const LogoImage = styled.img`
   width: 113.33px;
   height: 17px;
-  color: #181818;
 `
 export const NavBurger = styled.button`
   width: 20px;
-  height: 36px;
+  height: 37px;
   padding: 13px 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -51,7 +50,7 @@ export const BurgerLine = styled.span`
   display: inline-block;
   width: 100%;
   height: 1px;
-  background-color: #d3d3d3;
+  background-color: var(--color-text);
 `
 export const NavMenu = styled.div`
   display: block;
@@ -64,13 +63,22 @@ export const NavMenu = styled.div`
 export const MenuList = styled.ul`
   padding: 18px 0 10px 0;
   @media (width <= 1900px) {
+    padding: 0;
+    display: flex;
+    gap: 20px;
+  }
+`
+export const MenuBlock = styled.div`
+  @media (width <= 1900px) {
     display: flex;
     gap: 20px;
   }
 `
 export const MenuItem = styled.li`
-  padding: 5px 0;
-  margin-bottom: 16px;
+  margin-bottom: 26px;
+  @media (width <= 1900px) {
+    padding-top: 9px;
+  }
 `
 
 export const MenuItemVisib = styled(MenuItem)`
@@ -78,9 +86,14 @@ export const MenuItemVisib = styled(MenuItem)`
     display: none;
   }
 `
+export const ModeSwitcher = styled.img`
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  cursor: pointer;
+`
 
 export const MenuLink = {
-  color: '#ffffff',
   fontWeight: '400',
   fontXize: '16px',
   lineHeight: '24px',
