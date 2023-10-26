@@ -4,7 +4,7 @@
 
 ## Ссылка на приложение:
 
-https://arseniykhal.github.io/webdev-cw-instapro//////
+https://arseniykhal.github.io/skypro-music/
 
 ## Первоначальная задача
 
