@@ -3,6 +3,9 @@ import { styled } from 'styled-components'
 export const MainSidebar = styled.div`
   max-width: 418px;
   padding: 20px 90px 20px 78px;
+  @media (max-width: 1900px) {
+    display: none;
+  }
 `
 export const SidebarPersonal = styled.div`
   display: -webkit-box;
@@ -25,15 +28,14 @@ export const SidebarPersonalName = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
   margin-right: 16px;
 `
 export const SidebarIcon = styled.div`
-  width: 43px;
-  height: 43px;
-  background-color: #313131;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
+  overflow: hidden;
 `
 export const SidebarBlock = styled.div`
   height: 100%;

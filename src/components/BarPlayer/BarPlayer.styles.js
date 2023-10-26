@@ -8,7 +8,7 @@ export const BarContent = styled.div`
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  background: rgba(28, 28, 28, 0.5);
+  background: var(--color-bg);
 `
 
 export const BarPlayerTime = styled.div`
@@ -28,7 +28,7 @@ export const BarPlayerTime = styled.div`
 export const BarPlayerProgress = styled.div`
   width: 100%;
   height: 5px;
-  background: #2e2e2e;
+  background: var(--color-progress-line);
   cursor: pointer;
   &:hover {
     height: 12px;
@@ -175,7 +175,7 @@ export const TrackPlayContain = styled.div`
 export const TrackPlayImage = styled.div`
   width: 51px;
   height: 51px;
-  background-color: #313131;
+  background-color: var(--color-bg-wrap);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -211,7 +211,6 @@ export const TrackPlayAuthorLink = styled.a`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -229,7 +228,6 @@ export const TrackPlayAlbumLink = styled.a`
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
-  color: #ffffff;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -293,9 +291,53 @@ export const VolumeSvg = styled.svg`
   fill: transparent;
 `
 export const VolumeProgress = styled.div`
-  width: 109px;
   display: flex;
+  position: relative;
+  width: 109px;
+  height: 20px;
+  overflow: hidden;
 `
 export const VolumeProgressLine = styled.input`
   width: 109px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: inherit;
+  position: absolute;
+  height: 5px;
+  top: 8px;
+
+  &::-webkit-slider-runnable-track {
+    height: 3px;
+    -webkit-appearance: none;
+    background-color: var(--color-text-2);
+    color: #13bba4;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: var(--color-bg);
+    border: 3px solid var(--color-text);
+    border-radius: 50%;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: -6.5px;
+  }
+  &::-moz-range-progress {
+    background-color: #ad61ff;
+  }
+  &::-moz-range-track {
+    top: 8px;
+    background-color: var(--color-text-2);
+  }
+  &::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    background: var(--color-bg);
+    border: 3px solid var(--color-text);
+    border-radius: 50%;
+    cursor: pointer;
+  }
 `

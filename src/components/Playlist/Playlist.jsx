@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { useContext } from 'react'
 import {
   setCurrentTrack,
   addPlaylist,
@@ -10,6 +11,7 @@ import {
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import * as S from './Playlist.styles'
+import { SearchContext } from '../Centerblock/Centerblock'
 
 // форматер времени трека
 export const formatTime = (t) => {
@@ -37,20 +39,34 @@ export const Playlist = ({
   error,
   showAllTracksAsLiked,
 }) => {
-  const mapTracks =
-    tracks?.length > 0 ? (
-      tracks.map((track) => (
-        <Track
-          key={track.id}
-          isLoading={isLoading}
-          track={track}
-          playlist={tracks}
-          showAllTracksAsLiked={showAllTracksAsLiked}
-        />
-      ))
-    ) : (
-      <h3>В этом плейлисте нет треков</h3>
+  // поиск
+  const searchText = useContext(SearchContext)
+  let playlist = tracks
+  if (searchText.length) {
+    playlist = tracks.filter((el) =>
+      el.name.toLowerCase().includes(searchText.toLowerCase()),
     )
+  }
+
+  let mapTracks = ''
+  if (playlist === 'not found') {
+    mapTracks = <h2>Ничего не найдено *_*</h2>
+  } else {
+    mapTracks =
+      tracks?.length > 0 ? (
+        playlist.map((track) => (
+          <Track
+            key={track.id}
+            isLoading={isLoading}
+            track={track}
+            playlist={tracks}
+            showAllTracksAsLiked={showAllTracksAsLiked}
+          />
+        ))
+      ) : (
+        <h2>В этом плейлисте нет треков</h2>
+      )
+  }
   return (
     <S.CenterblockContent>
       <S.ContentTitle>
@@ -59,7 +75,7 @@ export const Playlist = ({
         <S.PlaylistTitleCol3>АЛЬБОМ</S.PlaylistTitleCol3>
         <S.PlaylistTitleCol4>
           <S.PlaylistTitleSvg alt="time">
-            <use xlinkHref="img/icon/sprite.svg#icon-watch" />
+            <use xlinkHref="/img/icon/sprite.svg#icon-watch" />
           </S.PlaylistTitleSvg>
         </S.PlaylistTitleCol4>
       </S.ContentTitle>
@@ -99,10 +115,10 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
   const trackId = track?.id
   const [likeTrack] = useLikeTrackMutation()
   const [dislikeTrack, { error: dislikeError }] = useDislikeTrackMutation()
+  let isLike = false
   if (dislikeError) {
     console.log(dislikeError.originalStatus)
   }
-  let isLike = false
   isLike = (track?.stared_user ?? []).find(({ id }) => id === idUser)
   if (showAllTracksAsLiked) {
     isLike = true
@@ -120,7 +136,6 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
       isLike = true
     }
   }
-
   // клик по треку
   const toggleTrackClick = () => {
     dispatch(setCurrentTrack(track))
@@ -135,7 +150,7 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
             <S.TrackTitleSvg alt="music">
               <use
                 xlinkHref={
-                  track?.logo ? track.logo : 'img/icon/sprite.svg#icon-note'
+                  track?.logo ? track.logo : '/img/icon/sprite.svg#icon-note'
                 }
               />
             </S.TrackTitleSvg>
@@ -176,8 +191,9 @@ const Track = ({ isLoading, track, playlist, showAllTracksAsLiked }) => {
               fill: `${isLike ? '#B672FF' : ''}`,
             }}
           >
-            <use xlinkHref="img/icon/sprite.svg#icon-like" />
+            <use xlinkHref="/img/icon/sprite.svg#icon-like" />
           </S.TrackTimeSvg>
+
           <S.TrackTimeText>
             {formatTime(track?.duration_in_seconds)}
             {isLoading && <S.Skeleton />}

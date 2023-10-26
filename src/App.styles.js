@@ -27,7 +27,7 @@ a:visited {
 	text-decoration: none;
 	font-family: "StratosSkyeng", sans-serif;
 	cursor: pointer;
-	color: inherit;
+	color: var(--color-text);
 }
 ul li {
 	list-style: none;
@@ -40,7 +40,7 @@ html, body {
 	width: 100%;
 	height: 100%;
 	font-family: "StratosSkyeng", sans-serif;
-	color: #ffffff;
+	color: var(--color-text);
 }
 
 ::-webkit-scrollbar {
@@ -84,7 +84,7 @@ html, body {
 	cursor: pointer;
 	}
 .skeleton {
-	background-color: #313131;
+	background-color: var(--color-bg-wrap);
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -92,19 +92,18 @@ html, body {
 	left: 0;
 }
 `
-
 export const Wrapper = styled.div`
   width: 100%;
   min-height: 100%;
   overflow: hidden;
-  background-color: #383838;
+  background-color: var(--color-bg-wrap);
 `
 export const Container = styled.div`
   max-width: 1920px;
   height: 100vh;
   margin: 0 auto;
   position: relative;
-  background-color: #181818;
+  background-color: var(--color-bg);
   display: flex;
   justify-content: center;
 `
@@ -120,6 +119,9 @@ export const Main = styled.main`
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  @media (width <= 1900px) {
+    display: block;
+  }
 `
 export const CenterBlock = styled.div`
   position: relative;

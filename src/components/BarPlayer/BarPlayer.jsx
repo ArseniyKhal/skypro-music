@@ -4,7 +4,6 @@ import { formatTime } from '../Playlist/Playlist'
 import {
   currentTrackSelector,
   isPlauingSelector,
-  isLoopSelector,
   isShuffledSelector,
   playListSelector,
 } from '../../store/selectors/audioplayerSelectors'
@@ -12,18 +11,25 @@ import {
   nextTrack,
   prevTrack,
   togglePause,
-  toggleRepeat,
   toggleShuffle,
 } from '../../store/actions/creators/audioplayerCreator'
+import {
+  useLikeTrackMutation,
+  useDislikeTrackMutation,
+  useGetIdTrackQuery,
+} from '../../services/servicesApi'
 import * as S from './BarPlayer.styles'
+import {
+  idUserSelector,
+  themeSelector,
+} from '../../store/selectors/authSelectors'
 
 export const BarPlayer = () => {
   const audioElem = useRef(null)
   const dispatch = useDispatch()
   const trackInPlayer = useSelector(currentTrackSelector)
   const plauing = useSelector(isPlauingSelector)
-  const isLoop = useSelector(isLoopSelector)
-  const [volume, setvolume] = useState(0.3)
+  const [volume, setvolume] = useState(0.5)
   const [play5sec, setPlay5sec] = useState(false)
   const playlist = useSelector(playListSelector)
 
@@ -89,11 +95,21 @@ export const BarPlayer = () => {
     setProgress((divProgress / 100) * duration.length)
   }
 
-  // сброс кнопок loop и shuffle при изменении плейлиста
+  // сброс shuffle при изменении плейлиста
   useEffect(() => {
-    dispatch(toggleRepeat('off'))
     dispatch(toggleShuffle('off'))
   }, [playlist])
+
+  // кнопка включения трека по кругу
+  const [loop, setLoop] = useState(false)
+  const toggleLoop = () => {
+    setLoop(!loop)
+  }
+
+  // лайкер в плеере
+  const idUser = useSelector(idUserSelector)
+  const { data } = useGetIdTrackQuery(trackInPlayer.id)
+  const isLike = (data?.stared_user ?? []).find(({ id }) => id === idUser)
 
   return (
     <>
@@ -104,7 +120,7 @@ export const BarPlayer = () => {
         onTimeUpdate={onPlaying}
         style={{ display: 'none' }}
         src={trackInPlayer?.track_file}
-        loop={isLoop ? 'loop' : ''}
+        loop={loop ? 'loop' : ''}
       >
         <track kind="captions" />
       </audio>
@@ -122,10 +138,18 @@ export const BarPlayer = () => {
           </S.BarPlayerProgress>
           <S.BarPlayerBlock>
             <S.BarPlayer>
-              <PlayerButtons togglePrevTreck={togglePrevTreck} />
+              <PlayerButtons
+                togglePrevTreck={togglePrevTreck}
+                loop={loop}
+                toggleLoop={toggleLoop}
+              />
               <S.BarPlayerTrackPlay>
                 <TrackPlay track={trackInPlayer} />
-                {/* <Likes /> */}
+                <Likes
+                  isLike={isLike}
+                  like={trackInPlayer.like}
+                  trackId={trackInPlayer.id}
+                />
               </S.BarPlayerTrackPlay>
             </S.BarPlayer>
             <S.BarVolumeBlock>
@@ -139,9 +163,8 @@ export const BarPlayer = () => {
 }
 
 // кнопки плеера
-const PlayerButtons = ({ togglePrevTreck }) => {
+const PlayerButtons = ({ togglePrevTreck, loop, toggleLoop }) => {
   const plauing = useSelector(isPlauingSelector)
-  const loop = useSelector(isLoopSelector)
   const shuffled = useSelector(isShuffledSelector)
   const dispatch = useDispatch()
 
@@ -149,30 +172,29 @@ const PlayerButtons = ({ togglePrevTreck }) => {
     <S.PlayerControls>
       <S.PlayerBtnPrev onClick={togglePrevTreck}>
         <S.PlayerBtnPrevSvg alt="prev">
-          <use xlinkHref="img/icon/sprite.svg#icon-prev" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-prev" />
         </S.PlayerBtnPrevSvg>
       </S.PlayerBtnPrev>
       <S.PlayerBtnPlay onClick={() => dispatch(togglePause())}>
         <S.PlayerBtnPlaySvg alt="play">
           <use
-            xlinkHref={`img/icon/sprite.svg#icon-${plauing ? 'pause' : 'play'}`}
+            xlinkHref={`/img/icon/sprite.svg#icon-${
+              plauing ? 'pause' : 'play'
+            }`}
           />
         </S.PlayerBtnPlaySvg>
       </S.PlayerBtnPlay>
       <S.PlayerBtnNext onClick={() => dispatch(nextTrack())}>
         <S.PlayerBtnNextSvg alt="next">
-          <use xlinkHref="img/icon/sprite.svg#icon-next" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-next" />
         </S.PlayerBtnNextSvg>
       </S.PlayerBtnNext>
-      <S.PlayerBtnRepeat
-        onClick={() => dispatch(toggleRepeat())}
-        className=" _btn-icon"
-      >
+      <S.PlayerBtnRepeat onClick={toggleLoop} className=" _btn-icon">
         <S.PlayerBtnRepeatSvg
           style={{ stroke: `${loop ? '#ACACAC' : '#696969'}` }}
           alt="repeat"
         >
-          <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-repeat" />
         </S.PlayerBtnRepeatSvg>
       </S.PlayerBtnRepeat>
       <S.PlayerBtnShuffle
@@ -183,7 +205,7 @@ const PlayerButtons = ({ togglePrevTreck }) => {
           style={{ stroke: `${shuffled ? '#ACACAC' : '#696969'}` }}
           alt="shuffle"
         >
-          <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
         </S.PlayerBtnShuffleSvg>
       </S.PlayerBtnShuffle>
     </S.PlayerControls>
@@ -195,7 +217,9 @@ const TrackPlay = ({ track }) => (
     <S.TrackPlayImage>
       <S.TrackPlaySvg alt="music">
         <use
-          xlinkHref={track?.logo ? track.logo : 'img/icon/sprite.svg#icon-note'}
+          xlinkHref={
+            track?.logo ? track.logo : '/img/icon/sprite.svg#icon-note'
+          }
         />
       </S.TrackPlaySvg>
     </S.TrackPlayImage>
@@ -210,20 +234,34 @@ const TrackPlay = ({ track }) => (
   </S.TrackPlayContain>
 )
 
-// const Likes = () => (
-//   <S.TrackPlayLikesDis>
-//     <S.TrackPlayLikes className=" _btn-icon">
-//       <S.TrackPlayLikesSvg className="track-play__like-svg" alt="like">
-//         <use xlinkHref="img/icon/sprite.svg#icon-like" />
-//       </S.TrackPlayLikesSvg>
-//     </S.TrackPlayLikes>
-//     <S.TrackPlayDislikes className=" _btn-icon">
-//       <S.TrackPlayDislikesSvg className="track-play__dislike-svg" alt="dislike">
-//         <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
-//       </S.TrackPlayDislikesSvg>
-//     </S.TrackPlayDislikes>
-//   </S.TrackPlayLikesDis>
-// )
+const Likes = ({ trackId, isLike }) => {
+  const [likeTrack] = useLikeTrackMutation()
+  const [dislikeTrack] = useDislikeTrackMutation()
+  const toggleLike = () => {
+    if (isLike) {
+      dislikeTrack(trackId)
+    } else {
+      likeTrack(trackId)
+    }
+  }
+  return (
+    <S.TrackPlayLikesDis>
+      <S.TrackPlayLikes className=" _btn-icon">
+        <S.TrackPlayLikesSvg
+          onClick={toggleLike}
+          className="track-play__like-svg"
+          alt="like"
+          style={{
+            stroke: `${isLike ? '#B672FF' : ''}`,
+            fill: `${isLike ? '#B672FF' : ''}`,
+          }}
+        >
+          <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+        </S.TrackPlayLikesSvg>
+      </S.TrackPlayLikes>
+    </S.TrackPlayLikesDis>
+  )
+}
 
 // громкость
 const VolumeSlider = ({ volume, volumeChange }) => {
@@ -236,13 +274,15 @@ const VolumeSlider = ({ volume, volumeChange }) => {
       volumeChange(tempVolume)
     }
   }
-
+  const theme = useSelector(themeSelector)
   return (
     <S.VolumeContent>
       <S.VolumeImage onClick={toggleVolume}>
         <S.VolumeSvg alt="volume">
           <use
-            xlinkHref={`img/icon/sprite.svg#icon-volume${+volume ? '' : 'non'}`}
+            xlinkHref={`/img/icon/sprite.svg#icon-volume${
+              theme === 'dark' ? '' : '_black'
+            }${+volume ? '' : '_non'}`}
           />
         </S.VolumeSvg>
       </S.VolumeImage>
@@ -253,7 +293,7 @@ const VolumeSlider = ({ volume, volumeChange }) => {
           name="range"
           min={0}
           max={1}
-          step={0.1}
+          step={0.01}
           value={volume}
           onChange={(e) => {
             volumeChange(+e.target.value)

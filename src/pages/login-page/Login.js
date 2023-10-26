@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../api'
 import * as S from './LoginReg.styles'
 import { logInState } from '../../store/actions/creators/authCreator'
+import { themeSelector } from '../../store/selectors/authSelectors'
 
 // логин: yellow@cat.ru			 пароль: 8symbol!
 
@@ -11,12 +12,13 @@ import { logInState } from '../../store/actions/creators/authCreator'
 export const saveUserInfoInLocalStorage = (loginData) => {
   const userInfo = JSON.stringify({
     email: loginData.email,
-    firstName: loginData.first_name,
-    lastName: loginData.last_name,
+    first_name: loginData.first_name,
+    last_name: loginData.last_name,
     username: loginData.username,
     id: loginData.id,
     refresh: loginData.refresh,
     access: loginData.access,
+    themeDark: true,
   })
   localStorage.setItem('userSkyproMusic', userInfo)
 }
@@ -57,13 +59,16 @@ export const Login = () => {
       setIsLoadingLogin(false)
     }
   }
-
+  const theme = useSelector(themeSelector)
   return (
     <S.ModalBlock>
       <S.ModalFormLogin>
         <a href="../">
           <S.ModalLogo>
-            <img src="../img/logo_modal.png" alt="logo" />
+            <img
+              src={`/img/logo${theme === 'dark' ? '_modal' : ''}.png`}
+              alt="logo"
+            />
           </S.ModalLogo>
         </a>
         <S.ModalInputLogin
@@ -92,7 +97,10 @@ export const Login = () => {
           Войти
         </S.ModalBtnEnter>
         <S.ModalBtnSignup disabled={isLoadingLogin}>
-          <Link to="/register"> Зарегистрироваться </Link>
+          <Link style={{ color: '#000' }} to="/register">
+            {' '}
+            Зарегистрироваться{' '}
+          </Link>
         </S.ModalBtnSignup>
       </S.ModalFormLogin>
     </S.ModalBlock>

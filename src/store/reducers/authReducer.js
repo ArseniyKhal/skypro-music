@@ -1,14 +1,17 @@
-import { USER_LOGIN, SET_ACC_TOKEN } from '../actions/types/constants'
+import { USER_LOGIN, TGL_THEME } from '../actions/types/constants'
+
+const isDarkTheme = window?.matchMedia('(prefers-color-scheme:dark)').matches
+const defaultTheme = isDarkTheme ? 'dark' : 'light'
 
 const initialState = {
-  logInState: false,
-  accessToken: '',
-  refreshToken: '',
+  access: '',
+  refresh: '',
   username: '',
   first_name: '',
   last_name: '',
   email: '',
   id: '',
+  theme: defaultTheme,
 }
 
 export default function authReducer(state = initialState, action) {
@@ -18,23 +21,20 @@ export default function authReducer(state = initialState, action) {
       const { data } = action.payload
       return {
         ...state,
-        logInState: !!data,
-        username: data.username,
-        email: data.email,
-        id: data.id,
-        accessToken: data.access,
-        refreshToken: data.refresh,
-        firstName: data.first_name,
-        lastName: data.last_name,
+        username: data?.username,
+        email: data?.email,
+        id: data?.id,
+        access: data?.access,
+        refresh: data?.refresh,
+        first_name: data?.first_name,
+        last_name: data?.last_name,
       }
     }
-
-    // перезапись access токена в стейт
-    case SET_ACC_TOKEN: {
-      const { accToken } = action.payload
+    // смена темы
+    case TGL_THEME: {
       return {
         ...state,
-        accessToken: accToken,
+        theme: state.theme === 'dark' ? 'light' : 'dark',
       }
     }
 

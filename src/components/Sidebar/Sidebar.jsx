@@ -4,7 +4,10 @@ import * as S from './Sidebar.styles'
 import { useGetTracksQuery } from '../../services/servicesApi'
 import { logInState } from '../../store/actions/creators/authCreator'
 
-import { nameUserSelector } from '../../store/selectors/authSelectors'
+import {
+  nameUserSelector,
+  themeSelector,
+} from '../../store/selectors/authSelectors'
 
 export const Sidebar = () => {
   const dispatch = useDispatch()
@@ -12,11 +15,11 @@ export const Sidebar = () => {
   const userName = useSelector(nameUserSelector)
 
   const toggleExitButton = () => {
-    dispatch(logInState(false))
+    dispatch(logInState(null))
     localStorage.removeItem('userSkyproMusic')
     navigate('/login')
   }
-
+  const theme = useSelector(themeSelector)
   return (
     <S.MainSidebar>
       <S.SidebarPersonal>
@@ -28,24 +31,28 @@ export const Sidebar = () => {
             }}
             alt="logout"
           >
-            <use xlinkHref="img/icon/sprite.svg#logout" />
+            <use
+              xlinkHref={`img/icon/sprite.svg#logout${
+                theme === 'dark' ? '' : 'Light'
+              }`}
+            />
           </svg>
         </S.SidebarIcon>
       </S.SidebarPersonal>
       <S.SidebarBlock>
         <S.SidebarList>
           <SidebarItem
-            imgUrl="img/playlist01.png"
+            imgUrl="/img/playlist01.png"
             imgAlt={"day's playlist"}
             id={1}
           />
           <SidebarItem
-            imgUrl="img/playlist02.png"
+            imgUrl="/img/playlist02.png"
             imgAlt={"day's playlist"}
             id={2}
           />
           <SidebarItem
-            imgUrl="img/playlist03.png"
+            imgUrl="/img/playlist03.png"
             imgAlt={"day's playlist"}
             id={3}
           />

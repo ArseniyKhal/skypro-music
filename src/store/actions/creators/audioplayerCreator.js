@@ -4,7 +4,6 @@ import {
   TOGGLE_PAUSE,
   NEXT_TRACK,
   PREV_TRACK,
-  REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
 } from '../types/constants'
 
@@ -28,11 +27,6 @@ export const nextTrack = () => ({
 
 export const prevTrack = () => ({
   type: PREV_TRACK,
-})
-
-export const toggleRepeat = (status) => ({
-  type: REPEAT_PLAYLIST,
-  payload: { status },
 })
 
 export const toggleShuffle = (status) => ({

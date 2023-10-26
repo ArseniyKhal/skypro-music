@@ -6,6 +6,9 @@ export const MainCenterblock = styled.div`
   -ms-flex-positive: 3;
   flex-grow: 3;
   padding: 20px 40px 20px 111px;
+  @media (width <= 1900px) {
+    padding: 0px 40px;
+  }
 `
 export const CenterblockSearch = styled.div`
   width: 100%;
@@ -40,10 +43,9 @@ export const SearchText = styled.input`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text);
   &::-webkit-input-placeholder {
     background-color: transparent;
-    color: #ffffff;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -51,7 +53,6 @@ export const SearchText = styled.input`
   }
   &:-ms-input-placeholder {
     background-color: transparent;
-    color: #ffffff;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -59,7 +60,6 @@ export const SearchText = styled.input`
   }
   &::placeholder {
     background-color: transparent;
-    color: #ffffff;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

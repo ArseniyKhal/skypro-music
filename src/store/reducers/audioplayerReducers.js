@@ -4,7 +4,6 @@ import {
   TOGGLE_PAUSE,
   NEXT_TRACK,
   PREV_TRACK,
-  REPEAT_PLAYLIST,
   SHUFFLE_PLAYLIST,
 } from '../actions/types/constants'
 
@@ -12,7 +11,6 @@ const initialState = {
   plauing: false,
   playlist: [],
   track: null,
-  loop: false,
   shuffled: false,
   shuffledPlaylist: [],
 }
@@ -75,15 +73,6 @@ export default function audioplayerReducer(state = initialState, action) {
         ...state,
         track: prevTrack,
         plauing: true,
-      }
-    }
-
-    // воспроизведение трека по кругу
-    case REPEAT_PLAYLIST: {
-      const { status } = action.payload
-      return {
-        ...state,
-        loop: status ? false : !state.loop,
       }
     }
 

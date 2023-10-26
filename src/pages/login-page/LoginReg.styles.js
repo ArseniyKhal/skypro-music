@@ -1,7 +1,6 @@
 import { styled } from 'styled-components'
 
 export const ModalBlock = styled.div`
-  font-family: 'StratosSkyeng', sans-serif;
   position: absolute;
   z-index: 2;
   left: calc(50% - (366px / 2));
@@ -12,7 +11,7 @@ export const ModalBlock = styled.div`
 export const ModalFormLogin = styled.form`
   width: 366px;
   min-height: 439px;
-  background-color: #ffffff;
+  background-color: var(--color-form-login);
   border-radius: 12px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -142,7 +141,7 @@ export const ModalBtnSignup = styled.button`
   font-size: 18px;
   line-height: 24px;
   letter-spacing: -0.05px;
-  color: #000000;
+  color: #000;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -153,10 +152,10 @@ export const ModalBtnSignup = styled.button`
   -ms-flex-pack: center;
   justify-content: center;
   &:hover {
-    background-color: #f4f5f6;
+    background-color: var(--color-btn-login-hover);
   }
   &:active {
-    background-color: #d9d9d9;
+    background-color: var(--color-btn-login-active);
   }
   & a {
     width: 100%;
@@ -166,7 +165,7 @@ export const ModalBtnSignup = styled.button`
     font-size: 18px;
     line-height: 24px;
     letter-spacing: -0.05px;
-    color: #000000;
+    color: #000;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -191,6 +190,7 @@ export const ModalBtnSignupEnt = styled.button`
   display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
+  color: #ffffff;
   align-items: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
