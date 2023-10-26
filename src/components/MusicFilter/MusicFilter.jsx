@@ -1,37 +1,32 @@
 import { useState, useEffect } from 'react'
-import { useGetTracksQuery } from '../../services/servicesApi'
 import * as S from './Filter.styles'
 
-export const MusicFilter = ({ setMusic }) => {
+export const MusicFilter = ({ setMusic, musicList, isLoading }) => {
   // отображение/скрытие меню фильтра
   const [visibleFilter, setVisibleFilter] = useState(null)
   const toggleVisibleFilter = (filter) => {
     setVisibleFilter(visibleFilter === filter ? null : filter)
   }
-  const { data: playlistAPI, isLoading } = useGetTracksQuery()
   const [authorFilter, setAuthorFilter] = useState([])
   const [genreFilter, setGenreFilter] = useState([])
   const [selectedSort, setSelectedSort] = useState('По умолчанию')
-
   useEffect(() => {
     if (
       !authorFilter.length &&
       !genreFilter.length &&
       selectedSort === 'По умолчанию'
     ) {
-      setMusic(playlistAPI)
+      setMusic(musicList)
     } else {
       // ======================= ФИЛЬТР ПО АВТОРУ ==========================
       let authorList = []
       if (authorFilter.length) {
         for (let i = 0; i < authorFilter.length; i++) {
-          const result = playlistAPI.filter(
-            (el) => el.author === authorFilter[i],
-          )
+          const result = musicList.filter((el) => el.author === authorFilter[i])
           authorList = [...authorList, ...result]
         }
       } else {
-        authorList = playlistAPI
+        authorList = musicList
       }
 
       // ======================= ФИЛЬТР ПО ЖАНРУ ==========================
@@ -71,7 +66,7 @@ export const MusicFilter = ({ setMusic }) => {
       }
       setMusic(sortList)
     }
-  }, [authorFilter, genreFilter, selectedSort, playlistAPI])
+  }, [authorFilter, genreFilter, selectedSort, musicList])
 
   return (
     <S.CenterblockFilter>
@@ -80,7 +75,7 @@ export const MusicFilter = ({ setMusic }) => {
         <MusicFilterItem
           title="исполнителю"
           filterList={Array.from(
-            new Set(playlistAPI?.map((track) => track.author)),
+            new Set(musicList?.map((track) => track.author)),
           )}
           isLoading={isLoading}
           visibleFilter={visibleFilter}
@@ -91,7 +86,7 @@ export const MusicFilter = ({ setMusic }) => {
         <MusicFilterItem
           title="жанру"
           filterList={Array.from(
-            new Set(playlistAPI?.map((track) => track.genre)),
+            new Set(musicList?.map((track) => track.genre)),
           )}
           isLoading={isLoading}
           visibleFilter={visibleFilter}

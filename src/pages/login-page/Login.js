@@ -97,7 +97,10 @@ export const Login = () => {
           Войти
         </S.ModalBtnEnter>
         <S.ModalBtnSignup disabled={isLoadingLogin}>
-          <Link to="/register"> Зарегистрироваться </Link>
+          <Link style={{ color: '#000' }} to="/register">
+            {' '}
+            Зарегистрироваться{' '}
+          </Link>
         </S.ModalBtnSignup>
       </S.ModalFormLogin>
     </S.ModalBlock>

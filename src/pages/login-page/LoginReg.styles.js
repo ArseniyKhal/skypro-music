@@ -141,7 +141,7 @@ export const ModalBtnSignup = styled.button`
   font-size: 18px;
   line-height: 24px;
   letter-spacing: -0.05px;
-  color: var(--color-hover-track);
+  color: #000;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -165,7 +165,7 @@ export const ModalBtnSignup = styled.button`
     font-size: 18px;
     line-height: 24px;
     letter-spacing: -0.05px;
-    color: var(--color-hover-track);
+    color: #000;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -190,6 +190,7 @@ export const ModalBtnSignupEnt = styled.button`
   display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
+  color: #ffffff;
   align-items: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
