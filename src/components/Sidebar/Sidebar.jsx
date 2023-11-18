@@ -47,6 +47,7 @@ export const Sidebar = () => {
             id={1}
           />
           <SidebarItem
+            // imgUrl="/img/playlist02.png"
             imgUrl="/img/playlist02.png"
             imgAlt={"day's playlist"}
             id={2}

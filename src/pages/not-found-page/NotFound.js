@@ -31,7 +31,6 @@ export const NotFound = () => {
           style={{
             fontSize: '32px',
             lineHeight: '125%',
-            // fontFamily: 'StratosSkyeng',
           }}
         >
           Страница не найдена
