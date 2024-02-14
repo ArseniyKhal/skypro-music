@@ -1,6 +1,6 @@
 # Skypro-music
 
-<img width="380" alt="image" src="https://github.com/ArseniyKhal/SkyFitnessPro/assets/92600602/fed7c398-4a03-479b-9335-b749675e7237">
+<img alt="image" src="https://github.com/ArseniyKhal/SkyFitnessPro/assets/92600602/8780da4b-f2b1-4ab6-87f1-6ce63c8058f5">
 
 Веб сервис для прослушивания музыки "Skypro-music"
 
@@ -47,8 +47,11 @@ npm run build
 ## Описание проекта:
 
 Веб сервис для прослушивания музыки "Skypro-music".
+
 Макет доступен [здесь](https://www.figma.com/file/ipmCH5eJNKY2XsEoXl4HzK/%D0%9C%D1%83%D0%B7%D1%8B%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81?type=design&node-id=0-1&mode=design&t=pzjJ9wuQxTCVJMrV-0)
+
 Документация API [здесь](https://github.com/skypro-web-developer/webdev-react-hw-template/blob/main/API.md)
+
 Репозиторий бекенда [здесь](https://github.com/skypro-backend/backend_web-music-app)
 
 ## Структура и функционал приложения
@@ -73,7 +76,7 @@ npm run build
 - [x] список музыкальных подборок
 - [x] музыкальный плеер (при воспроизведении трека)
 
-<img width="380" alt="image" src="https://github.com/ArseniyKhal/SkyFitnessPro/assets/92600602/fed7c398-4a03-479b-9335-b749675e7237">
+<img width="380" alt="image" src="https://github.com/ArseniyKhal/SkyFitnessPro/assets/92600602/8780da4b-f2b1-4ab6-87f1-6ce63c8058f5">
 
 ### Страница Мои треки
 
@@ -109,7 +112,7 @@ npm run build
 - [x] возможность изменения громкости и отключения звука
 - [x] поставить или убрать лайк (добавить в избранное)
 
-### Технический стек приложения
+### Технический стек
 
 - [x] React
 - [x] Redux + Redux Toolkit + RTK Query
