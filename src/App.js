@@ -1,4 +1,3 @@
-import './index.css'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { themeSelector } from './store/selectors/authSelectors'

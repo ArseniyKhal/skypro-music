@@ -8,12 +8,6 @@ import { Centerblock } from '../../components/Centerblock/Centerblock'
 import { logInState } from '../../store/actions/creators/authCreator'
 import * as S from '../../App.styles'
 
-// Задачи:
-// сделать время на прогрессе при наведении
-// нарисовать ОШИБКА ЗАГРУЗКИ ТРЕКОВ
-// поправить скрол плейлиста
-// не пойму почему не подключаются шрифты на страницах login и reg..
-
 export const Main = () => {
   const trackInPlayer = useSelector(currentTrackSelector)
   const userInfo = JSON.parse(localStorage.getItem('userSkyproMusic'))

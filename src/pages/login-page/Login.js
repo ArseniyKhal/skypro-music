@@ -2,11 +2,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../api'
-import * as S from './LoginReg.styles'
 import { logInState } from '../../store/actions/creators/authCreator'
 import { themeSelector } from '../../store/selectors/authSelectors'
-
-// логин: yellow@cat.ru			 пароль: 8symbol!
+import * as S from './LoginReg.styles'
 
 // запись юзера и токена в localStorage
 export const saveUserInfoInLocalStorage = (loginData) => {
@@ -98,8 +96,7 @@ export const Login = () => {
         </S.ModalBtnEnter>
         <S.ModalBtnSignup disabled={isLoadingLogin}>
           <Link style={{ color: '#000' }} to="/register">
-            {' '}
-            Зарегистрироваться{' '}
+            Зарегистрироваться
           </Link>
         </S.ModalBtnSignup>
       </S.ModalFormLogin>
