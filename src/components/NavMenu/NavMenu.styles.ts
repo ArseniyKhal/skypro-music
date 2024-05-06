@@ -27,7 +27,7 @@ export const LogoImage = styled.img`
 `
 export const NavBurger = styled.button`
   width: 20px;
-  height: 37px;
+  height: 39px;
   padding: 13px 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -52,10 +52,13 @@ export const BurgerLine = styled.span`
   height: 1px;
   background-color: var(--color-text);
 `
-export const NavMenu = styled.div`
+type Custom = {
+	$isVisible: string
+}
+export const NavMenu = styled.div<Custom>`
+  visibility: ${props => props.$isVisible};
   display: block;
   transition: all 0.2s ease;
-  visibility: hidden;
   @media (width <= 1900px) {
     visibility: visible;
   }
@@ -94,7 +97,7 @@ export const ModeSwitcher = styled.img`
 `
 
 export const MenuLink = {
-  fontWeight: '400',
-  fontXize: '16px',
-  lineHeight: '24px',
+	fontWeight: '400',
+	fontXize: '16px',
+	lineHeight: '24px',
 }

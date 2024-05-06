@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as S from '../login-page/LoginReg.styles'
@@ -20,7 +20,7 @@ export const Register = () => {
   const password = inputPass
   const password2 = input2Pass
 
-  const handleReg = async (e) => {
+  const handleReg = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
       if (!email) {
@@ -42,7 +42,7 @@ export const Register = () => {
       dispatch(logInState(loginData))
       saveUserInfoInLocalStorage(loginData)
       navigate('/')
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       setRegError(error.message)
     } finally {

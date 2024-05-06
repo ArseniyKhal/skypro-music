@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../api'
 import { logInState } from '../../store/actions/creators/authCreator'
 import { themeSelector } from '../../store/selectors/authSelectors'
+import { AuthState } from '../../types'
 import * as S from './LoginReg.styles'
 
 // запись юзера и токена в localStorage
-export const saveUserInfoInLocalStorage = (loginData) => {
+export const saveUserInfoInLocalStorage = (loginData: AuthState) => {
   const userInfo = JSON.stringify({
     email: loginData.email,
-    first_name: loginData.first_name,
-    last_name: loginData.last_name,
+    firstName: loginData.firstName,
+    lastName: loginData.lastName,
     username: loginData.username,
     id: loginData.id,
     refresh: loginData.refresh,
@@ -33,7 +34,7 @@ export const Login = () => {
   const email = inputEmail
   const password = inputPass
 
-  const handleEnter = async (e) => {
+  const handleEnter = async (e:MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
       if (!email) {
@@ -50,7 +51,7 @@ export const Login = () => {
       dispatch(logInState(loginData))
       saveUserInfoInLocalStorage(loginData)
       navigate('/')
-    } catch (error) {
+    } catch (error:any) {
       console.error(error)
       setLoginError(error.message)
     } finally {

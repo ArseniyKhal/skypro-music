@@ -8,7 +8,7 @@ export async function getPlaylist() {
 }
 
 // Авторизация + tokens
-export async function login({ email, password }) {
+export async function login({ email, password }:{ email:string, password:string }) {
   const [loginRes, tokenRes] = await Promise.all([
     fetch('https://skypro-music-api.skyeng.tech/user/login/', {
       method: 'POST',
@@ -43,7 +43,7 @@ export async function login({ email, password }) {
 }
 
 // Регистрация
-export async function registration({ email, password }) {
+export async function registration({ email, password }:{ email:string, password:string }) {
   const regRes = await fetch(
     'https://skypro-music-api.skyeng.tech/user/signup/',
     {

@@ -1,3 +1,4 @@
+import {TrackType} from '../../../types'
 import {
   ADD_PLAYLIST,
   SET_CURRENT_TRACK,
@@ -7,12 +8,12 @@ import {
   SHUFFLE_PLAYLIST,
 } from '../types/constants'
 
-export const addPlaylist = (playlist) => ({
+export const addPlaylist = (playlist:TrackType[]) => ({
   type: ADD_PLAYLIST,
   payload: { playlist },
 })
 
-export const setCurrentTrack = (track) => ({
+export const setCurrentTrack = (track:TrackType) => ({
   type: SET_CURRENT_TRACK,
   payload: { track },
 })
@@ -29,7 +30,7 @@ export const prevTrack = () => ({
   type: PREV_TRACK,
 })
 
-export const toggleShuffle = (status) => ({
+export const toggleShuffle = (status?: boolean ) => ({
   type: SHUFFLE_PLAYLIST,
   payload: { status },
 })
