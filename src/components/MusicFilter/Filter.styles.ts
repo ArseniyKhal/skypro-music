@@ -32,7 +32,7 @@ export const FilterTitle = styled.div`
 `
 export const FilterItem = styled.div`
   position: relative;
-  &:not(:last-child) {
+   &:not(:last-child) {
     margin-right: 10px;
   }
 `
@@ -77,6 +77,7 @@ export const FilterButton = styled.div`
   border: 1px solid var(--color-text);
   border-radius: 60px;
   padding: 6px 20px;
+  cursor: pointer;
 `
 
 export const FilterLabel = styled.div`

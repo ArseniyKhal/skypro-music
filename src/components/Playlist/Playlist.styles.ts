@@ -231,7 +231,7 @@ export const bubbleOut = styled.div`
 export const Skeleton = styled.div`
   width: 100%;
   height: 100%;
-  background-color: var(--color-bg);
+  background-color: var(--color-btn-regular);
   position: absolute;
   top: 0;
   left: 0;

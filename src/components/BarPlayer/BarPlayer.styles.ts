@@ -30,6 +30,7 @@ export const BarPlayerProgress = styled.div`
   height: 5px;
   background: var(--color-progress-line);
   cursor: pointer;
+  transition: height 0.1s;
   &:hover {
     height: 12px;
   }
