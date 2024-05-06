@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import React, { ChangeEvent, useState, createContext } from 'react'
+import  { ChangeEvent, useState, createContext } from 'react'
 import { useSelector } from 'react-redux'
 import * as S from './Centerblock.styles'
 import { themeSelector } from '../../store/selectors/authSelectors'
