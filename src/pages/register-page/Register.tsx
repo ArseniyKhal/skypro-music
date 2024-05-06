@@ -42,9 +42,10 @@ export const Register = () => {
       dispatch(logInState(loginData))
       saveUserInfoInLocalStorage(loginData)
       navigate('/')
-    } catch (error: any) {
-      console.error(error)
-      setRegError(error.message)
+    } catch (error) {
+			if (error instanceof Error) {
+				setRegError(error.message)
+			}
     } finally {
       setIsLoadingReg(false)
     }

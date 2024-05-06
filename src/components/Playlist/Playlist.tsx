@@ -10,7 +10,7 @@ import {
 import { idUserSelector } from '../../store/selectors/authSelectors'
 import { isPlauingSelector } from '../../store/selectors/audioplayerSelectors'
 import { SearchContext } from '../Centerblock/Centerblock'
-import { TrackType, TrackComponentType } from '../../types'
+import { TrackType, TrackComponentType, RootState } from '../../types'
 import * as S from './Playlist.styles'
 
 
@@ -90,7 +90,7 @@ const Track = ({ track, playlist }: TrackComponentType) => {
     const playing = useSelector(isPlauingSelector)
     const dispatch = useDispatch()
     // фиолетовый круг на обложке при восроизведении
-    const trackInPleer = useSelector((state: any) => state.audioplayer.track)
+    const trackInPleer = useSelector((state:RootState) => state.audioplayer.track)
     let visibolbubbleOut = false
     if (trackInPleer) {
         if (trackInPleer.id === track?.id) {
